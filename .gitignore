@@ -1,0 +1,10 @@
+.DS_Store
+xcuserdata/
+*.xcuserstate
+DerivedData/
+__pycache__/
+node_modules/
+linux/dist/
+*.AppImage
+*.dmg
+*.tar.gz

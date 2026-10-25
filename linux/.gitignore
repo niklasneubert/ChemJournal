@@ -1,0 +1,6 @@
+node_modules/
+dist/
+# Fertige Downloads sind groß (je ~120 MB) und werden mit "npm run dist" erzeugt
+Download/*.AppImage
+Download/*.tar.gz
+.DS_Store

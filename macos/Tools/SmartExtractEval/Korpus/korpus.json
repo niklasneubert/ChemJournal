@@ -1,0 +1,809 @@
+[
+ {
+  "id": "prot_1",
+  "quelle": "Praktikumsprotokoll (DE) (lokale Datei)",
+  "text": "Es wurden 6.05 g (40.0mmol, 1.00 Eq) 2-Amino-4-Methyl-Benzoesäure 1 als brauner Feststoﬀ\neingewogen und mit 260 mL Methanol (6.43 mol, 161 Eq) vorgelegt. Zu dieser Lösung wurden\nlangsam 20.0mL Schwefelsäure (0.37 mol, 9.25 Eq)hinzugegeben.",
+  "soll": [
+   {
+    "namen": [
+     "2-Amino-4-Methyl-Benzoesäure 1"
+    ],
+    "m": 6.05,
+    "n": 0.04,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "Methanol"
+    ],
+    "n": 6.43,
+    "V": 260,
+    "eq": 161
+   },
+   {
+    "namen": [
+     "Schwefelsäure"
+    ],
+    "n": 0.37,
+    "V": 20,
+    "eq": 9.25
+   }
+  ]
+ },
+ {
+  "id": "prot_2",
+  "quelle": "Praktikumsprotokoll (DE) (lokale Datei)",
+  "text": "Es wurden 3.50 g (21.2mmol, 1.00 Eq) 2-Amino-4-Methyl-Benzoesäuremethylester 6 in 117 ml\ntrockenem THF gelöst. Dazu wurde langsam 21.0ml MeMgBr bei 0°C (Kühlung durch Eisbad)\nhinzugetropft.",
+  "soll": [
+   {
+    "namen": [
+     "2-Amino-4-Methyl-Benzoesäuremethylester 6"
+    ],
+    "m": 3.5,
+    "n": 0.0212,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 117
+   },
+   {
+    "namen": [
+     "MeMgBr"
+    ],
+    "V": 21
+   }
+  ]
+ },
+ {
+  "id": "prot_3",
+  "quelle": "Praktikumsprotokoll (DE) (lokale Datei)",
+  "text": "Es wurden 2.10 g (7.60 mmol, 1.00 Eq)2-Iodo-↵, ↵,4-trimethylbenzenemethanol 21 zusammen mit\n76.0mlCHCl3 in einem Einhalskolben vorgelegt. Dazu wurde 2.2g(12.4mmol, 1.50 Eq)frischum-\nkristallisiertes N-Bromsuccinimid addiert.",
+  "soll": [
+   {
+    "namen": [
+     "trimethylbenzenemethanol 21",
+     "21"
+    ],
+    "m": 2.1,
+    "n": 0.0076,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "CHCl3"
+    ],
+    "V": 76
+   },
+   {
+    "namen": [
+     "N-Bromsuccinimid"
+    ],
+    "m": 2.2,
+    "n": 0.0124,
+    "eq": 1.5
+   }
+  ]
+ },
+ {
+  "id": "prot_4",
+  "quelle": "Praktikumsprotokoll (DE) (lokale Datei)",
+  "text": "Es wurden 1.1g(3.10 mmol, 41.0%)1-bromo-3,3-dimethyl-1,3-dihydro-1-\u0000-3-benzo[d][1,2]iodoxole\nzusammen mit 12.4ml DCM in einem Einhalskolben vorgelegt. Zu der Lösung wurden 12.5ml\neiner 0.5 m Lösung von KOH (0.35 g, 6.24 mmol, 2.0Eq) addiert.",
+  "soll": [
+   {
+    "namen": [
+     "iodoxole",
+     "benzo[d][1,2]iodoxole"
+    ],
+    "m": 1.1,
+    "n": 0.0031
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 12.4
+   },
+   {
+    "namen": [
+     "KOH"
+    ],
+    "m": 0.35,
+    "n": 0.00624,
+    "V": 12.5,
+    "eq": 2
+   }
+  ]
+ },
+ {
+  "id": "beng_0",
+  "quelle": "Molecules 2024, 29, 1715 (CC BY 4.0)",
+  "text": "((4R,5S)-5-((4-methoxyphenoxy)methyl)-2,2-dimethyl-1,3-dioxolan-4-yl)methanol 8: from 7a: To a solution of 7a (110 mg, 0.50 mmol), triphenylphosphine (193 mg, 0.73 mmol) and p-methoxyphenol (182 mg, 1.50 mmol) in dry CH2Cl2 (5 mL) at 0 °C was added to tert-butyl azodicarboxylate (175 mg, 0.74 mmol). The mixture was stirred at room temperature for 37 h. Then, the reaction mixture was concentrated and filtered through a short column of silica gel with PE/CH2Cl2/Et2O (1:1:1). The residue was directly diluted with MeOH (2 mL) and treated with KOH (0.80 mL, 6 M in MeOH). The reaction mixture was stirred at room temperature for 6 h, then diluted with saturated NH4Cl aq, extracted with Et2O, dried (Na2SO4), and concentrated. The crude residue was eluted from a column of silica gel with PE/AcOEt 3:1 to give 8 (152 mg, 93%, e.e. 76%) as a colorless oil.",
+  "soll": [
+   {
+    "namen": [
+     "7a"
+    ],
+    "m": 0.11,
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "triphenylphosphine"
+    ],
+    "m": 0.193,
+    "n": 0.00073
+   },
+   {
+    "namen": [
+     "p-methoxyphenol"
+    ],
+    "m": 0.182,
+    "n": 0.0015
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "tert-butyl azodicarboxylate"
+    ],
+    "m": 0.175,
+    "n": 0.00074
+   },
+   {
+    "namen": [
+     "MeOH"
+    ],
+    "V": 2
+   },
+   {
+    "namen": [
+     "KOH"
+    ],
+    "V": 0.8
+   }
+  ]
+ },
+ {
+  "id": "beng_2",
+  "quelle": "Molecules 2024, 29, 1715 (CC BY 4.0)",
+  "text": "1-((4R,5S)-5-((4-methoxyphenoxy)methyl)-2,2-dimethyl-1,3-dioxolan-4-yl)-4-methylpent-2-yn-1-ol (9): To a solution of DMSO (1.1 mL, 15.08 mmol), in dry CH2Cl2 (36 mL), at −70 °C, under a nitrogen atmosphere, a solution of oxalyl chloride in dry CH2Cl2 (1.43 M, 9.8 mL) was added. The solution was stirred for approximately 10 min, until effervescence ceased. A solution of 8 (1.50 g, 5.59 mmol) in dry CH2Cl2 (20 + 10 + 6 mL) was added dropwise, and the solution was stirred for 10 min at −70 °C. NEt3 (4.3 mL, 30.73 mmol) was then added, and the solution was stirred for 2 h at −70 °C. After this time, the reaction mixture was poured into a mixture of 5% aq (NH4)H2PO4 (90 mL) and 1 M HCl (10 mL) (final pH 4) and extracted with Et2O (100 + 30 mL). The organic layer was washed with brine (20 mL), dried (Na2SO4), and concentrated. The resulting crude aldehyde was rapidly solubilized in THF (20 mL) under Ar and used as such for the next reaction. To a solution of 2,2′-bipyridine (catalytic amount) in dry THF (30 mL) under Ar, at −50 °C, n-BuLi (11 mL, 1.6 M in hexane) was added, until a deep red color persisted. Then, 3-methyl-1-butyne (2 mL, 19.55 mmol) was added, and the mixture was stirred for 25 min. After this time, the temperature was kept at −70 °C, and the solution of aldehyde was slowly added to the mixture. The reaction was stirred for 1 h at −50 °C and overnight at room temperature. The reaction was diluted with saturated NH4Cl aq., extracted with AcOEt, dried (Na2SO4) and concentrated. The residue was eluted from a column of silica gel with PE/Et2O 3:1 to give 9 (1.64 g, 88%) as a 57:43 mixture of diastereoisomers (PHENYLIC RP column 150 × 3 mm, 3 μm, temp 25 °C, flow = 0.38 mL/min, mobile phase H2O/CH3CN, A = CH3CN—B = H2O, 0 min B = 90%, 30 min B = 0%. Rt (syn) = 12.0 min, Rt (anti) = 12.4 min).",
+  "soll": [
+   {
+    "namen": [
+     "DMSO"
+    ],
+    "n": 0.01508,
+    "V": 1.1
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 36
+   },
+   {
+    "namen": [
+     "oxalyl chloride"
+    ],
+    "V": 9.8
+   },
+   {
+    "namen": [
+     "8"
+    ],
+    "m": 1.5,
+    "n": 0.00559
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 36,
+    "optional": true
+   },
+   {
+    "namen": [
+     "NEt3"
+    ],
+    "n": 0.03073,
+    "V": 4.3
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 20,
+    "optional": true
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 30
+   },
+   {
+    "namen": [
+     "n-BuLi"
+    ],
+    "V": 11
+   },
+   {
+    "namen": [
+     "3-methyl-1-butyne"
+    ],
+    "n": 0.01955,
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "beng_3",
+  "quelle": "Molecules 2024, 29, 1715 (CC BY 4.0)",
+  "text": "Oxidation and diastereoselective reduction to give 9 anti: To a solution of 9 (969 mg, 2.90 mmol), in dry CH2Cl2 (22 mL), under a nitrogen atmosphere, Dess Martin periodinane (1.35 g, 3.19 mmol) was added at 0 °C, and the reaction was stirred at room temperature for 4.5 h. The mixture was quenched with NaHCO3 (5% w/v aqueous solution)/Na2S2O3 (0.4 M in water) (1:1), extracted with CH2Cl2, dried (Na2SO4), and concentrated to afford the corresponding ketone, which was used as such for the next reaction. To a solution of ketone in dry THF (29 mL) at −78 °C under a nitrogen atmosphere, K-Selectride (1 M in THF, 2.9 mL) was added. After stirring at room temperature for 5 h, the reaction was diluted with saturated NH4Cl (saturated aqueous solution), extracted with AcOEt, washed with brine, dried (Na2SO4), and concentrated. The residue was eluted from a column of silica gel with PE/AcOEt 3:1 to give first 9 anti (529 mg, 55%) as a white solid and 9 syn (168 mg, 18%) as a pale-yellow oil. The diastereoisomeric ratio (76:24) was determined on the crude after the reduction with HPLC (PHENYLIC RP column 150 × 3 mm, 3 μm, temp 25 °C, flow = 0.38 mL/min, mobile phase H2O/CH3CN, A = CH3CN—B = H2O, 0 min B = 90%, 30 min B = 0%. Rt (syn) = 12.0 min, Rt (anti) = 12.4 min).",
+  "soll": [
+   {
+    "namen": [
+     "9"
+    ],
+    "m": 0.969,
+    "n": 0.0029
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 22
+   },
+   {
+    "namen": [
+     "Dess Martin periodinane",
+     "Dess-Martin periodinane"
+    ],
+    "m": 1.35,
+    "n": 0.00319
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 29
+   },
+   {
+    "namen": [
+     "K-Selectride"
+    ],
+    "V": 2.9
+   }
+  ]
+ },
+ {
+  "id": "benzo_0",
+  "quelle": "Molecules 2025, 30, 3004 (CC BY 4.0)",
+  "text": "To a stirred solution of N-(2-benzoylphenyl)-4-methylbenzenesulfonamide [47] (858 mg, 2.44 mmol) and p-toluenesulfonamide (502 mg, 2.93 mmol) in 1,2-dichloroethane (20 mL) were added TiCl4 (0.16 mL, 1.46 mmol) and Et3N (0.68 mL, 4.88 mmol) dropwise. The reaction mixture was stirred under reflux for 13 h. After cooling to room temperature, the mixture was filtered through Celite and concentrated under reduced pressure. The residue was dissolved in EtOH (25 mL), and to the stirred solution was added NaBH4 (185 mg, 4.88 mmol) at 0 °C. The mixture was stirred for 7 h at the same temperature, then quenched with water and extracted with CH2Cl2. The combined organic layers were washed with brine, dried over anhydrous Na2SO4, and concentrated under reduced pressure. The crude product was recrystallized from CHCl3 and hexane to give N-tosyl-disubstituted 2-aminobenzylamine 1b [48] as a white solid (805 mg, 1.59 mmol, 65% yield over two steps). Mp 145–151 °C. IR (ATR): 3272, 1597, 1487 cm−1; 1H-NMR (500 MHz, CDCl3) δ 2.35 (3H, s), 2.42 (3H, s), 5.02 (1H, d, J = 8.5 Hz), 5.39 (1H, d, J = 8.5 Hz), 6.63 (2H, d, J = 7.5 Hz), 6.72 (1H, dd, J = 1.5, 8.0 Hz), 6.99 (1H, td, J = 7.5, 1.0 Hz), 7.09 (4H, m), 7.14 (1H, m), 7.20 (2H, m), 7.27 (1H, m), 7.44 (1H, dd, J = 8.0, 1.0 Hz), 7.51 (2H, d, J = 8.5 Hz), 7.71 (2H, d, J = 8.5 Hz); 13C-NMR (125 MHz, CDCl3) δ 21.6 (CH3), 21.7(CH3), 56.8 (CH), 126.3 (CH), 126.4 (CH), 126.5 (CH), 127.0 (CH), 127.3 (CH), 127.5 (CH), 127.7 (CH), 128.6 (CH), 128.9 (CH), 129.1 (CH), 129.6 (CH), 129.9 (CH), 134.3 (Cq), 134.6 (Cq), 136.4 (Cq), 137.2 (Cq), 143.8 (Cq), 144.0 (Cq); HRMS (ES) m/z calcd for C27H26N2O4S2 [M]+ 506.1334, found 506.1333.",
+  "soll": [
+   {
+    "namen": [
+     "N-(2-benzoylphenyl)-4-methylbenzenesulfonamide"
+    ],
+    "m": 0.858,
+    "n": 0.00244
+   },
+   {
+    "namen": [
+     "p-toluenesulfonamide"
+    ],
+    "m": 0.502,
+    "n": 0.00293
+   },
+   {
+    "namen": [
+     "1,2-dichloroethane"
+    ],
+    "V": 20
+   },
+   {
+    "namen": [
+     "TiCl4"
+    ],
+    "n": 0.00146,
+    "V": 0.16
+   },
+   {
+    "namen": [
+     "Et3N"
+    ],
+    "n": 0.00488,
+    "V": 0.68
+   },
+   {
+    "namen": [
+     "EtOH"
+    ],
+    "V": 25
+   },
+   {
+    "namen": [
+     "NaBH4"
+    ],
+    "m": 0.185,
+    "n": 0.00488
+   }
+  ]
+ },
+ {
+  "id": "benzo_1",
+  "quelle": "Molecules 2025, 30, 3004 (CC BY 4.0)",
+  "text": "To a stirred solution of trimethylsilylacetylene (2.08 mL, 15.0 mmol) in THF (90 mL), n-BuLi (2.8 M in THF, 5.4 mL, 15.0 mmol) was added dropwise at −78 °C. The mixture was stirred for 0.5 h at the same temperature. A solution of 4-(methylsulfonyl)benzaldehyde (1.88 g, 10.0 mmol) in THF (15 mL) was then added dropwise at −78 °C, and stirring was continued for 1 h. Subsequently, methyl chloroformate (2.32 mL, 30.0 mmol) was added dropwise at −78 °C, and then the temperature was allowed to rise to room temperature over 1 h. The reaction mixture was diluted with water and extracted with AcOEt. The combined organic layers were washed with brine, dried, and concentrated. The residue was dissolved in THF (75 mL), and to the stirred solution were added TBAF (1 M in THF, 25.0 mL, 25.0 mmol) and AcOH (2.86 mL, 50.0 mmol). The mixture was stirred for 1 h at room temperature, then diluted with water and extracted with AcOEt. The combined organic layers were washed with brine, dried, and concentrated. The crude product was purified by column chromatography on silica gel (hexane/AcOEt = 75:25 v/v) to give propargylic carbonate 2b as a colorless oil (2.54 g, 9.47 mmol, 95% yield in two steps). IR (ATR): 3262, 3020, 1749, 1598 cm−1; 1H-NMR (500 MHz, CDCl3) δ 2.78 (1H, d, J = 2.0 Hz) 3.06 (3H, s), 3.85 (3H, s), 6.35 (1H, d, J = 2.0 Hz), 7.76 (2H, d, J = 8.5 Hz), 7.99 (2H, d, J = 8.5 Hz); 13C-NMR (125 MHz, CDCl3) δ 44.6 (CH3), 55.6 (CH3), 68.3 (CH), 77.6 (CH), 78.6 (Cq), 128.1 (CH), 128.6 (CH), 141.5 (Cq), 141.8 (Cq), 154.7 (Cq); HRMS (ES) m/z calcd for C12H12O5S [M]+ 268.0405, found 268.0402.",
+  "soll": [
+   {
+    "namen": [
+     "trimethylsilylacetylene"
+    ],
+    "n": 0.015,
+    "V": 2.08
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 90
+   },
+   {
+    "namen": [
+     "n-BuLi"
+    ],
+    "n": 0.015,
+    "V": 5.4
+   },
+   {
+    "namen": [
+     "4-(methylsulfonyl)benzaldehyde"
+    ],
+    "m": 1.88,
+    "n": 0.01
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 15
+   },
+   {
+    "namen": [
+     "methyl chloroformate"
+    ],
+    "n": 0.03,
+    "V": 2.32
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 75
+   },
+   {
+    "namen": [
+     "TBAF"
+    ],
+    "n": 0.025,
+    "V": 25
+   },
+   {
+    "namen": [
+     "AcOH"
+    ],
+    "n": 0.05,
+    "V": 2.86
+   }
+  ]
+ },
+ {
+  "id": "dibr_0",
+  "quelle": "Molecules 2020, 25, 468 (CC BY 4.0)",
+  "text": "Anhydrous aluminum chloride (3.7 g, 28.0 mmol) was added to 50 mL CH2Cl2. Then, 3,4-dimethoxybromobenzene (6.6 g, 28.0 mmol) and 2-methoxybenzoyl chloride (5 g, 36.0 mmol) were slowly added into the mixture at 0 °C, respectively. The temperature of mixture was allowed to warm to room temperature, stirred for 2 h, then poured into 200 mL water to quench the reaction. The organic phase was separated, and the aqueous phase was extracted twice with 50 mL CH2Cl2. The combined organics were dried over anhydrous sodium sulfate and concentrated via rotary evaporation to get light yellow oil liquid. The crude product was purified by silica gel column chromatography with the system of petroleum ether-ethyl acetate (v/v, 6/1) as the eluent to give 7.0 g white solid-compound LM49-02-imA in 66.0% yield with 100% HPLC purity (Scheme 4). Mp 73–74 °C; 1H-NMR (400 MHz, DMSO-d6) δ 7.61–7.53 (m, 1H), 7.44 (dd, J = 7.6, 1.8 Hz, 1H), 7.19 (s, 1H), 7.14 (d, J = 8.4 Hz, 1H), 7.05 (td, J = 1.0 Hz, 1H), 6.97 (s, 1H), 3.85 (s, 3H), 3.71 (s, 3H), 3.66 (s, 3H); 13C-NMR (100MHz, DMSO-d6) δ 194.2, 158.8, 151.4, 148.3, 134.5, 133.6, 131.2, 128.0, 121.0, 116.5, 113.4, 113.0, 111.1, 56.6, 56.3, 56.2; MS (ESI) m/z (100%) 351.1, 353.1 [M + H]+; HRMS (ESI) calculated for C16H16BrO4 [M + H]+ 351.0232, found 351.0222.",
+  "soll": [
+   {
+    "namen": [
+     "aluminum chloride",
+     "Anhydrous aluminum chloride"
+    ],
+    "m": 3.7,
+    "n": 0.028
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "3,4-dimethoxybromobenzene"
+    ],
+    "m": 6.6,
+    "n": 0.028
+   },
+   {
+    "namen": [
+     "2-methoxybenzoyl chloride"
+    ],
+    "m": 5,
+    "n": 0.036
+   }
+  ]
+ },
+ {
+  "id": "dibr_1",
+  "quelle": "Molecules 2020, 25, 468 (CC BY 4.0)",
+  "text": "5-Bromo-2-methoxybenzoic acid (5 g, 21.6 mmol) was dissolved in 25 mL anhydrous SOCl2, which was heated to reflux for 4 h in the presence of DMF and then concentrated under reduced pressure to afford 5-bromo-2-methoxybenzoyl chloride. Then 50 mL of anhydrous CH2Cl2 was added into the system, and anhydrous AlCl3 (2.88 g, 21.6 mmol) and 1,2-dimethoxybenzene (2.99 g, 21.6 mmol) were added to the system at 0 °C, respectively. The reaction mixture was allowed to warm to room temperature, stirred for 2 h, and then slowly poured into 100 mL of water to quench the reaction. The organic phase was separated, and the aqueous phase was extracted twice with 50 mL CH2Cl2. The combined organics were dried over anhydrous sodium sulfate, concentrated under reduced pressure, and purified by silica gel column chromatography with the system of methanol-CH2Cl2 (v/v, 1/80) as the eluent to obtain 5 g white solid-compound LM49-02-imB in 66.0% yield with 99.19% HPLC purity (Scheme 5). Mp 114–115 °C; 1H-NMR (500 MHz, DMSO-d6) δ 7.68 (dd, J = 8.9, 2.5 Hz, 1H), 7.43 (d, J = 2.5 Hz, 1H), 7.39 (d, J = 1.9 Hz, 1H), 7.17–7.14 (m, 2H), 7.03 (d, J = 8.5 Hz, 1H), 3.84 (s, 3H), 3.81 (s, 3H), 3.70 (s, 3H); 13C-NMR (100MHz, DMSO-d6) δ 192. 8, 156.1, 154.1, 149.2, 134.2, 131.3, 131.0, 129.7, 126.0, 114.8, 112.3, 111.3, 110.8, 56.4, 56.3, 56.0; MS (ESI) m/z (100%) 351.1, 353.0, 354.3 [M + H]+; HRMS (ESI) calculated for C16H16BrO4 [M + H]+ 351.0232, found 351.0212.",
+  "soll": [
+   {
+    "namen": [
+     "5-Bromo-2-methoxybenzoic acid"
+    ],
+    "m": 5,
+    "n": 0.0216
+   },
+   {
+    "namen": [
+     "SOCl2"
+    ],
+    "V": 25
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "AlCl3"
+    ],
+    "m": 2.88,
+    "n": 0.0216
+   },
+   {
+    "namen": [
+     "1,2-dimethoxybenzene"
+    ],
+    "m": 2.99,
+    "n": 0.0216
+   }
+  ]
+ },
+ {
+  "id": "dibr_2",
+  "quelle": "Molecules 2020, 25, 468 (CC BY 4.0)",
+  "text": "LM49-02 (7 g, 16.3 mmol) was dissolved in 50 mL CH2Cl2, and 4.1 g (16.3 mmol) BBr3 was slowly dropped into the system at 0 °C. The reaction mixture was allowed to warm to room temperature, stirred for 1 h, and poured into 150 mL ice water to quench the reaction. The organic phase was separated, and the water phase was extracted with 50 mL CH2Cl2. The combined organic phase was dried on anhydrous sodium sulfate and concentrated under reduced pressure to give the crude product, which was further purified by silica gel column chromatography with the system of petroleum ether-ethyl acetate-dichloromethane (v/v/v, 6/1/1) as the eluent to acquire 5 g light yellow solid-compound LM49-API-imA in 74.1% yield with 98.72% HPLC purity (Scheme 6). Mp 130–131 °C; 1H-NMR (400 MHz, DMSO-d6) δ 11.03 (s, 1H), 7.67 (dd, J = 8.8, 2.6 Hz, 1H), 7.41 (d, J = 2.6 Hz, 1H), 7.25 (s, 1H), 7.11 (s, 1H), 6.98 (d, J = 8.8 Hz, 1H), 3.86 (s, 3H), 3.75 (s, 3H); 13C-NMR (100MHz, DMSO-d6) δ 196.9 159.3, 151.4, 148.5, 138.5, 134.3, 131.9, 124.3, 120.5, 116.2, 113.0, 110.5, 110.2, 56.6, 56.4; MS (ESI) m/z (100%)415.3, 416.2 [M + H]+; HRMS (ESI) calculated for C15H12Br2O4 [M − H]− 414.9004, found 414.9002.",
+  "soll": [
+   {
+    "namen": [
+     "LM49-02"
+    ],
+    "m": 7,
+    "n": 0.0163
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "BBr3"
+    ],
+    "m": 4.1,
+    "n": 0.0163
+   }
+  ]
+ },
+ {
+  "id": "dibr_3",
+  "quelle": "Molecules 2020, 25, 468 (CC BY 4.0)",
+  "text": "LM49-02 (20 g, 46.5 mmol) was dissolved in 100 mL CH2Cl2, and 17.5 g BBr3 (69.7 mmol) was added to the system slowly at 0 °C. The mixture was allowed to warm to room temperature, stirred for 1 h, and poured into 400 mL water to quench the reaction. The precipitation was removed by filtration. The separated organic phase was dried over anhydrous sodium sulfate and then concentrated under reduced pressure to obtain the crude product, which was purified by silica gel column chromatography with the system of petroleum ether-ethyl acetate-dichloromethane (v/v/v, 6/1/1) as the eluent to obtain 5.1g yellow solid-compound LM49-API-imB in 27.3% yield with 99.40% HPLC purity (Scheme 7). Mp 198–199 °C; 1H-NMR (400 MHz, DMSO-d6) δ 10.90 (s, 1H), 9.68 (s, 1H), 7.64 (dd, J = 8.8, 2.6 Hz, 1H), 7.39 (d, J = 2.6 Hz, 1H), 7.21 (s, 1H), 6.95 (d, J = 8.8 Hz, 1H), 6.90 (s, 1H), 3.86 (s, 3H); 13C-NMR (100MHz, DMSO-d6) δ 196.3, 158.7, 150.8, 146.3, 138.0, 133.9, 131.7, 125.1, 120.3, 117.0, 116.9, 110.4, 108.5, 56.6; HRMS (ESI) calculated for C14H10Br2O4 [M + H]+ 402.9004, found 402.9822.",
+  "soll": [
+   {
+    "namen": [
+     "LM49-02"
+    ],
+    "m": 20,
+    "n": 0.0465
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 100
+   },
+   {
+    "namen": [
+     "BBr3"
+    ],
+    "m": 17.5,
+    "n": 0.0697
+   }
+  ]
+ },
+ {
+  "id": "dibr_4",
+  "quelle": "Molecules 2020, 25, 468 (CC BY 4.0)",
+  "text": "LM49-02-imB (6 g, 17.1 mmol) was dissolved in 50 mL CH2Cl2. BBr3 (17.2 g, 68.4 mmol) was dropped into the system at 0 °C. The mixture was allowed to warm to room temperature, stirred for 1 h, and poured into 200 mL ice water slowly. The precipitate was filtered and dried at 50 °C in a vacuum oven to obtain 5.2 g yellow solid-compound LM49-API-imC in 98.5% yield with 99.52% HPLC purity (Scheme 8). Mp 112–113 °C; 1H-NMR (400 MHz, DMSO-d6) δ 10.18 (s, 1H), 9.92 (brs, 1H), 9.40 (brs, 1H), 7.49 (dd, J = 8.7, 2.6 Hz, 1H), 7.33 (d, J = 2.6 Hz, 1H), 7.19 (d, J = 2.1 Hz, 1H), 7.08 (dd, J = 8.3, 2.1 Hz, 1H), 6.90 (d, J = 8.7 Hz, 1H), 6.82 (d, J = 8.3 Hz, 1H); 13C-NMR (100 MHz, DMSO-d6) δ 193.7, 155.0, 151.6, 145.6, 134.2, 131.4, 129.6, 128.9, 123.6, 119.0, 116.9, 115.7, 110.3; MS (ESI) m/z (100%) 309.0, 311.0 [M + H]+; HRMS (ESI) calculated for C13H9BrO4 [M − H]− 306.9606, found 306.9604.",
+  "soll": [
+   {
+    "namen": [
+     "LM49-02-imB"
+    ],
+    "m": 6,
+    "n": 0.0171
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "BBr3"
+    ],
+    "m": 17.2,
+    "n": 0.0684
+   }
+  ]
+ },
+ {
+  "id": "taf_0",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "n-BuLi (28.6 mL, 45.8 mmol, 1.6 M in hexanes) was added dropwise to a solution of diisopropylamine (7.96 mL, 45.8 mmol) in anhydrous THF (12 mL) at −78 °C under an argon atmosphere. After 15 min at −78 °C, the phenylsulfone 16 (21.0 g, 30.2 mmol) in anhydrous THF (40 mL) was added dropwise with vigorous stirring. The reaction mixture was stirred at −60 °C for 30 min and the aldehyde 17 (14.0 g, 50.0 mmol) in anhydrous THF (10 mL) was added dropwise. After being stirred at −60 °C for another 30 min, TLC analysis (6% MeCN/toluene) indicated disappearance of the starting phenylsulfone 16. The cold reaction was quenched with saturated aqueous NaCl solution (30 mL). The resulting layers were separated and the aqueous phase was extracted with THF (3 × 25 mL). The combined organic extracts were washed with brine (150 mL), dried over Na2SO4, filtered and concentrated in vacuo. The crude product was carefully dried in vacuo to yield a mixture of diastereoisomeric hydroxysulfones 18 (38.2 g), as a yellow oil. The hydroxysulfones 18 were directly used for the next step without further purification.",
+  "soll": [
+   {
+    "namen": [
+     "n-BuLi"
+    ],
+    "n": 0.0458,
+    "V": 28.6
+   },
+   {
+    "namen": [
+     "diisopropylamine"
+    ],
+    "n": 0.0458,
+    "V": 7.96
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 12
+   },
+   {
+    "namen": [
+     "phenylsulfone 16",
+     "16"
+    ],
+    "m": 21,
+    "n": 0.0302
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 40
+   },
+   {
+    "namen": [
+     "aldehyde 17",
+     "17"
+    ],
+    "m": 14,
+    "n": 0.05
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 10
+   }
+  ]
+ },
+ {
+  "id": "taf_1",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "TEA (23.7 mL, 173.3 mmol), DMAP (0.2 g) and Ac2O (8.2 mL, 86.5 mol) were added to a solution of the diastereoisomeric prostaglandin derivatives 27a/b (10.5 g, 17.3 mmol) in CH2Cl2 (100 mL). The mixture was stirred for 1 h at room temperature prior the addition of saturated aqueous solution NH4Cl (100 mL). The resulting layers were separated and the aqueous phase was extracted with CH2Cl2 (3 × 50 mL). The combined organic extracts were washed with saturated aqueous solution NaHCO3 (50 mL) and dried over anhydrous MgSO4. Filtration and evaporation in vacuo furnished the crude product, which was purified by silica gel flash chromatography with gradient elution 5%–10% AcOEt-hexanes to give a sample of ester (+)-28a (70 mg) and an inseparable mixture of diastereoisomeric esters 28a/b (12.97 g, yield 97% yield). (+)-28a: Rf = 0.35 (25% AcOEt/hexanes).",
+  "soll": [
+   {
+    "namen": [
+     "TEA"
+    ],
+    "n": 0.1733,
+    "V": 23.7
+   },
+   {
+    "namen": [
+     "DMAP"
+    ],
+    "m": 0.2
+   },
+   {
+    "namen": [
+     "Ac2O"
+    ],
+    "n": 86.5,
+    "V": 8.2
+   },
+   {
+    "namen": [
+     "27a/b",
+     "prostaglandin derivatives 27a/b"
+    ],
+    "m": 10.5,
+    "n": 0.0173
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 100
+   }
+  ]
+ },
+ {
+  "id": "taf_2",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "Camphorosulfonic acid (1.12 g, 4.81 mmol) was added to a solution of diastereoisomeric esters 28a/b (11.3 g, 14.58 mmol) in a mixture of MeOH-CH2Cl2 (1:1, 100 mL). The resulting solution was stirred for 7 h, whereupon NaHCO3 (0.47 g) was added. After being stirred for 30 min, the mixture was filtered through a Büchner funnel and the filtrate was concentrated under reduced pressure. The crude product was purified by silica gel flash chromatography with gradient elution 5%–40% AcOEt-hexanes to give a sample of alcohol (+)-29a (59 mg) and an inseparable mixture of diastereoisomeric alcohols 29a/b (6.94 g, 82% yield). (+)-29a: Rf = 0.37 (50% AcOEt/hexanes).",
+  "soll": [
+   {
+    "namen": [
+     "Camphorosulfonic acid"
+    ],
+    "m": 1.12,
+    "n": 0.00481
+   },
+   {
+    "namen": [
+     "28a/b",
+     "esters 28a/b"
+    ],
+    "m": 11.3,
+    "n": 0.01458
+   },
+   {
+    "namen": [
+     "MeOH-CH2Cl2",
+     "CH2Cl2"
+    ],
+    "V": 100,
+    "optional": true
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "m": 0.47,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "taf_3",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "Dess-Martin periodinane (4.48 g, 10.56 mmol) was added portionwise to a suspension of diastereoisomeric alcohols 29a/b (5.8 g, 8.8 mmol) and dry NaHCO3 (2.22 g, 26.4 mmol) in anhydrous CH2Cl2 (50 mL). After being stirred for 1 h at room temperature, TLC analysis (AcOEt/hexanes, 1:1) indicated disappearance of the starting alcohols 29a/b. Saturated aqueous NaHCO3 (100 mL) and Na2SO3 (8.87 g, 70.4 mmol) were then added simultaneously and the mixture was stirred at room temperature for 30 min The resulting layers were separated and the aqueous phase was extracted with CH2Cl2 (3 × 50 mL). The combined extracts were washed with water brine (100 mL) and dried over Na2SO4. Filtration and evaporation in vacuo furnished the crude product as a light yellow oil, which was purified by flash column chromatography (silica gel, 2%–20% AcOEt/hexanes) to give the ketone 30 (5.76 g, 99% yield) as a colorless oil. Rf = 0.54 (50% AcOEt/hexanes).",
+  "soll": [
+   {
+    "namen": [
+     "Dess-Martin periodinane"
+    ],
+    "m": 4.48,
+    "n": 0.01056
+   },
+   {
+    "namen": [
+     "29a/b",
+     "alcohols 29a/b"
+    ],
+    "m": 5.8,
+    "n": 0.0088
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "m": 2.22,
+    "n": 0.0264
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "V": 100,
+    "optional": true
+   },
+   {
+    "namen": [
+     "Na2SO3"
+    ],
+    "m": 8.87,
+    "n": 0.0704,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "taf_4",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "Deoxo-Fluor (39.1 mL, 91.2 mmol, 50% in THF) was added dropwise to a stirred solution of ketone 30 (5.0 g, 7.6 mmol) in CH2Cl2 (60 mL) at 0 °C under an argon atmosphere. The resulting mixture was refluxed for 24 h, cooled to 0–5 °C, whereupon saturated aqueous solution of NaHCO3 (200 mL) was added dropwise. After being stirred for 30 min at room temperature, the layers were separated and the aqueous phase was extracted with CH2Cl2 (3 × 50 mL). The combined extracts were washed with brine (100 mL) and dried over Na2SO4. Filtration and evaporation in vacuo furnished the crude product as a light yellow oil, which was purified by flash column chromatography (silica gel, 5%–20% AcOEt/hexanes) to give the difluoro derivative 31 (4.03 g, 78% yield) as a colorless oil. Rf = 0.64 (50% AcOEt/hexanes).",
+  "soll": [
+   {
+    "namen": [
+     "Deoxo-Fluor"
+    ],
+    "n": 0.0912,
+    "V": 39.1
+   },
+   {
+    "namen": [
+     "ketone 30",
+     "30"
+    ],
+    "m": 5,
+    "n": 0.0076
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 60
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "V": 200,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "taf_5",
+  "quelle": "Molecules 2017, 22, 217 (CC BY 4.0)",
+  "text": "K2CO3 (0.46 g, 3.3 mmol) was added to a solution of ester 31 (0.75 g, 1.1 mmol) in MeOH (25 mL). The resulting suspension was stirred for 24 h at room temperature and then concentrated under reduced pressure. The residue was diluted with H2O (50 mL) and the product was extracted with AcOEt (3 × 25 mL). The combined extracts were washed with brine (100 mL) and dried over Na2SO4. Filtration and evaporation in vacuo furnished the crude product as a light yellow oil, which was purified by flash column chromatography (silica gel, 10%–40% AcOEt/hexanes) to give the methyl ester 32 (0.35 g, 76% yield) as a colorless oil. Rf = 0.48 (75% AcOEt/hexanes).",
+  "soll": [
+   {
+    "namen": [
+     "K2CO3"
+    ],
+    "m": 0.46,
+    "n": 0.0033
+   },
+   {
+    "namen": [
+     "ester 31",
+     "31"
+    ],
+    "m": 0.75,
+    "n": 0.0011
+   },
+   {
+    "namen": [
+     "MeOH"
+    ],
+    "V": 25
+   }
+  ]
+ }
+]

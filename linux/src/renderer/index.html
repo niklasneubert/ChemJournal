@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; worker-src 'self' blob:; connect-src 'self' blob: data:">
+  <title>ChemJournal</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Gemeinsame Module (auch in den Tests und im Hintergrundprozess genutzt) -->
+  <script src="../shared/numberformat.js"></script>
+  <script src="../shared/casnumber.js"></script>
+  <script src="../shared/smartformat.js"></script>
+  <script src="../shared/search.js"></script>
+  <script src="../shared/pdfhtml.js"></script>
+  <script src="../shared/smartextract/lexicon.js"></script>
+  <script src="../shared/smartextract/normalizer.js"></script>
+  <script src="../shared/smartextract/chemfeatures.js"></script>
+  <script src="../shared/smartextract/chemclassifier.js"></script>
+  <script src="../shared/smartextract/chemlexicon.js"></script>
+  <script src="../shared/smartextract/extractor.js"></script>
+  <script src="mathjax-config.js"></script>
+  <script src="vendor/mathjax-tex-svg-full.js" async></script>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

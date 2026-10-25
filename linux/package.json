@@ -1,0 +1,78 @@
+{
+  "name": "chemjournal",
+  "productName": "ChemJournal",
+  "version": "1.0.0",
+  "description": "Elektronisches Laborjournal für die Synthesechemie – Linux-Version von ChemJournal",
+  "author": {
+    "name": "Niklas Neubert"
+  },
+  "license": "MIT",
+  "private": true,
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "eval": "node tools/eval-smartextract.js",
+    "vendor": "node tools/copy-vendor.js",
+    "dist": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.17.0",
+    "htm": "3.1.1",
+    "pdfjs-dist": "5.7.284",
+    "preact": "10.29.8"
+  },
+  "build": {
+    "appId": "de.chemjournal.app",
+    "productName": "ChemJournal",
+    "artifactName": "ChemJournal-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "fileAssociations": [
+      {
+        "ext": "chemjournal",
+        "name": "ChemJournal-Ansatz",
+        "mimeType": "application/x-chemjournal"
+      }
+    ],
+    "linux": {
+      "category": "Science",
+      "icon": "build/icon.png",
+      "synopsis": "Elektronisches Laborjournal",
+      "executableName": "chemjournal",
+      "desktop": {
+        "entry": {
+          "Name": "ChemJournal",
+          "Comment": "Elektronisches Laborjournal für die Synthesechemie",
+          "StartupWMClass": "ChemJournal"
+        }
+      },
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "toolsets": {
+      "appimage": "1.0.3"
+    }
+  }
+}

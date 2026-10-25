@@ -1,0 +1,535 @@
+[
+ {
+  "id": "lup_pcc",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "Under argon atmosphere, PCC (1015.0 mg, 4.70 mmol, 2 equiv) was added to a solution of lupeol (1000.0 mg, 2.34 mmol, 1 equiv) in dry DCM (40 mL) at room temperature and the mixture was stirred for 3 h, then concentred under reduced pressure and filtered through celite. The final solution was evaporated to afford compound 2 quantitatively (986 mg, >99%) as a white solid.",
+  "soll": [
+   {
+    "namen": [
+     "PCC"
+    ],
+    "m": 1.015,
+    "n": 0.0047,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "lupeol"
+    ],
+    "m": 1.0,
+    "n": 0.00234,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 40
+   }
+  ]
+ },
+ {
+  "id": "lup_me",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "Under argon atmosphere, MeMgCl (0.23 mL of a solution 3.0 M in THF, 0.7 mmol, 2.0 equiv) or MeLi (0.43 mL of a solution 1.6 M in diethyl ether, 0.7 mmol, 2.0 equiv) was added dropwise to a solution of lupenone (150 mg, 0.35 mmol, 1.0 equiv) in dry THF (5 mL) at −78 °C, and the resulting mixture was allowed to slowly warm to room temperature and stirred overnight, before being quenched with 1M HCl (3 mL). The resulting mixture was extracted 3 times with Et2O; the organic phases were combined, washed with brine, dried over anhydrous Na2SO4 and concentrated in vacuo.",
+  "soll": [
+   {
+    "namen": [
+     "MeMgCl"
+    ],
+    "n": 0.0007,
+    "V": 0.23,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "MeLi"
+    ],
+    "n": 0.0007,
+    "V": 0.43,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "lupenone"
+    ],
+    "m": 0.15,
+    "n": 0.00035,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "HCl",
+     "1M HCl"
+    ],
+    "V": 3,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "lup_allylli",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "From allyllithium: Following a previously reported procedure, under argon atmosphere, n-BuLi (0.28 mL of a solution 2.5 M in hexane, 0.7 mmol, 2.0 equiv) was added dropwise to a solution of allyltributylstannane (0.23 mL, 245.0 mg, 0.74 mmol, 2.1 equiv) in dry THF (3 mL) at −78 °C, and the resulting mixture was stirred for a further 1 h. The solution of freshly prepared allyllithium was added dropwise to a solution of lupenone (150 mg, 0.35 mmol, 1.0 equiv) in dry THF (5 mL) at −78 °C, and the resulting mixture was allowed to slowly warm to room temperature and stirred overnight, before being quenched with 1M HCl (3 mL).",
+  "soll": [
+   {
+    "namen": [
+     "n-BuLi"
+    ],
+    "n": 0.0007,
+    "V": 0.28,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "allyltributylstannane"
+    ],
+    "m": 0.245,
+    "n": 0.00074,
+    "V": 0.23,
+    "eq": 2.1
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 3
+   },
+   {
+    "namen": [
+     "lupenone"
+    ],
+    "m": 0.15,
+    "n": 0.00035,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "HCl",
+     "1M HCl"
+    ],
+    "V": 3,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "lup_in",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "From allylindium bromide: Allylbromide (0.47 mL, 652.1 mg, 5.39 mmol, 15.4 equiv) was added dropwise to a solution of lupenone (150 mg, 0.35 mmol, 1.0 equiv) and powdered metal indium (618.9 mg, 5.39 mmol, 15.4 equiv) in dry THF (7.5 mL) at room temperature, and the solution was stirred for 24 h at 30 °C. The final mixture was then cooled to 0 °C by ice bath and quenched with 1M HCl (3 mL).",
+  "soll": [
+   {
+    "namen": [
+     "Allylbromide",
+     "Allyl bromide"
+    ],
+    "m": 0.6521,
+    "n": 0.00539,
+    "V": 0.47,
+    "eq": 15.4
+   },
+   {
+    "namen": [
+     "lupenone"
+    ],
+    "m": 0.15,
+    "n": 0.00035,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "indium",
+     "powdered metal indium",
+     "metal indium"
+    ],
+    "m": 0.6189,
+    "n": 0.00539,
+    "eq": 15.4
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 7.5
+   },
+   {
+    "namen": [
+     "HCl",
+     "1M HCl"
+    ],
+    "V": 3,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "lup_grig",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "Preparation of 4-fluorobenzylmagnesium bromide. Under argon atmosphere, to a suspension of powdered magnesium metal (35.7 mg, 1.46 mmol, 4.2 equiv) in 4 mL of anhydrous diethyl ether, a drop of 1.2 dibromoethane and a grain of I2 were added, and the red mixture was vigorously stirred until a straw-yellow color appeared. 4-fluorobenzyl bromide (0.09 mL, 139.9 mg, 0.74 mmol, 2.1 equiv) in dry diethyl ether (2.0 mL) was slowly added over 15 min, and the final mixture was refluxed for 3 h.",
+  "soll": [
+   {
+    "namen": [
+     "magnesium",
+     "powdered magnesium metal",
+     "magnesium metal"
+    ],
+    "m": 0.0357,
+    "n": 0.00146,
+    "eq": 4.2
+   },
+   {
+    "namen": [
+     "diethyl ether"
+    ],
+    "V": 4
+   },
+   {
+    "namen": [
+     "4-fluorobenzyl bromide"
+    ],
+    "m": 0.1399,
+    "n": 0.00074,
+    "V": 0.09,
+    "eq": 2.1
+   },
+   {
+    "namen": [
+     "diethyl ether"
+    ],
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "lup_epox",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "Under argon atmosphere, MeLi-LiBr (0.44 mL of a solution 2.2 M in diethyl ether, 0.98 mmol, 2.8 equiv) was added dropwise to a solution of lupenone (150 mg, 0.35 mmol, 1.0 equiv) and chloroiodomethane (0.08 mL, 185.2 mg, 1.05 mmol, 3.0 equiv) in dry THF (5 mL) at −78 °C, and the resulting mixture was allowed to slowly warm to room temperature and stirred overnight, before being quenched with 1M HCl (3 mL).",
+  "soll": [
+   {
+    "namen": [
+     "MeLi-LiBr"
+    ],
+    "n": 0.00098,
+    "V": 0.44,
+    "eq": 2.8
+   },
+   {
+    "namen": [
+     "lupenone"
+    ],
+    "m": 0.15,
+    "n": 0.00035,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "chloroiodomethane"
+    ],
+    "m": 0.1852,
+    "n": 0.00105,
+    "V": 0.08,
+    "eq": 3
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "HCl",
+     "1M HCl"
+    ],
+    "V": 3,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "lup_seo2",
+  "quelle": "Molecules 2025, 30, 3064 (CC BY 4.0)",
+  "text": "A solution of lupeol (500 mg, 1.17 mmol, 1.0 equiv) and SeO2 (194.2 mg, 1.75 mmol, 1.5 equiv) in dry ethanol (20 mL) was refluxed for 48 h. The resulting mixture was filtered through celite and extracted 3 times with Et2O; the organic phases were combined, washed with brine, dried over anhydrous Na2SO4 and concentrated in vacuo.",
+  "soll": [
+   {
+    "namen": [
+     "lupeol"
+    ],
+    "m": 0.5,
+    "n": 0.00117,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "SeO2"
+    ],
+    "m": 0.1942,
+    "n": 0.00175,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "ethanol"
+    ],
+    "V": 20
+   }
+  ]
+ },
+ {
+  "id": "mes_2",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "In a round-bottom flask, potassium carbonate (1.65 g, 12 mmol) was dissolved in water (10 mL). To this, ethanol (10 mL) and toluene (20 mL) were added, and the resulting mixture was degassed by bubbling nitrogen for 15 min. After degassing, triiodomesitylene (0.5 g, 1 mmol) was added, followed by 4-cyanophenylboronic acid (0.57 g, 3.9 mmol), XPhosPdG4 (25 mg, 0.03 mmol, 3 mol%) and XPhos (14 mg, 0.03 mmol, 3 mol%). The mixture thus obtained was stirred at 100 °C for 6 h, during which the color of the reaction changed from yellow to black.",
+  "soll": [
+   {
+    "namen": [
+     "potassium carbonate"
+    ],
+    "m": 1.65,
+    "n": 0.012
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "ethanol"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 20
+   },
+   {
+    "namen": [
+     "triiodomesitylene"
+    ],
+    "m": 0.5,
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "4-cyanophenylboronic acid"
+    ],
+    "m": 0.57,
+    "n": 0.0039
+   },
+   {
+    "namen": [
+     "XPhosPdG4"
+    ],
+    "m": 0.025,
+    "n": 3e-05,
+    "eq": 0.03
+   },
+   {
+    "namen": [
+     "XPhos"
+    ],
+    "m": 0.014,
+    "n": 3e-05,
+    "eq": 0.03
+   }
+  ]
+ },
+ {
+  "id": "mes_4",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "Triethylamine (20 mL) was added to a Schlenk tube and degassed by bubbling nitrogen for 15 min. Triiodomesitylene (0.5 g, 1 mmol), 4-ethynylbenzonitrile (0.46 g, 3.6 mmol) and XPhosPdG4 (50 mg, 0.06 mmol, 6 mol%) were then added, and the flask was capped with a silicone septum and heated at 55 °C under a nitrogen atmosphere for 72 h.",
+  "soll": [
+   {
+    "namen": [
+     "Triethylamine"
+    ],
+    "V": 20
+   },
+   {
+    "namen": [
+     "Triiodomesitylene"
+    ],
+    "m": 0.5,
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "4-ethynylbenzonitrile"
+    ],
+    "m": 0.46,
+    "n": 0.0036
+   },
+   {
+    "namen": [
+     "XPhosPdG4"
+    ],
+    "m": 0.05,
+    "n": 6e-05,
+    "eq": 0.06
+   }
+  ]
+ },
+ {
+  "id": "mes_3",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "Nitrile 2 (0.21 g, 0.5 mmol), sodium azide (0.29 g, 4.5 mmol), triethylamine hydrochloride (0.62 g, 4.5 mmol) and DMF (10 mL) were added in a Schlenk tube. The reaction vessel was then closed with a rubber septum and connected to a flow of nitrogen through the side tube.",
+  "soll": [
+   {
+    "namen": [
+     "Nitrile 2"
+    ],
+    "m": 0.21,
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "sodium azide"
+    ],
+    "m": 0.29,
+    "n": 0.0045
+   },
+   {
+    "namen": [
+     "triethylamine hydrochloride"
+    ],
+    "m": 0.62,
+    "n": 0.0045
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "V": 10
+   }
+  ]
+ },
+ {
+  "id": "mes_9",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "A solution of triphenylphosphine (1.38 g, 5.28 mmol) in dry dichloromethane (10 mL) was cooled down to 0 °C and added to a solution of tetrabromomethane (0.66 g, 2.64 mmol) in dry dichloromethane (5 mL) at the same temperature under a nitrogen atmosphere. After stirring for 5 min, a solution of 8 (0.19 g, 0.44 mmol) in dry dichloromethane (3 mL) was added dropwise while maintaining 0 °C.",
+  "soll": [
+   {
+    "namen": [
+     "triphenylphosphine"
+    ],
+    "m": 1.38,
+    "n": 0.00528
+   },
+   {
+    "namen": [
+     "dichloromethane"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "tetrabromomethane"
+    ],
+    "m": 0.66,
+    "n": 0.00264
+   },
+   {
+    "namen": [
+     "dichloromethane"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "8"
+    ],
+    "m": 0.19,
+    "n": 0.00044
+   },
+   {
+    "namen": [
+     "dichloromethane"
+    ],
+    "V": 3
+   }
+  ]
+ },
+ {
+  "id": "mes_10",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "A solution of 9 (0.27 g, 0.3 mmol) in THF (10 mL) was cooled down to −78 °C. A solution of n-BuLi in hexane (1.44 mL, 3.6 mmol) was then slowly added, and the resulting mixture was stirred at −78 °C for one hour, allowed to warm up to room temperature and stirred for another hour. Aqueous hydrochloric acid (1 mL, 5%) was then added, and the reaction was stirred for 15 min.",
+  "soll": [
+   {
+    "namen": [
+     "9"
+    ],
+    "m": 0.27,
+    "n": 0.0003
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "n-BuLi"
+    ],
+    "n": 0.0036,
+    "V": 1.44
+   },
+   {
+    "namen": [
+     "hydrochloric acid"
+    ],
+    "V": 1,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "mes_11",
+  "quelle": "Molecules 2021, 26, 5952 (CC BY 4.0)",
+  "text": "Phenyl azide (180 mg, 1.5 mmol) was added to a solution of acetylene 10 (105 mg, 0.25 mmol) in 1,4-dioxane (5 mL). To the resulting mixture, [Cu(phen)(PPh3)2]NO3 (13 mg, 0.015 mmol) was added, and the reaction medium was heated to 60 °C for 24 h.",
+  "soll": [
+   {
+    "namen": [
+     "Phenyl azide"
+    ],
+    "m": 0.18,
+    "n": 0.0015
+   },
+   {
+    "namen": [
+     "acetylene 10"
+    ],
+    "m": 0.105,
+    "n": 0.00025
+   },
+   {
+    "namen": [
+     "1,4-dioxane"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "[Cu(phen)(PPh3)2]NO3"
+    ],
+    "m": 0.013,
+    "n": 1.5e-05
+   }
+  ]
+ }
+]
