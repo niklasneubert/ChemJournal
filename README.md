@@ -8,6 +8,9 @@ into a clean PDF when you need it on paper.
 
 > The user interface is in **German**. 🇩🇪 [Deutsche Version dieser Seite](README.de.md)
 
+> 🤖 **Built with AI:** ChemJournal was programmed with the help of **Google Gemini Flash 3.8** and
+> **Claude Opus 5.5** (Anthropic). See [How this app was made](#how-this-app-was-made).
+
 ![ChemJournal overview](docs/screenshots/overview.png)
 
 ## Download
@@ -107,6 +110,13 @@ training/   Generator for the Smart Extract training data (synthetic sentences) 
 examples/   Example experiments to import
 docs/       Screenshots
 ```
+
+## How this app was made
+
+ChemJournal is an AI-assisted project: the code for the macOS app, the Linux version, Smart Extract and the
+training-data generator was written with **Google Gemini Flash 3.8** and **Claude Opus 5.5** (Anthropic). The idea,
+the requirements from day-to-day lab work and all decisions come from me.
+Every feature is covered by automated tests (76 on macOS, 10 on Linux) and the Smart Extract evaluation corpus.
 
 ## License
 

@@ -8,6 +8,9 @@ als sauberes PDF.
 
 🇬🇧 [English version](README.md)
 
+> 🤖 **Mit KI entwickelt:** ChemJournal wurde mithilfe von **Google Gemini Flash 3.8** und **Claude Opus 5.5**
+> (Anthropic) programmiert. Mehr dazu unter [Wie die App entstanden ist](#wie-die-app-entstanden-ist).
+
 ![ChemJournal](docs/screenshots/overview.png)
 
 ## Download
@@ -71,6 +74,14 @@ PubChem-Suche, und die enthält nur die eingetippte CAS-Nummer.
 
 **macOS:** Xcode 27 oder neuer, `macos/ChemJournal.xcodeproj` öffnen, ⌘R. **Linux:** Node.js 24, siehe
 [`linux/README.md`](linux/README.md).
+
+## Wie die App entstanden ist
+
+ChemJournal ist ein KI-gestütztes Projekt: Der Code der Mac-App, der Linux-Version, von Smart Extract und des
+Trainingsdaten-Generators wurde mit **Google Gemini Flash 3.8** und **Claude Opus 5.5** (Anthropic) geschrieben.
+Idee, Anforderungen aus dem Laboralltag und alle Entscheidungen kommen von mir.
+Jede Funktion ist durch automatische Tests abgedeckt (76 unter macOS, 10 unter Linux) und durch das
+Smart-Extract-Testkorpus.
 
 ## Lizenz
 
