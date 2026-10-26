@@ -1,5 +1,5 @@
 // Stufe eines Ansatzes – entspricht StageView.swift, ReactionImageView.swift, AnalysisFilesView.swift.
-import { html, CJ, api, t, useState, useRef, uuid, nowRef } from './lib.js';
+import { html, CJ, api, t, useState, useRef, uuid, nowRef, refToDate, formatLong, formatAbbrevTime } from './lib.js';
 import { Icon } from './icons.js';
 import { ask, openContextMenu, alertOK } from './ui.js';
 import { store } from './store.js';
@@ -40,6 +40,7 @@ export function StageView({ eid, stage, onDelete, onDuplicate }) {
     <div class="stage-header">
       <button class=${'disclosure' + (stage.isExpanded ? ' open' : '')} onClick=${() => set('isExpanded', !stage.isExpanded)}><${Icon} name="chevron.right" /></button>
       <input class="plain-field" placeholder=${t('Stufenname')} value=${stage.title} onInput=${e => set('title', e.target.value)} />
+      <span class="stage-date caption secondary" title=${t('Stufe angelegt am {0}', formatAbbrevTime(refToDate(stage.createdAt)))}><${Icon} name="calendar" />${formatLong(refToDate(stage.createdAt))}</span>
       <button class="icon-button blue" title=${t('Stufe duplizieren')} onClick=${onDuplicate}><${Icon} name="doc.on.doc" /></button>
       <button class="icon-button red" title=${t('Stufe löschen')} onClick=${confirmDelete}><${Icon} name="trash" /></button>
     </div>

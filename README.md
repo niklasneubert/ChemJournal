@@ -26,10 +26,10 @@ Get the latest version from the **[Releases page](../../releases/latest)**:
 
 | System | File |
 |---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.1-macOS.dmg` |
-| Linux x86_64 (most PCs) | `ChemJournal-1.0.1-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.1-arm64.AppImage` |
-| Linux, as plain archive | `ChemJournal-1.0.1-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.2-macOS.dmg` |
+| Linux x86_64 (most PCs) | `ChemJournal-1.0.2-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.2-arm64.AppImage` |
+| Linux, as plain archive | `ChemJournal-1.0.2-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
@@ -38,8 +38,8 @@ and click **Open Anyway**.
 **Linux:** make the AppImage executable and start it – no installation needed:
 
 ```bash
-chmod +x ChemJournal-1.0.1-x86_64.AppImage
-./ChemJournal-1.0.1-x86_64.AppImage
+chmod +x ChemJournal-1.0.2-x86_64.AppImage
+./ChemJournal-1.0.2-x86_64.AppImage
 ```
 
 Want to try it with data? Import one of the [example experiments](examples/) via
@@ -47,7 +47,7 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 
 ## Features
 
-- **Projects → experiments → stages**, with drag & drop between projects and a full-text journal search
+- **Projects → experiments → stages**, each stage with its own date, drag & drop between projects and a full-text journal search
 - **Reagent table that does the maths:** enter mass, volume or amount and the rest follows from molar mass,
   density and equivalents; change the limiting reagent and every other row is recalculated; scale a whole
   experiment by a factor

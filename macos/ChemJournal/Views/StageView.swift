@@ -51,6 +51,10 @@ struct StageView: View {
             HStack {
                 TextField("Stufenname", text: $stage.title).font(.title2).fontWeight(.semibold)
                 Spacer()
+                // Jede Stufe zeigt ihr eigenes Datum (eine spätere Stufe also den Tag, an dem sie angelegt wurde)
+                Label(stage.createdAt.appFormatted(date: .long, time: .omitted), systemImage: "calendar")
+                    .font(.caption).foregroundColor(.secondary).fixedSize()
+                    .help(String(localized: "Stufe angelegt am \(stage.createdAt.appFormatted(date: .long, time: .shortened))"))
                 Button(action: duplicateAction) { Image(systemName: "doc.on.doc").foregroundColor(.blue) }.buttonStyle(.plain)
                 Button(action: { showDeleteConfirm = true }) { Image(systemName: "trash").foregroundColor(.red) }.buttonStyle(.plain)
             }

@@ -1624,6 +1624,16 @@
         }
       }
     },
+    "Stufe angelegt am %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stage created on %@"
+          }
+        }
+      }
+    },
     "Stufe löschen": {
       "localizations": {
         "en": {

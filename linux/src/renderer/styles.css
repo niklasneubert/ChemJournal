@@ -155,6 +155,8 @@ svg.icon { width: 1em; height: 1em; flex: none; vertical-align: -0.12em; }
 .stage-card { padding: 16px; background: var(--stage-bg); border: 1px solid var(--gray-border); border-radius: 12px; margin-bottom: 10px; }
 .stage-header { display: flex; align-items: center; gap: 8px; }
 .stage-header input { font-size: 22px; font-weight: 600; flex: 1; }
+/* Datum jeder Stufe (wann sie angelegt wurde) */
+.stage-header .stage-date { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
 .icon-button { border: none; background: none; padding: 2px; display: flex; align-items: center; font-size: 14px; border-radius: 4px; }
 .icon-button:hover { background: var(--hover); }
 .blue { color: var(--blue); } .red { color: var(--red); } .green { color: var(--green-text); } .orange { color: var(--orange); }

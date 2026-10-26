@@ -3,15 +3,21 @@ import AppKit
 
 struct YieldTableView: View {
     @Binding var yields: [YieldData]; @Binding var allChemicals: [ChemicalData]; @State private var nameWidth: CGFloat = 160
+    private func header(_ title: LocalizedStringKey, minWidth: CGFloat, maxWidth: CGFloat = .infinity) -> some View {
+        Text(title).fontWeight(.bold).frame(minWidth: minWidth, maxWidth: maxWidth, alignment: .leading)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Ausbeute (Produkt)").font(.headline).padding([.top, .leading, .trailing], 12).padding(.bottom, 8)
             Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 10) {
                 GridRow {
                     HStack(spacing: 0) { Text("Produktname").fontWeight(.bold).frame(maxWidth: .infinity, alignment: .leading); ColumnResizeHandle(width: $nameWidth) }.frame(width: nameWidth)
-                    Text("CAS").fontWeight(.bold); Text("Bezug").fontWeight(.bold); Text("M (g/mol)").fontWeight(.bold); Text("d (g/cm3)").fontWeight(.bold); Text("n (mol)").fontWeight(.bold); Text("V (ml)").fontWeight(.bold); Text("m (g)").fontWeight(.bold)
-                    Text("m theor.").fontWeight(.bold).foregroundColor(.secondary)
-                    Text("Ausbeute").fontWeight(.bold).foregroundColor(.green); Text("")
+                    // Gleiche Mindestbreiten wie die Felder darunter – sonst rücken die Köpfe einer leeren Tabelle zusammen
+                    header("CAS", minWidth: 70); header("Bezug", minWidth: 90, maxWidth: 140); header("M (g/mol)", minWidth: 60); header("d (g/cm3)", minWidth: 60)
+                    header("n (mol)", minWidth: 60); header("V (ml)", minWidth: 60); header("m (g)", minWidth: 60)
+                    header("m theor.", minWidth: 60).foregroundColor(.secondary)
+                    header("Ausbeute", minWidth: 60).foregroundColor(.green); Text("").frame(width: 16)
                 }.padding(.bottom, 4); Divider()
                 ForEach($yields) { $yieldItem in YieldRowView(yieldData: $yieldItem, allChemicals: allChemicals, nameWidth: $nameWidth) { yields.removeAll { $0.id == yieldItem.id } }; Divider() }
             }.padding(.horizontal, 12)

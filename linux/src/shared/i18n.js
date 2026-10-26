@@ -200,6 +200,7 @@
   "Sprache": "Language",
   "Standard ist Deutsch, unabhängig von der Sprache des Macs. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.": "German is the default, regardless of your Mac's language. Smart Extract always understands German and English text.",
   "Standard ist Deutsch, unabhängig von der Sprache des Rechners. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.": "German is the default, regardless of your computer's language. Smart Extract always understands German and English text.",
+  "Stufe angelegt am {0}": "Stage created on {0}",
   "Stufe duplizieren": "Duplicate Stage",
   "Stufe löschen": "Delete Stage",
   "Stufe löschen?": "Delete Stage?",

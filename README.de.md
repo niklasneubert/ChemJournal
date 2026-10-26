@@ -26,10 +26,10 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 
 | System | Datei |
 |---|---|
-| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.1-macOS.dmg` |
-| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.1-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.1-arm64.AppImage` |
-| Linux als Archiv | `ChemJournal-1.0.1-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.2-macOS.dmg` |
+| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.2-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.2-arm64.AppImage` |
+| Linux als Archiv | `ChemJournal-1.0.2-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -38,8 +38,8 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 **Linux:** AppImage ausführbar machen und starten, keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.0.1-x86_64.AppImage
-./ChemJournal-1.0.1-x86_64.AppImage
+chmod +x ChemJournal-1.0.2-x86_64.AppImage
+./ChemJournal-1.0.2-x86_64.AppImage
 ```
 
 Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
@@ -47,7 +47,7 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 
 ## Funktionen
 
-- **Projekte → Ansätze → Stufen**, Ansätze per Drag & Drop verschieben, Volltextsuche
+- **Projekte → Ansätze → Stufen**, jede Stufe mit eigenem Datum, Ansätze per Drag & Drop verschieben, Volltextsuche
 - **Ansatzgrößen, die rechnen:** Masse, Volumen oder Stoffmenge eingeben, der Rest folgt aus Molmasse, Dichte und
   Äquivalenten; ändert sich der Leit-Reaktand, rechnen alle Zeilen mit; ganzen Ansatz skalieren
 - **CAS-Autofill:** CAS-Nummer eintippen, Molmasse und Dichte kommen aus PubChem – und werden lokal gespeichert,
