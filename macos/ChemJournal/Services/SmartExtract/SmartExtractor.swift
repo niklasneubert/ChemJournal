@@ -131,6 +131,10 @@ nonisolated extension SmartExtractor {
         var lastFlushed: PartialRow?
         /// Klammertiefe im aktuellen Satz. In Einschüben ("(1:1 mixture of regioisomers)") beenden Stoppwörter keinen Namen.
         var parenDepth = 0
+        /// Ende der zuletzt gelesenen Einheit ("1 mmol| diene"): ein direkt folgendes Wort ist der Name.
+        var lastQuantityEnd: String.Index?
+        /// "azide (13, 14, or 17; 0.27 mmol)": Nummern/Namen am Anfang der Klammer sind Aliasse des Namens davor
+        var skippingAliases = false
         /// Zuletzt verworfenes Wort. Folgt darauf "(Menge …)", war es doch ein Name ("Natriumascorbat (19.8 mg)").
         var lastRejectedWord: Word?
 
@@ -144,7 +148,20 @@ nonisolated extension SmartExtractor {
                 flush()
                 parenDepth = 0
                 let firstRow = rows.count
-                for clause in splitClauses(sentence) where !isWorkupOrProduct(clause) {
+                var previousWasWorkup = false
+                for clause in splitClauses(sentence) {
+                    // "washed with NaHCO3 (5 mL), and water (5 mL)": Fortsetzung eines Aufarbeitungsteils ohne neues Zugabe-Verb
+                    let continuesWorkup = previousWasWorkup && ["and", "und"].contains(text[clause[clause.startIndex].range].lowercased())
+                        && !clause.contains(where: { Vocabulary.reactionVerbs.contains(text[$0.range].lowercased()) })
+                    if continuesWorkup || isWorkupOrProduct(clause) { previousWasWorkup = true; continue }
+                    // "General procedure A using X (…), Y (…) gave compound 4b (89 mg, 66%)": ab dem Produktverb ist es das Produkt
+                    if let k = clause.firstIndex(where: { Vocabulary.productVerbs.contains(text[$0.range].lowercased()) }) {
+                        parse(clause[clause.startIndex..<k])
+                        flush()
+                        previousWasWorkup = true
+                        continue
+                    }
+                    previousWasWorkup = false
                     parse(clause)
                     flush()
                 }
@@ -159,28 +176,50 @@ nonisolated extension SmartExtractor {
         private func splitSentences() -> [ArraySlice<Word>] {
             var result: [ArraySlice<Word>] = []
             var start = 0
-            for i in words.indices where i > 0 && isSentenceBoundary(before: i) {
-                result.append(words[start..<i])
-                start = i
+            var depth = 0
+            for i in words.indices {
+                let gap = words[i].gapBefore
+                let depthAtGap = max(0, depth + gap.filter { $0 == "(" }.count - gap.filter { $0 == ")" }.count)
+                if i > 0 && isSentenceBoundary(before: i, parenDepth: depthAtGap) {
+                    result.append(words[start..<i])
+                    start = i
+                    depth = 0
+                }
+                let span = text[gap.startIndex..<words[i].range.upperBound]
+                depth = max(0, depth + span.filter { $0 == "(" }.count - span.filter { $0 == ")" }.count)
             }
             if start < words.count { result.append(words[start..<words.count]) }
             return result
         }
 
-        private func isSentenceBoundary(before i: Int) -> Bool {
+        private func isSentenceBoundary(before i: Int, parenDepth: Int) -> Bool {
             let gap = words[i].gapBefore
             if gap.contains("\n") || gap.contains(";") { return true }
             // NLTagger hängt den Satzpunkt manchmal ans Token: "… bei 0 °C. The mixture", "… 30 min. Danach"
             if let lastToken = words[i - 1].tokens.last?.text, lastToken.count > 1, lastToken.hasSuffix("."),
                gap.contains(where: \.isWhitespace), let first = text[words[i].range].first, first.isUppercase || first.isNumber {
                 let stem = String(lastToken.dropLast()).lowercased()
-                if !Vocabulary.abbreviations.contains(stem) && !stem.contains(".") { return true }
+                // Initiale wie "J. Young" sind kein Satzende
+                if !Vocabulary.abbreviations.contains(stem) && !stem.contains(".") && !isInitial(i - 1) { return true }
             }
-            if gap.contains(":"), text[words[i].range].first?.isUppercase == true { return true }
+            // Doppelpunkt beendet den Satz, aber nicht in einer Klammer: "(petroleum ether: EtOAc = 30 : 1)"
+            if gap.contains(":"), parenDepth == 0, text[words[i].range].first?.isUppercase == true { return true }
+            // "… 1.5 equiv.). The reaction": Punkt nach der Klammer beendet den Satz, auch hinter einer Abkürzung
+            if gap.contains(")."), gap.last?.isWhitespace == true, text[words[i].range].first?.isUppercase == true { return true }
             // Punkt direkt gefolgt von Leerraum; "equiv.)" oder "abs. THF" sind keine Satzenden
             guard let dot = gap.firstIndex(of: "."), gap[gap.index(after: dot)...].first?.isWhitespace ?? true else { return false }
+            // "cat. (0.04 mmol, 20 mol%)": Mengenklammer nach dem Punkt gehört noch zum Wort davor
+            if gap[dot...].contains("("), parseDecimal(String(text[words[i].range])) != nil { return false }
+            if isInitial(i - 1) { return false }
             let previous = text[words[i - 1].range].lowercased()
             return !Vocabulary.abbreviations.contains(previous)
+        }
+
+        /// Einzelner Großbuchstabe als Initiale ("J. Young tube") – nicht "°C." oder Einheiten wie "M", "K", "L".
+        private func isInitial(_ k: Int) -> Bool {
+            let w = text[words[k].range].trimmingCharacters(in: CharacterSet(charactersIn: "."))
+            guard w.count == 1, let c = w.first, c.isUppercase, !"CFKLMN".contains(c) else { return false }
+            return !words[k].gapBefore.contains("°")
         }
 
         /// Teilt einen Satz an starken Teilsatzgrenzen: ", which", "and then", ", and the", ", followed by", "und anschließend" …
@@ -189,12 +228,28 @@ nonisolated extension SmartExtractor {
             var result: [ArraySlice<Word>] = []
             var start = sentence.startIndex
             func lower(_ i: Int) -> String { i < sentence.endIndex ? text[sentence[i].range].lowercased() : "" }
+            // "After evaporation of MeCN, MeOH (5 mL) … were added": einleitende Zeitangabe bis zum ersten Komma
+            // außerhalb von Klammern ist ein eigener Teilsatz
+            var leadingPhraseOpen = ["after", "upon", "following", "once"].contains(lower(sentence.startIndex))
+            var depth = 0
             for i in sentence.indices where i > start {
                 let comma = sentence[i].gapBefore.contains(",")
+                let gap = sentence[i].gapBefore
+                let depthAtGap = max(0, depth + gap.filter { $0 == "(" }.count - gap.filter { $0 == ")" }.count)
+                let span = text[gap.startIndex..<sentence[i].range.upperBound]
+                depth = max(0, depth + span.filter { $0 == "(" }.count - span.filter { $0 == ")" }.count)
+                if leadingPhraseOpen && comma && depthAtGap == 0 {
+                    leadingPhraseOpen = false
+                    result.append(sentence[start..<i]); start = i
+                    continue
+                }
                 let w = lower(i), next = lower(i + 1)
-                let boundary = (comma && Vocabulary.clauseOpeners.contains(w))
+                let previous = i > sentence.startIndex ? lower(i - 1) : ""
+                let vesselClause = ["that", "which", "der", "die", "das"].contains(w)
+                    && Vocabulary.apparatus.contains(where: { previous.contains($0) })
+                let boundary = (comma && Vocabulary.clauseOpeners.contains(w)) || vesselClause
                     || (["and", "und"].contains(w) && ["then", "anschließend", "danach", "dann"].contains(next))
-                    || (comma && ["and", "und"].contains(w) && ["the", "die", "der", "das", "to", "zu"].contains(next))
+                    || (comma && ["and", "und"].contains(w) && !next.isEmpty)
                 if boundary { result.append(sentence[start..<i]); start = i }
             }
             result.append(sentence[start..<sentence.endIndex])
@@ -203,12 +258,22 @@ nonisolated extension SmartExtractor {
 
         private func isWorkupOrProduct(_ clause: ArraySlice<Word>) -> Bool {
             let lowers = clause.map { text[$0.range].lowercased() }
-            if lowers.contains(where: { Vocabulary.workupWords.contains($0) }) { return true }
+            for (k, w) in lowers.enumerated() where Vocabulary.workupWords.contains(w) {
+                // Partizip als Eigenschaft eines Reagenzes: "purified lithium borohydride", "concentrated aqueous NH3",
+                // "dried THF" – kein Aufarbeitungsschritt
+                if Vocabulary.adjectivalParticiples.contains(w), k + 1 < lowers.count,
+                   !Vocabulary.participleFollowers.contains(lowers[k + 1]),
+                   k == 0 || !["was", "were", "is", "are", "been", "be", "being", "wurde", "wurden"].contains(lowers[k - 1]),
+                   lowers[k + 1].first?.isLetter == true { continue }
+                return true
+            }
+            // Stoffmengen oder Äquivalente im Teilsatz: Reaktionsansatz, auch wenn "ges. NH4Cl" vorkommt
+            let hasAmounts = lowers.contains { ["mmol", "µmol", "umol", "mol", "equiv", "eq", "äq", "äquiv"].contains($0.trimmingCharacters(in: CharacterSet(charactersIn: "."))) }
             // "crude product", "crude residue" – aber nicht "crude (6.0 g, …) tris-diol" als Edukt
             for (a, b) in zip(lowers, lowers.dropFirst()) where a == "crude" && ["product", "residue", "mixture", "material", "oil", "solid", "aldehyde", "ketone", "alcohol", "diol"].contains(b) { return true }
             // "saturated aqueous NH4Cl", "ges. NaHCO3-Lösung", "brine"
             let saturated = lowers.contains { ["saturated", "sat", "gesättigter", "gesättigte", "gesättigtem", "ges"].contains($0) }
-            if saturated && lowers.contains(where: { w in ["aqueous", "aq", "wässriger", "wässrige", "nh4cl", "nahco3", "nacl", "na2s2o3"].contains(where: { w.hasPrefix($0) }) || w.hasSuffix("-lösung") }) { return true }
+            if saturated && !hasAmounts && lowers.contains(where: { w in ["aqueous", "aq", "wässriger", "wässrige", "nh4cl", "nahco3", "nacl", "na2s2o3"].contains(where: { w.hasPrefix($0) }) || w.hasSuffix("-lösung") }) { return true }
             // Verdünnen ohne Reagenzzugabe ist Aufarbeitung ("The reaction mixture was diluted with DCM (100 mL) …")
             if lowers.contains(where: { ["diluted", "verdünnt"].contains($0) })
                 && !lowers.contains(where: { Vocabulary.reactionVerbs.contains($0) }) { return true }
@@ -229,19 +294,35 @@ nonisolated extension SmartExtractor {
                     nameOpen = false
                     skipCarrier = false
                 }
+                // "1a (0.12 mmol), 2a (0.10 mmol)": Komma außerhalb der Klammer schließt eine vollständige Zeile ab
+                if word.gapBefore.contains(","), word.gapBefore.contains(")") || parenDepth == 0,
+                   current.nameRange != nil, current.hasQuantity, !continuesBareQuantity(at: i, in: sentence) { flush() }
                 // Klammern vor und innerhalb des Wortes zählen ("((4R,5S)-5-(…)methyl)…methanol" ist in sich ausgeglichen)
                 let span = text[word.gapBefore.startIndex..<word.range.upperBound]
                 parenDepth = max(0, parenDepth + span.filter { $0 == "(" }.count - span.filter { $0 == ")" }.count)
                 if skipCarrier { i += 1; continue }
+                if word.gapBefore.contains(")") { skippingAliases = false }
+                if word.gapBefore.contains("("), current.nameRange != nil, !current.hasQuantity, parenDepth > 0,
+                   !startsQuantity(at: i, in: sentence), parenGroupHasQuantity(from: i, in: sentence),
+                   aliasListFollows(from: i, in: sentence) {
+                    skippingAliases = true
+                }
+                if skippingAliases {
+                    if startsQuantity(at: i, in: sentence) { skippingAliases = false } else { i += 1; continue }
+                }
                 let rejectedBefore = lastRejectedWord
                 lastRejectedWord = nil
 
                 // Zahl (+ Einheit)
                 if word.tokens.count == 1, let value = parseDecimal(wordText) {
                     // Name-zuerst-Schreibweise mit unbekanntem Namen: "Natriumascorbat (19.8 mg, …)"
-                    if word.gapBefore.contains("("), current.nameRange == nil, !current.hasQuantity,
+                    if word.gapBefore.contains("("), !current.hasQuantity,
                        let candidate = rejectedBefore, i > sentence.startIndex, candidate.range == sentence[i - 1].range {
-                        addNameWord(candidate)
+                        // "Standard reaction conditions: 1a (0.12 mmol)": Nummer direkt vor der Mengenklammer ist der Name,
+                        // auch wenn vorher schon ein (falscher) Name stand
+                        if current.nameRange == nil { addNameWord(candidate) }
+                        else if SmartExtractor.isCompoundLabel(String(text[candidate.range])),
+                                !candidate.gapBefore.contains("["), !word.gapBefore.contains("]") { flush(); addNameWord(candidate) }
                     }
                     i = handleNumber(value, at: i, in: sentence, skipCarrier: &skipCarrier)
                     continue
@@ -254,6 +335,32 @@ nonisolated extension SmartExtractor {
                     continue
                 }
 
+                // Molsieb: "AW-500 MS (25 mg)", "4 Å MS" – nicht das Analytik-Kürzel
+                if lower == "ms", nameOpen || (i > sentence.startIndex && text[sentence[i - 1].range].contains("Å")) {
+                    addNameWord(word)
+                    i += 1
+                    continue
+                }
+                // Menge zuerst: "1 mmol diene, 1.3 mmol formalin" – das Wort direkt hinter der Einheit ist der Name
+                if let end = lastQuantityEnd, word.gapBefore.startIndex == end, word.gapBefore.allSatisfy({ $0 == " " }),
+                   current.hasQuantity, current.nameRange == nil, parenDepth == 0,
+                   wordText.first?.isLetter == true, wordText.count >= 3,
+                   !Vocabulary.stopwords.contains(lower), !Vocabulary.apparatus.contains(where: { lower.contains($0) }),
+                   !Vocabulary.notNamesAfterQuantity.contains(lower),
+                   Units.quantity(lower, gapAfter: "") == nil, !Units.isIgnoredUnit(lower) {
+                    lastQuantityEnd = nil
+                    addNameWord(word)
+                    i += 1
+                    continue
+                }
+                // "0.4 mmol scale": kein Stoff, auch wenn das Modell das Wort für einen Namen hält
+                if let end = lastQuantityEnd, word.gapBefore.startIndex == end, Vocabulary.notNamesAfterQuantity.contains(lower) {
+                    lastQuantityEnd = nil
+                    nameOpen = false
+                    i += 1
+                    continue
+                }
+                lastQuantityEnd = nil
                 // Stoppwörter schließen den aktuellen Namen
                 if word.tokens.count == 1, Vocabulary.stopwords.contains(lower) {
                     nameOpen = false
@@ -287,6 +394,8 @@ nonisolated extension SmartExtractor {
                     nameOpen = false
                     pendingNameStart = nil
                     lastRejectedWord = word
+                    // "tube in a glovebox was charged with alcohol (…)": "in" gehörte nicht zu einem Lösemittel
+                    sawInAfterName = false
                 }
                 i += 1
             }
@@ -309,6 +418,10 @@ nonisolated extension SmartExtractor {
                 current = previous
                 solventAfterIn = false
             }
+            if numberWord.gapBefore.contains("("), nameClosedByStopword, current.nameRange != nil, !current.hasQuantity,
+               i > sentence.startIndex, Vocabulary.additionVerbs.contains(text[sentence[i - 1].range].lowercased()) {
+                nameClosedByStopword = false
+            }
             let next = i + 1 < sentence.endIndex ? sentence[i + 1] : nil
             let nextText = next.map { String(text[$0.range]) } ?? ""
             let gapToNext = next?.gapBefore ?? ""
@@ -325,7 +438,25 @@ nonisolated extension SmartExtractor {
             let unitAdjacent = next != nil && gapToNext.allSatisfy(\.isWhitespace)
             if unitAdjacent, let quantity = Units.quantity(nextText, gapAfter: gapAfterNext) {
                 if quantity.kind == .volume, isApparatus(after: i + 1, in: sentence) { return i + 2 }
+                // "KOH (0.200 g, 3.56 mmol, 2 mL H2O)": Volumen direkt vor einem Lösemittel in der Klammer ist eine eigene Zeile
+                if quantity.kind == .volume, parenDepth > 0, current.nameRange != nil, i + 2 < sentence.endIndex,
+                   sentence[i + 2].gapBefore.allSatisfy({ $0 == " " }) {
+                    let solvent = sentence[i + 2]
+                    let solventText = String(text[solvent.range])
+                    // Das Modell sieht "2 mL H2O" gern als eine Volumenangabe – hier zählt auch die Namens-Heuristik
+                    if !Vocabulary.stopwords.contains(solventText.lowercased()),
+                       isChemicalName(solvent, text: solventText) || ChemicalHeuristics.looksLikeChemical(solventText) {
+                        flush()
+                        current.volume = value * quantity.factor
+                        addNameWord(solvent)
+                        nameOpen = false
+                        return i + 3
+                    }
+                }
+                if quantity.kind == .volume, numberWord.gapBefore.contains("("), i > sentence.startIndex,
+                   Vocabulary.apparatus.contains(where: { text[sentence[i - 1].range].lowercased().contains($0) }) { return i + 2 }
                 setQuantity(quantity.kind, value * quantity.factor)
+                lastQuantityEnd = next?.range.upperBound
                 return i + 2
             }
             if unitAdjacent, Units.isConcentration(nextText) {
@@ -346,6 +477,50 @@ nonisolated extension SmartExtractor {
             return i + 1
         }
 
+        /// "Lithium aluminum hydride 11.1 mg, 1 equiv was added": weitere Menge ohne Klammer gehört zur selben Zeile,
+        /// wenn diese Mengenart noch fehlt.
+        private func continuesBareQuantity(at i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            guard parenDepth == 0, !sentence[i].gapBefore.contains(")"), i + 1 < sentence.endIndex,
+                  sentence[i].tokens.count == 1, parseDecimal(String(text[sentence[i].range])) != nil,
+                  let q = Units.quantity(String(text[sentence[i + 1].range]), gapAfter: "") else { return false }
+            return !current.has(q.kind)
+        }
+
+        /// Beginnt bei Wort i eine Mengenangabe ("0.27 mmol", "5 mol%")?
+        private func startsQuantity(at i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            guard parseDecimal(String(text[sentence[i].range])) != nil else { return false }
+            guard i + 1 < sentence.endIndex else { return false }
+            let gapAfter = i + 2 < sentence.endIndex ? sentence[i + 2].gapBefore : ""
+            return Units.quantity(String(text[sentence[i + 1].range]), gapAfter: gapAfter) != nil
+        }
+
+        /// Enthält die Klammer ab Wort i irgendwo eine Mengenangabe?
+        private func parenGroupHasQuantity(from i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            var j = i
+            while j < sentence.endIndex {
+                if j > i && sentence[j].gapBefore.contains(")") { return false }
+                if startsQuantity(at: j, in: sentence) { return true }
+                j += 1
+            }
+            return false
+        }
+
+        /// Steht vor der ersten Menge der Klammer eine Aufzählung ("13, 14, or 17;", "ibuprofen, flurbiprofen or fenoprofen,",
+        /// "O,O,")? Ein einzelnes Wort wie "(1, 0.66 g)" bleibt beim bisherigen Verhalten (Verbindungsnummer).
+        private func aliasListFollows(from i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            var j = i, count = 0
+            while j < sentence.endIndex, !startsQuantity(at: j, in: sentence) {
+                if j > i && sentence[j].gapBefore.contains(")") { return false }
+                // Konzentrationen und Prozentangaben sind keine Aliasse: "(1.43 M, 9.8 mL)", "(5% w/v, …)"
+                let w = String(text[sentence[j].range])
+                if Units.isConcentration(w) || sentence[j].gapBefore.contains("%") || w.contains("%") { return false }
+                count += 1
+                j += 1
+            }
+            let first = String(text[sentence[i].range])
+            return count >= 2 || first.contains(",")
+        }
+
         /// Steht in der aktuellen Klammer (ab Wort i bis ")") eine Stoffmenge oder Konzentration?
         private func parenGroupHasAmount(from i: Int, in sentence: ArraySlice<Word>) -> Bool {
             var j = i
@@ -361,14 +536,18 @@ nonisolated extension SmartExtractor {
 
         /// Kolben- oder Gefäßvolumen: "in einem 250 mL Kolben", "a 25 mL round-bottom flask".
         private func isApparatus(after unitIndex: Int, in sentence: ArraySlice<Word>) -> Bool {
-            for j in (unitIndex + 1)..<min(unitIndex + 3, sentence.endIndex) {
+            for j in (unitIndex + 1)..<min(unitIndex + 5, sentence.endIndex) {
+                // Nur die Wörter direkt dahinter ("25 mL high-pressure J-Young tube"), nicht über "in", Kommas oder Klammern hinaus
+                if j > unitIndex + 1, sentence[j].gapBefore.contains(where: { ",;()".contains($0) }) { break }
                 let w = text[sentence[j].range].lowercased()
+                if j > unitIndex + 1, Vocabulary.stopwords.contains(w), !Vocabulary.apparatus.contains(where: { w.contains($0) }) { break }
                 if Vocabulary.apparatus.contains(where: { w.contains($0) }) { return true }
             }
             return false
         }
 
         private func acceptCompoundLabel(at i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            if isAlternativeLabel(at: i, in: sentence) { return true }
             // Nach Mengenangaben ohne Namen: "6.80 ml (53.8 mmol, 1.10 eq) 4 addiert"
             if current.hasQuantity && current.nameRange == nil { return true }
             // Direkt hinter einem Namen: "aldehyde 1", "Trimethylsilylchlorid 4"
@@ -381,10 +560,21 @@ nonisolated extension SmartExtractor {
             return false
         }
 
+        /// "9 or 10", "1a/1b": zweite Nummer direkt nach "or"/"oder" hinter einer Nummer desselben Namens.
+        private func isAlternativeLabel(at i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            guard i - 2 >= sentence.startIndex, current.nameRange != nil, !current.hasQuantity else { return false }
+            let previous = text[sentence[i - 1].range].lowercased()
+            return ["or", "oder", "and", "und"].contains(previous) && SmartExtractor.isCompoundLabel(String(text[sentence[i - 2].range]))
+        }
+
         // MARK: Namen
 
         /// Verbindungsnummer übernehmen; nach einem Nomen ("starting material 1", "Verbindung 12") gehört das Nomen dazu.
         private mutating func addLabelWord(_ word: Word, at i: Int, in sentence: ArraySlice<Word>) {
+            if isAlternativeLabel(at: i, in: sentence) {
+                nameOpen = true
+                nameClosedByStopword = false
+            }
             if !nameOpen, i > sentence.startIndex,
                word.gapBefore.allSatisfy(\.isWhitespace) {
                 let previous = sentence[i - 1]
@@ -605,13 +795,39 @@ nonisolated enum Vocabulary {
         "aufgearbeitet", "dekantiert", "decanted", "beendet", "ausbeute", "yield", "rohprodukt", "rohproduktes",
         "erhielt", "quench", "quenching", "poured", "gegossen", "silica", "kieselgel", "slurry", "brine",
         "filtration", "evaporation", "extraction", "eingedampft", "rotiert",
+        "afford", "affords", "affording", "furnishing",
+    ]
+
+    /// Verben, hinter denen im selben Teilsatz nur noch das Produkt steht ("… to give 3a (45 mg)", "… gave 4b").
+    static let productVerbs: Set<String> = ["gave", "give", "gives", "giving", "provided", "providing"]
+
+    /// Wörter direkt hinter einer Mengenangabe, die kein Stoff sind ("0.4 mmol scale", "1 mmol batch").
+    static let notNamesAfterQuantity: Set<String> = [
+        "scale", "scales", "batch", "batches", "excess", "total", "overall", "quantity", "quantities", "amount", "amounts",
+        "yield", "conversion", "loading", "run", "runs", "experiment", "experiments", "sample", "samples", "aliquot",
+        "aliquots", "fraction", "fractions", "each", "per", "respectively", "maßstab", "ansatz", "überschuss",
+    ]
+
+    /// Zugabe-Verben, hinter denen eine Mengenklammer zum Stoff davor gehört ("X was added (79 mg, 0.96 mmol)").
+    static let additionVerbs: Set<String> = [
+        "added", "introduced", "charged", "dissolved", "suspended", "placed", "transferred", "combined", "loaded", "mixed",
+        "zugegeben", "hinzugegeben", "addiert", "zugetropft", "gelöst", "vorgelegt", "suspendiert", "zugefügt", "hinzugefügt",
+    ]
+
+    /// Aufarbeitungswörter, die auch als Eigenschaft vor einem Reagenz stehen ("purified LiBH4", "dried THF").
+    static let adjectivalParticiples: Set<String> = ["purified", "dried", "concentrated", "filtered", "distilled", "gereinigt", "getrocknet"]
+    /// Folgt eines dieser Wörter, ist das Partizip ein Arbeitsschritt ("dried over", "concentrated in vacuo").
+    static let participleFollowers: Set<String> = [
+        "by", "under", "in", "with", "over", "through", "via", "on", "to", "and", "at", "from", "for", "using", "off",
+        "again", "twice", "thoroughly", "briefly", "overnight", "carefully", "first", "as", "until", "unter", "über",
+        "mit", "im", "bei", "durch", "und",
     ]
 
     /// Abkürzungen, deren Punkt kein Satzende ist.
     static let abbreviations: Set<String> = [
         "eq", "equiv", "äq", "äquiv", "abs", "ca", "approx", "conc", "konz", "ges", "sat", "aq", "wässr", "bzw", "vgl",
         "resp", "ref", "nr", "no", "fig", "abb", "tab", "lit", "et", "al", "e.g", "i.e", "z.b", "u.a", "techn", "dest", "anhyd",
-        "frisch", "ca", "vs", "wt",
+        "frisch", "ca", "vs", "wt", "cat", "kat",
     ]
 
     static let labelIntroducers: Set<String> = labelNouns.union(["von", "of", "nr", "no"])
@@ -626,11 +842,13 @@ nonisolated enum Vocabulary {
         "acetylene", "alkyne", "nitrile", "nitril", "sulfone", "sulfon", "phenylsulfone", "carbonate", "carbonat", "tosylate",
         "mesylate", "boronate", "lactone", "lacton", "imine", "imin", "oxime", "oxim", "sulfide", "thiol", "phenol", "aniline",
         "anilin", "indole", "indol", "pyridine", "pyridin", "olefine", "alcohols", "esters", "derivative", "derivat", "nitrone",
+        "acceptor", "donor", "thiols", "amines", "aldehydes", "ketones", "acids", "halide", "halides",
     ]
 
     static let apparatus = [
         "kolben", "flask", "vial", "tube", "gefäß", "reaktor", "reactor", "schlenk", "ampulle", "ampoule", "autoklav",
         "autoclave", "trichter", "funnel", "spritze", "syringe", "becherglas", "beaker", "atmosph", "ballon", "balloon",
+        "vessel", "eppendorf", "jar", "bottle", "cuvette", "küvette", "container", "young",
     ]
 
     static let solutionSuffixes = ["-lösung", " lösung", "-solution", " solution", "-suspension", " suspension"]

@@ -52,4 +52,5 @@ if [[ $USE_MODEL -eq 1 ]]; then
     ARGS+=(--model "$COMPILED")
 fi
 
-"$BIN" ${ARGS[@]+"${ARGS[@]}"} ${PASS[@]+"${PASS[@]}"} "$HERE/Korpus/korpus.json" "$HERE/Korpus/kontrollset.json"
+"$BIN" ${ARGS[@]+"${ARGS[@]}"} ${PASS[@]+"${PASS[@]}"} "$HERE/Korpus/korpus.json" "$HERE/Korpus/kontrollset.json" \
+    "$HERE/Korpus/korpus_europepmc.json" "$HERE/Korpus/kontrollset_europepmc.json"

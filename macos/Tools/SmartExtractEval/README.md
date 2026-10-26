@@ -46,14 +46,29 @@ und es gibt keinen Wert, der nicht im Soll steht.
 |---|---|
 | `Korpus/korpus.json` | 20 Absätze, 90 Pflichtzeilen. An diesen Fällen wurde Smart Extract verbessert. |
 | `Korpus/kontrollset.json` | 13 Absätze, 56 Pflichtzeilen. Nur zum Messen – nie daran nachbessern. |
+| `Korpus/korpus_europepmc.json` | 67 Absätze, 280 Pflichtzeilen aus 2024/25 erschienenen Open-Access-Artikeln (CC BY 4.0, über Europe PMC), davon 7 aus SI-PDFs. An diesen Fällen wurde Smart Extract am 26.10.2026 robuster gemacht. |
+| `Korpus/kontrollset_europepmc.json` | 28 Absätze, 112 Pflichtzeilen aus *anderen* Artikeln derselben Suche. Während der Arbeit nie im Detail angesehen, nur als Gesamtzahl gemessen. |
 
-Stand 23.10.2026 mit Modell 15: beide Dateien 100 % (33/33 Fälle).
+Stand 23.10.2026 mit Modell 15: `korpus.json` und `kontrollset.json` 100 % (33/33 Fälle).
 
 Öffentlich enthalten sind nur frei lizenzierte Texte: Molecules-Artikel unter CC BY 4.0 und eigene
 Praktikumsprotokolle (Quelle steht je Fall im Feld `quelle`). Das vollständige Korpus (58 Fälle, zusätzlich
 Supporting Informations von Verlagen und Abschlussarbeiten) bleibt aus Urheberrechtsgründen privat; auch dort
 erreicht Smart Extract 100 %. Die Texte sind so belassen, wie
 PDFKit bzw. der Browser sie beim Kopieren liefert – inklusive der Artefakte, um die es geht.
+
+### Europe-PMC-Korpus (26.10.2026)
+
+Ausgewählt per Europe-PMC-Suche nach Open-Access-Artikeln mit Lizenz CC BY und experimentellem Teil
+(Molecules, J. Org. Chem., ACS Omega, ChemistryOpen, Chem. Eur. J., RSC Adv., Beilstein J. Org. Chem., Front. Chem.,
+Chem. Sci., Org. Lett.); Volltext als JATS-XML, SI-PDFs über die Supplementary-Files-Schnittstelle. Aufgeteilt
+**nach Artikel**: Kein Artikel des Kontrollsets kommt im Entwicklungsteil vor. Die Quelle (Zeitschrift, Jahr, PMCID,
+DOI) steht je Fall im Feld `quelle`.
+
+| Kontrollset (ungesehen) | vorher (v1.0.2) | nachher |
+|---|---|---|
+| Mac, Modell 15 | 83.0 % richtige Zeilen, 12/28 Fälle fehlerfrei, 13 falsche Zusatzzeilen | 85.7 %, 19/28, 6 |
+| Linux (Klassifikator) | 83.9 %, 12/28, 12 | 87.5 %, 20/28, 4 |
 
 ## Neuen Fall hinzufügen
 

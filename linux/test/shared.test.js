@@ -71,8 +71,18 @@ test('Smart Extract: Normalisierung und Fallbeispiel', () => {
 
 test('Smart Extract: echtes Korpus (Mindestquote 99 %)', () => {
   const { execFileSync } = require('child_process');
-  const out = execFileSync(process.execPath, [path.join(__dirname, '../tools/eval-smartextract.js'), '--min', '99'], { encoding: 'utf8' });
+  const korpus = f => path.join(__dirname, 'korpus', f);
+  const out = execFileSync(process.execPath, [path.join(__dirname, '../tools/eval-smartextract.js'), '--min', '99',
+    korpus('korpus.json'), korpus('kontrollset.json'), korpus('korpus_europepmc.json')], { encoding: 'utf8' });
   assert.match(out, /Gesamt: .*komplett richtig/);
+});
+
+test('Smart Extract: ungesehenes Kontrollset aus Open-Access-Artikeln (Untergrenze 85 %)', () => {
+  // Stand 1.0.3: 87.5 %. Nur eine Untergrenze gegen Rückschritte – an diesen Fällen wird nicht nachgebessert.
+  const { execFileSync } = require('child_process');
+  const out = execFileSync(process.execPath, [path.join(__dirname, '../tools/eval-smartextract.js'), '--min', '85',
+    path.join(__dirname, 'korpus', 'kontrollset_europepmc.json')], { encoding: 'utf8' });
+  assert.match(out, /komplett richtig/);
 });
 
 test('Speichern im Mac-Format, Versionen und Backup', () => {

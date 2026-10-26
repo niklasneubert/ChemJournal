@@ -1,0 +1,2872 @@
+[
+ {
+  "id": "dev_PMC12508946_0",
+  "quelle": "ACS Omega 2025 (CC BY 4.0, PMC12508946, doi:10.1021/acsomega.5c06908)",
+  "text": "Fatty acid (1.0 equiv, 0.4 mmol), acridine (0.1 equiv, 0.04 mmol), and thiophenol (0.2 equiv, 0.08 mmol) were added to a 10 mL glass vial that had been previously dried in an oven and equipped with a magnetic stirring bar. The vial was then sealed, evacuated under pressure, and purged with nitrogen gas. A mixture of dichloromethane (DCM) and water (1.0 mL, 9:1) was added. The reaction mixture was irradiated with a 70 W violet LED (405 nm) under ventilation and stirred for 3–10 h.",
+  "soll": [
+   {
+    "namen": [
+     "Fatty acid"
+    ],
+    "n": 0.0004,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "acridine"
+    ],
+    "n": 4e-05,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "thiophenol"
+    ],
+    "n": 8e-05,
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "dichloromethane",
+     "DCM"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12508946_1",
+  "quelle": "ACS Omega 2025 (CC BY 4.0, PMC12508946, doi:10.1021/acsomega.5c06908)",
+  "text": "For the hydrodecarboxylation of the real mixture of fatty acids obtained by hydrolysis of vegetable oils, 100 mg of starting material (≈0.4 mmol based on the average molar mass of the fatty acid mixture) was used, and the amount of catalysts was determined for a 0.4 mmol scale following the general procedure. The gram-scale hydrodecarboxylation of palm oil fatty acids was carried out using the same procedure with 1 g of starting material.",
+  "soll": [
+   {
+    "namen": [
+     "starting material",
+     "fatty acid"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "catalyst"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11340086_4",
+  "quelle": "ACS Omega 2024 (CC BY 4.0, PMC11340086, doi:10.1021/acsomega.4c01314)",
+  "text": "One equiv of 1,2-phenylenediamine was dissolved in 8 mL of acetonitrile and heated to reflux. Two equiv of the respectively substituted salicylaldehyde (1.78 mmol) in 10 mL of acetonitrile were added dropwise, and the mixture was refluxed for 8–24 h. Subsequently, the solution was allowed to cool down to room temperature (rt). The precipitated product was collected by filtration and washed with cold acetonitrile to gain L1–L4. After drying in vacuo, the ligands were obtained as an orange powder. All spectra for the ligands are given as Supporting Information (Figures S1–S12).",
+  "soll": [
+   {
+    "namen": [
+     "1,2-phenylenediamine"
+    ],
+    "eq": 1
+   },
+   {
+    "namen": [
+     "acetonitrile"
+    ],
+    "V": 8
+   },
+   {
+    "namen": [
+     "salicylaldehyde"
+    ],
+    "n": 0.00178,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "acetonitrile"
+    ],
+    "V": 10,
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11897656_7",
+  "quelle": "Beilstein J Org Chem 2025 (CC BY 4.0, PMC11897656, doi:10.3762/bjoc.21.35)",
+  "text": "General procedure for reductive aminations (compounds 3a, 4b–d, 11, and 12). Aldehyde 9 or 10 (50.0 mg, 282 µmol) was suspended in methanol (1.3 mL). Anhydrous magnesium sulfate (340 mg, 2.82 mmol, 10 equiv) and the respective amino alcohol (2.82 mmol, 10 equiv) were added. The mixture was sonicated for 30 minutes and subsequently stirred at room temperature for 16 h. After cooling to 0 °C, sodium borohydride (96.1 mg, 2.54 mmol, 9 equiv) was added in portions over the course of 1 h. The mixture was stirred for additional 2.5 h at room temperature. Afterwards, the volatiles were removed under reduced pressure and the residue was taken up in dilute aqueous acid (for composition see individual experiments in Supporting Information File 1; compounds 3a, 4b–d, 11, and 12). If insolubles were present after pH 1–2 was reached, the suspension was filtered. Purification is described in Supporting Information File 1 for the individual compounds 3a, 4b–d, 11, and 12.",
+  "soll": [
+   {
+    "namen": [
+     "Aldehyde 9",
+     "aldehyde"
+    ],
+    "m": 0.05,
+    "n": 0.000282
+   },
+   {
+    "namen": [
+     "methanol",
+     "MeOH"
+    ],
+    "V": 1.3
+   },
+   {
+    "namen": [
+     "magnesium sulfate",
+     "MgSO4"
+    ],
+    "m": 0.34,
+    "n": 0.00282,
+    "eq": 10
+   },
+   {
+    "namen": [
+     "amino alcohol"
+    ],
+    "n": 0.00282,
+    "eq": 10
+   },
+   {
+    "namen": [
+     "sodium borohydride",
+     "NaBH4"
+    ],
+    "m": 0.0961,
+    "n": 0.00254,
+    "eq": 9
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12548753_11",
+  "quelle": "Chem Sci 2025 (CC BY 4.0, PMC12548753, doi:10.1039/d5sc06079f)",
+  "text": "To gain some insights into the reaction mechanism, radical quenching experiments were conducted under standard conditions (Fig. 2A). The addition of TEMPO (2,2,6,6-tetramethylpiperidine-1-oxyl) significantly suppressed the formation of the desired amide product 3aa, resulting in only 19% yield. This result suggests the possible involvement of a radical intermediate, but the oxidation property of TEMPO should also be considered as it might oxidize phosphine or the in situ generated Pd(0) intermediate. The reaction proceeded smoothly, when BHT (2,6-di-tert-butyl-4-methylphenol) or DPE (1,1-diphenylethylene) was added, furnishing 3aa in 97% and 93% yields, respectively. These results imply that the process likely proceeds through a non-radical mechanism. In addition, a control experiment conducted in the absence of CO resulted in no product formation (Fig. 2B), highlighting the essential role of carbon monoxide in the reaction. To evaluate the practicality and scalability of the developed method, we performed a gram–scale reaction using 2.0 mmol of vinyl thianthrenium salt 1a (Fig. 2C). The reaction proceeded efficiently under the optimized conditions, affording the desired product 3aa in 96% isolated yield, demonstrating the excellent robustness and scalability of the protocol for potential synthetic applications.",
+  "soll": [
+   {
+    "namen": [
+     "vinyl thianthrenium salt",
+     "thianthrenium"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "TEMPO"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "BHT"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "DPE"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12080305_14",
+  "quelle": "Chemistry 2025 (CC BY 4.0, PMC12080305, doi:10.1002/chem.202500557)",
+  "text": "To evaluate the eco‐sustainability of our approach, we calculated the E‐factor (E), a widely accepted indicator that assesses the environmental impact of a chemical process by quantifying the waste generated per kilogram of the desired product.[ 14 ] An ideal E‐factor is 0, with higher E‐factor values indicating greater waste generation. A key limitation of the E‐factor as a measure of greenness is that it does not account for the hazards of the generated waste, as it fails to differentiate between harmless and hazardous waste, and overlooks energy‐related waste. All the reactions in this study were carried out on a laboratory scale, requiring chromatography for accurate isolated yield measurements, a purification method known for its high waste production. To achieve a more realistic assessment of waste generation and, consequently, of the environmental impact of our synthetic approach, the synthesis of 3a (Table 1, entry 9) was scaled up to a 10 mmol scale. The crude reaction mixture was then subjected to a short percolation on silica gel before being purified by distillation (Supporting information). Referring to this large‐scale reaction, where a purification method specifically suited to the reaction product was used instead of chromatography, we calculated both the complete E‐factor (cE) and the simple E‐factor (sE),[ 14a ] which were found to be 7.9 and 3.0, respectively (Supporting information).",
+  "soll": [
+   {
+    "namen": [
+     "3a"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12734670_15",
+  "quelle": "Chemistry 2025 (CC BY 4.0, PMC12734670, doi:10.1002/chem.202502653)",
+  "text": "A Schlenk tube was charged with purified lithium borohydride (318 mg, 14.6 mmol, 1.0 equiv) and toluene (30 mL). The solution was cooled to 0°C, and hexafluoro‐2,3‐bis(trifluoromethyl)‐2,3‐butanediol (10.2 g, 30.7 mmol, 2.1 equiv) was added dropwise. The evolution of dihydrogen was observed with effervescence. The reaction was left to stir at 0°C for 30 minutes before slowly warming to room temperature. The solution was then heated to 90°C and left to stir for 18 hours. During this time the product salt began to precipitate out of solution. After heating, the reaction was left to cool to ambient temperature, and pentane (40 mL) was added, which further precipitated the product out. The solvent was removed by syringe, and the white powder was washed with pentane (3 × 10 mL) and dried in vacuo at 90°C to give the title product, lithium bis(perfluorinated pinacolato)borate, Li[B(pp)2]. Yield: 3.35 g, 4.34 mmol, 30%.",
+  "soll": [
+   {
+    "namen": [
+     "lithium borohydride",
+     "LiBH4"
+    ],
+    "m": 0.318,
+    "n": 0.0146,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 30
+   },
+   {
+    "namen": [
+     "butanediol",
+     "hexafluoro"
+    ],
+    "m": 10.2,
+    "n": 0.0307,
+    "eq": 2.1
+   },
+   {
+    "namen": [
+     "pentane"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11973499_20",
+  "quelle": "ChemistryOpen 2025 (CC BY 4.0, PMC11973499, doi:10.1002/open.202400112)",
+  "text": "To a mixture of pyranopyridine (0.5 mmol), arylboronic acid 2 (0.6 mmol), CuI (20 mmol %), Et3N (2.0 equiv.) was added dimethyl sulfoxide (5.0 mL) at room temperatureunder under atmosphere. The reaction was stirred in an IKA magneticstirring heating module at room temperature for 12 h. After completion, water and ethyl acetate were added to the mixture. The organic layer was separated, and the aqueous layer was extracted with ethyl acetate. The organic layers were combined. Then, organic layers were washed with brine and dried over Na2SO4, filtered, and concentrated in vacuo. The residue was purified by flash chromatography eluting with petroleum ether and ethyl acetate (PE/EA=5 : 1) to afford the corresponding products.",
+  "soll": [
+   {
+    "namen": [
+     "pyranopyridine"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "arylboronic acid"
+    ],
+    "n": 0.0006
+   },
+   {
+    "namen": [
+     "CuI"
+    ],
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "Et3N"
+    ],
+    "eq": 2.0
+   },
+   {
+    "namen": [
+     "dimethyl sulfoxide",
+     "DMSO"
+    ],
+    "V": 5.0
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12502733_27",
+  "quelle": "Front Chem 2025 (CC BY 4.0, PMC12502733, doi:10.3389/fchem.2025.1650302)",
+  "text": "From 4 and 10: A mixture of acceptor 10 (5.0 mg, 0.017 mmol, 1 equiv), donor 4 (17.7 mg, 1.7 equiv, 0.029 mmol), and freshly activated AW-500 MS (25 mg) in dry CH2Cl2 (1.5 mL) was stirred at room temperature for 1 h under an N2 atmosphere and then cooled to 0 °C. NIS (6.5 mg, 1.7 equiv, 0.029 mmol) and TfOH (0.3 μL, 0.2 equiv, 0.003 mmol) were added to the reaction mixture. After constant stirring at 0 °C for 2 more hours, the mixture was filtered through a pad of Celite, the solids were washed with CH2Cl2, and the filtrate was washed with a mixture of saturated NaHCO3(aq) and 20% Na2S2O3 solution and then with water. The organic layer was dried over anhydrous MgSO4, filtered, and concentrated in vacuo. The residue was purified by flash column chromatography (silica gel; ethyl acetate/hexane = 2/3) to afford trisaccharide 19 (12.7 mg, 95%).",
+  "soll": [
+   {
+    "namen": [
+     "acceptor 10",
+     "acceptor"
+    ],
+    "m": 0.005,
+    "n": 1.7e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "donor 4",
+     "donor"
+    ],
+    "m": 0.0177,
+    "n": 2.9e-05,
+    "eq": 1.7
+   },
+   {
+    "namen": [
+     "AW-500",
+     "MS"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 1.5
+   },
+   {
+    "namen": [
+     "NIS"
+    ],
+    "m": 0.0065,
+    "n": 2.9e-05,
+    "eq": 1.7
+   },
+   {
+    "namen": [
+     "TfOH"
+    ],
+    "n": 3e-06,
+    "V": 0.0003,
+    "eq": 0.2
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12502733_28",
+  "quelle": "Front Chem 2025 (CC BY 4.0, PMC12502733, doi:10.3389/fchem.2025.1650302)",
+  "text": "To a stirred suspension of 8 (60 mg, 0.194 mmol) in anhydrous CH2Cl2 (2.4 mL), Et3N (27.1 μL, 0.194 mmol) and MsCl (15.1 μL, 0.388 mmol) were added at 0 °C under an N2 atmosphere. Upon completion of the reaction after 1 h, the mixture was diluted with CH2Cl2, washed with H2O and brine, dried over MgSO4, and then concentrated under reduced pressure. The residue was purified by column chromatography (silica gel; ethyl acetate/hexane = 1/3) to afford 20 (47.5 mg, 63%). The specific rotation was [α]28 D +7.80 (c 0.5, CHCl3). The IR spectrum (thin film) showed absorption bands at ν 3,492, 2,922, 1,712, 1,355, and 1,073 cm–1. The 1H NMR spectrum (600 MHz, CDCl3) exhibited signals at δ 7.34 (s, 3H, Ar-H), 7.38–7.27 (m, 2H, Ar-H), 4.90 (d, J = 11.6 Hz, 1H, Ar-CH2), 4.62 (d, J = 11.6 Hz, 1H, Ar-CH2), 4.51–4.42 (m, 2H, H-6), 4.25 (d, J = 8.3 Hz, 1H, H-1), 4.13 (dd, J = 5.6, 2.3 Hz, 1H, H-4), 4.11–4.04 (m, 2H, 3-H, H-5), 3.60 (td, J = 7.9, 1.9 Hz, 1H, H-2), 3.04 (s, 3H, SO2CH3), 2.40 (d, J = 2.4 Hz, 1H, OH), 1.50 (s, 3H, CH3), and 1.32 (s, 3H, CH3). The 13C NMR spectrum (150 MHz, CDCl3) displayed resonances at δ 136.5 (C), 128.61 (CH), 128.28 (CH), 128.24 (CH), 110.7 (C), 100.83 (CH), 78.6 (CH), 73.4 (CH), 73.0 (CH), 71.2 (CH2), 68.7 (CH2), 37.38 (CH3), 28.00 (CH3), and 26.31 (CH3). HRMS (ESI) analysis showed a peak at m/z 406.1535, which is consistent with the calculated value of m/z 406.1530 for C17H24O8SNH4 ([M + NH4]+).",
+  "soll": [
+   {
+    "namen": [
+     "8",
+     "compound 8"
+    ],
+    "m": 0.06,
+    "n": 0.000194
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 2.4
+   },
+   {
+    "namen": [
+     "Et3N"
+    ],
+    "n": 0.000194,
+    "V": 0.0271
+   },
+   {
+    "namen": [
+     "MsCl"
+    ],
+    "n": 0.000388,
+    "V": 0.0151
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12481575_31",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12481575, doi:10.1021/acs.joc.5c01342)",
+  "text": "Alcohols 8a–8d were prepared according to the GP 2f: To a 20 mL reaction tube with a condenser, epoxide (0.5 mmol), KOH (5.6 mg, 0.1 mmol; 20 mol %), Ir6 (2.1 mg, 0.0025 mmol, 0.5 mol %), Pd/C (21.3 mg, 0.02 mmol, 4 mol %) and 2-propanol (2.0 mL) were added under open air conditions. The reaction mixture was vigorously stirred under reflux in a preheated oil bath at 95 °C for 20 h. Thereafter, the reaction mixture was cooled to ambient temperature and the reaction mixture was diluted with 5 mL dichloromethane. After filtration, the solvent was evaporated, and the crude product was purified by column chromatography over silica gel.",
+  "soll": [
+   {
+    "namen": [
+     "epoxide"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "KOH"
+    ],
+    "m": 0.0056,
+    "n": 0.0001,
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "Ir6"
+    ],
+    "m": 0.0021,
+    "n": 2.5e-06,
+    "eq": 0.005
+   },
+   {
+    "namen": [
+     "Pd/C"
+    ],
+    "m": 0.0213,
+    "n": 2e-05,
+    "eq": 0.04
+   },
+   {
+    "namen": [
+     "2-propanol",
+     "isopropanol"
+    ],
+    "V": 2.0
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12481575_32",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12481575, doi:10.1021/acs.joc.5c01342)",
+  "text": "Alcohols 7a–7f were prepared according to the GP2e: To a 20 mL reaction tube with a condenser, epoxide (0.5 mmol), Cs2CO3 (16.3 mg, 0.05 mmol; 10 mol %), Ir6 (2.1 mg, 0.0025 mmol, 0.5 mol %), Pd/C (15.9 mg, 0.015 mmol, 3 mol %) and 2-propanol (2.0 mL) were added under open air conditions. The reaction mixture was vigorously stirred under reflux in a preheated oil bath at 95 °C for 20 h. Thereafter, the reaction mixture was cooled to ambient temperature and the reaction mixture was diluted with 5 mL dichloromethane. After filtration, the solvent was evaporated, and the crude product was purified by column chromatography over silica gel.",
+  "soll": [
+   {
+    "namen": [
+     "epoxide"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "Cs2CO3"
+    ],
+    "m": 0.0163,
+    "n": 5e-05,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "Ir6"
+    ],
+    "m": 0.0021,
+    "n": 2.5e-06,
+    "eq": 0.005
+   },
+   {
+    "namen": [
+     "Pd/C"
+    ],
+    "m": 0.0159,
+    "n": 1.5e-05,
+    "eq": 0.03
+   },
+   {
+    "namen": [
+     "2-propanol",
+     "isopropanol"
+    ],
+    "V": 2.0
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12340960_33",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12340960, doi:10.1021/acs.joc.5c01213)",
+  "text": "Reaction conditions: 1 mmol diene, 1.3 mmol formalin, 0.5 M solution prepared using NH4Cl (sat.). Spectroscopic yield refers to yield as determined by 1H NMR spectroscopy of the crude reaction mixture. Calculated using 1 mmol maleic acid added at the end of the reaction. aReaction conducted at 30 °C due to the volatility of diene.",
+  "soll": [
+   {
+    "namen": [
+     "diene"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "formalin"
+    ],
+    "n": 0.0013
+   },
+   {
+    "namen": [
+     "NH4Cl"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "maleic acid"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12340960_34",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12340960, doi:10.1021/acs.joc.5c01213)",
+  "text": "aReaction conditions: 1 mmol diene, 1.3 mmol formalin, 0.5 M solution prepared using NH4Cl (sat.). Spectroscopic yield refers to yield as determined by 1H NMR spectroscopy of the crude reaction mixture. Calculated using 1 mmol maleic acid added at the end of the reaction. aReaction conducted at 30 °C due to the volatility of diene.",
+  "soll": [
+   {
+    "namen": [
+     "diene"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "formalin"
+    ],
+    "n": 0.0013
+   },
+   {
+    "namen": [
+     "NH4Cl"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "maleic acid"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12624841_35",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12624841, doi:10.1021/acs.joc.5c01892)",
+  "text": "Generally, to a suspension of the respective monosaccharide (2 mmol, 1.0 equiv) in anhydrous methanol 10 mL, aniline (200 μL, 2.2 mmol, 1.2 equiv) and acetic acid (10 μL, 0.18 mmol, 0.1 equiv) were added. The reaction mixture was heated in an aluminum heating block with stirring at 60 °C for 1 or 20 h. Reaction progress was monitored by thin-layer chromatography (ACN/H2O, 19:1). Upon complete conversion of the starting material, the reaction mixture was cooled to room temperature and filtered. The resulting crystalline product was washed with cold EtOH and Et2O and dried at room temperature under vacuum. The filtrate was concentrated and the residue was crystallized. The product was collected by filtration, washed as above, and dried under vacuum.",
+  "soll": [
+   {
+    "namen": [
+     "monosaccharide"
+    ],
+    "n": 0.002,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "methanol",
+     "MeOH"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "aniline"
+    ],
+    "n": 0.0022,
+    "V": 0.2,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "acetic acid",
+     "AcOH"
+    ],
+    "n": 0.00018,
+    "V": 0.01,
+    "eq": 0.1
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12281559_36",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12281559, doi:10.1021/acs.joc.5c00881)",
+  "text": "An oven-dried vial was charged with azanapthoquinone 22 (20 mg, 0.08 mmol) and dissolved in MeCN (0.4 mL). Pyrone 23 (9 mg, 0.08 mmol, 1 equiv) and NEt3 (11 μL, 0.08 mmol, 1 equiv) were added, the vial was sealed with a Teflon cap, and heated at 60 °C for 16 h using an aluminum heating block. The reaction mixture was cooled to rt and concentrated in vacuo. 1H NMR analysis of the unpurified material revealed a single azaanthraquinone isomer 20b. Purification by flash column chromatography on silica gel (gradient elution: 3–30% EtOAc in hexanes) afforded azaanthraquinone 20b (13 mg, 0.041 mmol, 52% yield) as a yellow powder. The structure of 20b was confirmed by heteronuclear correlation spectroscopy (HMBC). mp 170–175 °C; TLC (10% EtOAc in hexanes), R f : 0.25 (KMNO4); IR film 3071, 1657, 1576, 1333, 1283, 912, 779 cm–1; 1H NMR (400 MHz, CDCl3) 12.28 (s, 1H), 8.46 (s, 1H), 8.23–8.21 (m, 2H), 7.84 (d, J = 8.4 Hz, 1H), 7.76 (t, J = 8.4 Hz, 1H), 7.54–7.51 (m, 3H), 7.32 (d, J = 8.4 Hz, 1H), 3.15 (s, 3H); 13C {1H} NMR (100 MHz, CDCl3) 188.1, 182.9, 162.31, 162.29, 160.8, 141.0, 137.7, 137.5, 134.3, 130.7, 129.0, 127.5, 123.6, 123.0, 119.7, 115.8, 113.7, 26.8; HRMS (ESI) m/z: [M + H]+ calcd for C20H13NO3H+, 316.0968; found, 316.0966.",
+  "soll": [
+   {
+    "namen": [
+     "azanapthoquinone 22",
+     "azanapthoquinone"
+    ],
+    "m": 0.02,
+    "n": 8e-05
+   },
+   {
+    "namen": [
+     "MeCN",
+     "acetonitrile"
+    ],
+    "V": 0.4
+   },
+   {
+    "namen": [
+     "Pyrone 23",
+     "pyrone"
+    ],
+    "m": 0.009,
+    "n": 8e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "NEt3",
+     "Et3N"
+    ],
+    "n": 8e-05,
+    "V": 0.011,
+    "eq": 1
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12281559_37",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12281559, doi:10.1021/acs.joc.5c00881)",
+  "text": "A dry vial was charged with azanapthoquinone 22 (80 mg, 0.32 mmol) and dissolved in PhMe (1 mL). 2,3-Dimethylbuta-1,3-diene was added (79 mg, 0.96 mmol, 3 equiv) and the vial was sealed with a Teflon cap and heated to 80 °C in an aluminum heating block. After heating overnight, the starting material appeared consumed (as judged by TLC) and MnO2 (111 mg, 1.28 mmol, 4 equiv) was added. The resulting mixture was heated to 110 °C for 1 h until the intermediate cycloadduct was consumed. After cooling to rt, the reaction mixture was filtered through Celite, and the pad was washed with EtOH and HCl. The filtrate was washed with brine, dried with Na2SO4, and concentrated in vacuo to afford azaanthraquinone 29 (39 mg, 0.12 mmol, 43% yield) as an orange solid. mp 210–215 °C; TLC (10% EtOAc in hexanes), R f : 0.3 (KMnO4); IR film 2922, 1670, 1574, 1369, 1329, 1292, 741 cm–1; 1H NMR (400 MHz, CDCl3): δ 8.37 (s, 1H), 8.20 (d, J = 6.8 Hz, 2H), 7.98 (d, J = 8.4 Hz, 2H), 7.53–7.50 (m, 3H), 3.12 (s, 3H), 2.41 (s, 3H), 2.40 (s, 3H); 13C {1H} NMR (100 MHz, CDCl3): δ 183.8, 183.1, 161.8, 160.3, 145.1, 143.7, 141.1, 137.7, 132.4, 130.4, 129.0, 128.9, 128.3, 127.6, 127.6, 127.5, 123.1, 114.1, 26.7, 20.4, 20.1; HRMS (ESI) m/z: [M + H]+ calcd for C22H17NO2H+, 328.1332; found, 328.1336.",
+  "soll": [
+   {
+    "namen": [
+     "azanapthoquinone 22",
+     "azanapthoquinone"
+    ],
+    "m": 0.08,
+    "n": 0.00032
+   },
+   {
+    "namen": [
+     "PhMe",
+     "toluene"
+    ],
+    "V": 1
+   },
+   {
+    "namen": [
+     "Dimethylbuta-1,3-diene",
+     "dimethylbutadiene",
+     "diene"
+    ],
+    "m": 0.079,
+    "n": 0.00096,
+    "eq": 3
+   },
+   {
+    "namen": [
+     "MnO2"
+    ],
+    "m": 0.111,
+    "n": 0.00128,
+    "eq": 4
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11820832_42",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC11820832, doi:10.3390/molecules30030465)",
+  "text": "Oxazole-4-carboxylic acid (100 mg, 0.9 mmol, 1.0 equiv) was dissolved in 1 mL of anhydrous tetrahydrofuran (THF). Oxalyl chloride (152 μL, 1.8 mmol, 2.0 equiv) was added dropwise under an inert nitrogen atmosphere, followed by a catalytic amount of DMF (0.1 equiv). The reaction mixture was stirred at room temperature for 4 h. Upon completion, the reaction was monitored by TLC to ensure the formation of the acyl chloride intermediate. The solvent and excess oxalyl chloride were removed under reduced pressure, yielding a yellowish residue. Fusidic acid (153 mg, 0.3 mmol, 0.33 equiv) was dissolved in 1 mL of anhydrous DCM, followed by the addition of pyridine (36 μL, 0.5 mmol, 0.5 equiv) and DMAP (55 mg, 0.5 mmol, 0.5 equiv). The resulting solution was then added dropwise to the previously prepared acyl chloride intermediate under an inert nitrogen atmosphere at 0 °C. The reaction mixture was allowed to warm to room temperature and stirred overnight. After the reaction was determined to be complete by TLC (24 h), the reaction mixture was diluted with DCM (10 mL), washed with saturated NaHCO3 solution once (5 mL), and water twice (5 mL), and then saturated with aqueous brine (5 mL). The organic layer was then dried over anhydrous MgSO4, filtered, and concentrated in vacuo. The crude product was then purified by column chromatography (1.5% MeOH in DCM, 2nd column: 30% EA/hexane) on silica gel to afford the product 5e (colorless solid, 42 mg, 35%). Rf = 0.5 (60% EA in hexane):",
+  "soll": [
+   {
+    "namen": [
+     "Oxazole-4-carboxylic acid",
+     "oxazole"
+    ],
+    "m": 0.1,
+    "n": 0.0009,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "tetrahydrofuran",
+     "THF"
+    ],
+    "V": 1
+   },
+   {
+    "namen": [
+     "Oxalyl chloride"
+    ],
+    "n": 0.0018,
+    "V": 0.152,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "Fusidic acid"
+    ],
+    "m": 0.153,
+    "n": 0.0003,
+    "eq": 0.33
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 1
+   },
+   {
+    "namen": [
+     "pyridine"
+    ],
+    "n": 0.0005,
+    "V": 0.036,
+    "eq": 0.5
+   },
+   {
+    "namen": [
+     "DMAP"
+    ],
+    "m": 0.055,
+    "n": 0.0005,
+    "eq": 0.5
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11820832_43",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC11820832, doi:10.3390/molecules30030465)",
+  "text": "Fusidic acid (100 mg, 0.2 mmol, 1.0 equiv) was added to a premixed solution of isonicotinic acid (48 mg, 0.4 mmol, 2.0 equiv), EDCI (74 mg, 0.4 mmol, 2.0 equiv), and DMAP (30 mg, 0.2 mmol, 1.25 equiv) in anhydrous DMF (0.6 mL). The reaction mixture was stirred at 25 °C under a N2 atmosphere. After the reaction was determined to be complete by TLC (24 h), the reaction mixture was diluted with EA (10 mL), washed with H2O (5 mL), and saturated with aqueous brine (5 mL). The organic layer was then dried over anhydrous MgSO4, filtered, and concentrated in vacuo. The crude product was then purified by column chromatography (1.75% MeOH in DCM) on silica gel to afford the product 5d (colorless solid, 55 mg, 45%). Rf = 0.3 (60% EA in hexane):",
+  "soll": [
+   {
+    "namen": [
+     "Fusidic acid"
+    ],
+    "m": 0.1,
+    "n": 0.0002,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "isonicotinic acid"
+    ],
+    "m": 0.048,
+    "n": 0.0004,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "EDCI"
+    ],
+    "m": 0.074,
+    "n": 0.0004,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "DMAP"
+    ],
+    "m": 0.03,
+    "n": 0.0002,
+    "eq": 1.25
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "V": 0.6
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11721635_44",
+  "quelle": "Molecules 2024 (CC BY 4.0, PMC11721635, doi:10.3390/molecules30010057)",
+  "text": "In a round bottom flask, sCy5 diacid Et3NH+ salt S5 (58.3 mg, 0.056 mmol, 1 equiv.) was dissolved in DMF (2 mL), and DIPEA (12 μL, 8.9 mg, 0.069 mmol, 1.2 equiv.) was added. To the resulting mixture, a solution of TSTU (16 mg, 0.056 mmol, 1 equiv.) in DMF (1 mL) was added dropwise over the course of 20 min. The mixture was stirred at 23 °C for 70 min, after which TLC (silica gel, DCM–MeOH–H2O–Et3N, 85:17.5:2:1) indicated the formation of mono- and bis-NHS esters, and concentrated aqueous NH3 (12 μL, 14.7 M, 0.176 mmol, 3.1 equiv.) was added. The resulting mixture was stirred at 23 °C for 2.5 h and poured into Et2O (60 mL), with a blue precipitate forming. The resultant mixture was passed through a pad of Celite, the precipitate was washed with Et2O, dried, eluted with MeOH, and concentrated under reduced pressure to give a dark blue solid. A 0.3 mg portion of the crude product was purified by HPLC, yielding 4f as a blue solid. LCMS (ESI) calcd for C37H46N3O9S2− [M − H]− 740.27, found 739.55.",
+  "soll": [
+   {
+    "namen": [
+     "sCy5",
+     "S5"
+    ],
+    "m": 0.0583,
+    "n": 5.6e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "V": 2
+   },
+   {
+    "namen": [
+     "DIPEA"
+    ],
+    "m": 0.0089,
+    "n": 6.9e-05,
+    "V": 0.012,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "TSTU"
+    ],
+    "m": 0.016,
+    "n": 5.6e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "NH3",
+     "ammonia"
+    ],
+    "n": 0.000176,
+    "V": 0.012,
+    "eq": 3.1
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC11721635_45",
+  "quelle": "Molecules 2024 (CC BY 4.0, PMC11721635, doi:10.3390/molecules30010057)",
+  "text": "In a round-bottom flask, sCy3 diacid Et3NH+ salt S4 (77.7 mg, 0.076 mmol, 1 equiv.) was dissolved in DMF (2 mL), and DIPEA (16 μL, 12 mg, 0.092 mmol, 1.2 equiv.) was added. To the resulting mixture, a solution of TSTU (22 mg, 0.076 mmol, 1 equiv.) in DMF (1 mL) was added dropwise over the course of 15 min. The mixture was stirred at 23 °C for 15 min, after which TLC (silica gel, DCM–MeOH–H2O–Et3N, 85:17.5:2:1) indicated the formation of mono- and bis-NHS esters. After 20 more min, concentrated aqueous NH3 (16 μL, 14.7 M, 0.235 mmol, 3.1 equiv.) was added. The resulting mixture was stirred at 23 °C for 40 min and poured into Et2O (60 mL), with an amorphous magenta precipitate forming. The resultant mixture was passed through a pad of Celite, the precipitate was washed with Et2O, dried, eluted with MeOH, and concentrated under reduced pressure to give a glassy magenta solid. A 0.3 mg portion of the crude product was purified by HPLC, yielding 4e as a magenta solid. LCMS (ESI) calcd for C35H44N3O9S2− [M − H]− 714.25, found 713.64.",
+  "soll": [
+   {
+    "namen": [
+     "sCy3",
+     "S4"
+    ],
+    "m": 0.0777,
+    "n": 7.6e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "V": 2
+   },
+   {
+    "namen": [
+     "DIPEA"
+    ],
+    "m": 0.012,
+    "n": 9.2e-05,
+    "V": 0.016,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "TSTU"
+    ],
+    "m": 0.022,
+    "n": 7.6e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "NH3",
+     "ammonia"
+    ],
+    "n": 0.000235,
+    "V": 0.016,
+    "eq": 3.1
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12735628_46",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12735628, doi:10.3390/molecules30244688)",
+  "text": "Representative Competition Experimental Procedure: (S)-2-((R)-hydroxy(4-nitrophenyl)methyl)cyclohexan-1-one (3a). To a clean, screw-cap, V-shaped reaction vessel (5.0 mL) equipped with a small pyramidal stir bar, mortar and pestle, ground 4-nitrobenzaldehyde (MW = 151.12 g/mol, 1.00 equiv, 1.50 mmol, 226.7 mg), cyclohexanone (MW = 98.14 g/mol, 1.50 equiv, 2.25 mmol, 220.84 mg, 233 µL, density 0.948 g/mL), and nitromethane (MW = 61.04 g/mol, 3.00 equiv, 4.5 mmol, 274.68 mg, 243 µL, density 1.132 g/mL) were added. The liquid reactants (cyclohexanone and nitromethane) were used to rinse the solid 4-nitrobenzaldehyde off the walls as needed. The heterogeneous mixture was allowed to gently stir for <5 min, but visual inspection showed little or no dissolution of the 4-nitrobenzaldehyde. Next, the stirring was terminated, and trans-4-(tert-butyldiphenylsilyloxy)-L-proline (MW = 369.54 g/mol, 2.5 mol%, 0.0375 mmol, 13.9 mg) was added. Distilled deoxygenated water (MW = 18.02 g/mol, 15.00 equiv, 22.5 mmol, 405.45 mg, 406 µL) was added within 30 s. The resulting heterogeneous solution was gently stirred such that the contents of the vessel did not splash against the vessel walls. Undissolved solids remained until about 6 h into the reaction, at which point both layers became transparent. The rate of stirring only gently agitated the phase boundary, and the reaction was quenched at 24 h. See Section S2 of the Supplementary Materials for the work-up procedure.",
+  "soll": [
+   {
+    "namen": [
+     "4-nitrobenzaldehyde",
+     "nitrobenzaldehyde"
+    ],
+    "m": 0.2267,
+    "n": 0.0015,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "cyclohexanone"
+    ],
+    "m": 0.22084,
+    "n": 0.00225,
+    "V": 0.233,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "nitromethane"
+    ],
+    "m": 0.27468,
+    "n": 0.0045,
+    "V": 0.243,
+    "eq": 3
+   },
+   {
+    "namen": [
+     "proline"
+    ],
+    "m": 0.0139,
+    "n": 3.75e-05,
+    "eq": 0.025
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "m": 0.40545,
+    "n": 0.0225,
+    "V": 0.406,
+    "eq": 15
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12735628_47",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12735628, doi:10.3390/molecules30244688)",
+  "text": "Representative Ball Milling Competition Experimental Procedure: (S)-2-((R)-hydroxy(4-nitrophenyl)methyl)cyclohexan-1-one (3a). To a clean plastic Eppendorf (2 mL) equipped with three 3 mm stainless steel balls, 4-nitrobenzaldehyde (MW = 151.12 g/mol, 1.00 equiv, 0.12 mmol, 18.0 mg), cyclohexanone (MW = 98.14 g/mol, 1.50 equiv, 0.18 mmol, 19.2 µL, density = 0.947 g/mL), (nitromethyl)benzene (MW = 137.14 g/mol, 1.50 equiv, 0.18 mmol, 15 µL, density = 1.158 g/mL), and trans-4-(tert-butyldiphenylsilyloxy)-L-proline (MW = 369.54 g/mol, 2.50 mol%, 0.003 mmol, 1.1 mg) were added. The snap-cap Eppendorf was closed, and the reaction was mixed in a ball mill (Retsch vibrating mill MM 200, Retsch GmbH, Haan, Germany) for 9 h at a frequency of 16 Hz under air and room temperature conditions. During mixing, the shaking was periodically stopped every 90 min for 2–3 min to prevent excessive heating. See Section S2 of the Supplementary Materials for the work-up procedure.",
+  "soll": [
+   {
+    "namen": [
+     "4-nitrobenzaldehyde",
+     "nitrobenzaldehyde"
+    ],
+    "m": 0.018,
+    "n": 0.00012,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "cyclohexanone"
+    ],
+    "n": 0.00018,
+    "V": 0.0192,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "(nitromethyl)benzene",
+     "nitromethyl"
+    ],
+    "n": 0.00018,
+    "V": 0.015,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "proline"
+    ],
+    "m": 0.0011,
+    "n": 3e-06,
+    "eq": 0.025
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12557309_51",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC12557309, doi:10.1039/d5ra07282d)",
+  "text": "A stoppered test tube equipped with a magnetic stirring bar was charged with Na2S2O3·5H2O (0.025 g, 0.1 mmol), a substituted 1,3-diketone (1.0 mmol), hydrazine or a hydrazine derivative (1.0 mmol), thiol (1.0 mmol), and DMSO (2.0 mL). The mixture was stirred at 120 °C under an air atmosphere for 12 hours. After this period, the reaction mixture was allowed to cool to room temperature and then diluted by the addition of distilled water (1.0 mL). The mixture was extracted with ethyl acetate (5 × 2 mL), and the combined organic layers were concentrated. The crude product was purified by silica gel column chromatography using an appropriate mixture of n-hexane and ethyl acetate to afford the pure C4-sulfenylated pyrazoles.",
+  "soll": [
+   {
+    "namen": [
+     "Na2S2O3"
+    ],
+    "m": 0.025,
+    "n": 0.0001
+   },
+   {
+    "namen": [
+     "1,3-diketone",
+     "diketone"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "hydrazine"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "thiol"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "DMSO"
+    ],
+    "V": 2.0
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12184090_52",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC12184090, doi:10.1039/d5ra03630e)",
+  "text": "A dried reaction flask was charged with 4-bromo-2-(4-chlorophenyl)-1-tosyl-1,2,3,6-tetrahydropyridine 4ac (100 mg, 0.23 mmol, 1.0 equiv.). Triphenylphosphine (PPh3) (0.02 mmol, 0.05 equiv.), palladium(ii) chloride (PdCl2) (0.02 mmol, 0.05 equiv.), and copper(i) iodide (CuI) (0.01 mmol, 0.01 equiv.) were then added, and the flask was evacuated under reduced pressure and subsequently purged with nitrogen gas. Subsequently, anhydrous dimethylformamide (DMF) (3 mL), triethylamine (Et3N) (4.14 mmol, 18.0 equiv.), and phenylacetylene (0.37 mmol, 1.6 equiv.) were added to the reaction flask under a nitrogen atmosphere. The reaction mixture was heated at 80 °C in an oil bath for 12 h. After completion of the reaction, it was allowed to cool to room temperature and then quenched with a saturated sodium bicarbonate solution. A brine solution was then added, and the mixture was extracted with ethyl acetate (3 × 10 mL). The combined organic layer was dried over anhydrous sodium sulfate (Na2SO4), filtered, and concentrated under reduced pressure by rotary evaporator. The crude was purified by silica gel column chromatography with ethyl acetate/hexane (1 : 9, v/v) as the eluent to yield the product.",
+  "soll": [
+   {
+    "namen": [
+     "4ac",
+     "tetrahydropyridine"
+    ],
+    "m": 0.1,
+    "n": 0.00023,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "Triphenylphosphine",
+     "PPh3"
+    ],
+    "n": 2e-05,
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "palladium(ii) chloride",
+     "PdCl2"
+    ],
+    "n": 2e-05,
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "copper(i) iodide",
+     "CuI"
+    ],
+    "n": 1e-05,
+    "eq": 0.01
+   },
+   {
+    "namen": [
+     "dimethylformamide",
+     "DMF"
+    ],
+    "V": 3
+   },
+   {
+    "namen": [
+     "triethylamine",
+     "Et3N"
+    ],
+    "n": 0.00414,
+    "eq": 18
+   },
+   {
+    "namen": [
+     "phenylacetylene"
+    ],
+    "n": 0.00037,
+    "eq": 1.6
+   }
+  ]
+ },
+ {
+  "id": "dev_PMC12184090_53",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC12184090, doi:10.1039/d5ra03630e)",
+  "text": "A solution of N-(3-bromobut-3-en-1-yl)-4-methylbenzene-sulfonamide (0.6 mmol, 1.0 equiv.) and the aldehyde (0.66 mmol, 1.1 equiv.) in dry 1,2-dichloroethane (DCE) (3 mL) was cooled to 0 °C under a nitrogen atmosphere. To this solution, boron tribromide (BBr3) (1 M in DCM) (0.15 mmol, 0.25 equiv.) and trimethylsilyl bromide (TMSBr) (0.72 mmol, 1.2 equiv.) were added. The reaction mixture was then stirred at room temperature for overnight, and progress of the reaction was monitored by thin-layer chromatography (TLC) (ethyl acetate: hexane = 1 : 9). Once the starting material was fully consumed, 1,8-diazabicyclo[5.4.0]undec-7-ene (DBU) (24 mmol, 40.0 equiv.) was added, and the mixture was stirred in an oil bath at 80 °C for 4 to 6 hours. The progress of the reaction was monitored by TLC (ethyl acetate : hexane = 1 : 9). After completion, it was allowed to cool to room temperature, brine was added, and the organic layer was extracted with EtOAc (3 × 10 mL). The combined organic layers were dried over anhydrous sodium sulfate (Na2SO4), filtered, and concentrated under reduced pressure by rotary evaporator and purified by column chromatography over silica gel using hexane/ethyl acetate (9 : 1, v/v) as eluent to get the products.",
+  "soll": [
+   {
+    "namen": [
+     "sulfonamide",
+     "bromobut"
+    ],
+    "n": 0.0006,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "aldehyde"
+    ],
+    "n": 0.00066,
+    "eq": 1.1
+   },
+   {
+    "namen": [
+     "1,2-dichloroethane",
+     "DCE"
+    ],
+    "V": 3
+   },
+   {
+    "namen": [
+     "boron tribromide",
+     "BBr3"
+    ],
+    "n": 0.00015,
+    "eq": 0.25
+   },
+   {
+    "namen": [
+     "trimethylsilyl bromide",
+     "TMSBr"
+    ],
+    "n": 0.00072,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "DBU",
+     "diazabicyclo"
+    ],
+    "n": 0.024,
+    "eq": 40
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12444563_0",
+  "quelle": "ACS Omega 2025 (CC BY 4.0, PMC12444563, doi:10.1021/acsomega.5c05758)",
+  "text": "Fmoc-VCit-PABC-(Boc)­diamine (8c) (24 mg, 0.029 mmol, 1 equiv) was dissolved in 800 μL of dry DCM and 70 μL of dry MeOH and the solution was cooled to 0 °C. Then, 800 μL of TFA was added dropwise, and the reaction mixture was stirred at room temperature for 5 h. Volatiles were then removed under reduced pressure and TFA was azeotropically removed by additions of toluene and diethyl ether, affording the crude product as a brown solid. The crude product was used in the next step without further purification (23 mg, 0.032 mmol, 96%). MS (ESI+) m/z calculated for [C38H49N7O7]+, 716.4 [M + H]+; m/z obtained, 716.4.",
+  "soll": [
+   {
+    "namen": [
+     "Fmoc-VCit",
+     "8c",
+     "diamine"
+    ],
+    "m": 0.024,
+    "n": 2.9e-05,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 0.8
+   },
+   {
+    "namen": [
+     "MeOH"
+    ],
+    "V": 0.07
+   },
+   {
+    "namen": [
+     "TFA"
+    ],
+    "V": 0.8
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "diethyl ether"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12444550_1",
+  "quelle": "ACS Omega 2025 (CC BY 4.0, PMC12444550, doi:10.1021/acsomega.5c06619)",
+  "text": "Potassium carbonate (0.43 mmol; 1.2 equiv) was dissolved in a mixture of methanol and water (1:1, v/v, 10 mL). To this solution, the corresponding azide (13, 14, 15, 16, or 17; 0.27 mmol; 1.0 equiv), trimethylsilylacetylene (0.43 mmol; 1.2 equiv), copper­(II) sulfate (0.054 mmol; 0.2 equiv), and sodium ascorbate (0.108 mmol; 0.4 equiv) were sequentially added. The reaction mixture was stirred vigorously at room temperature overnight. Upon completion (monitored by TLC), the mixture was diluted with dichloromethane, washed with water, dried over anhydrous sodium sulfate, and concentrated under reduced pressure. The crude product was purified by column chromatography on neutral alumina using a chloroform/methanol (9:1, v/v) mixture as the eluent, affording the desired monosubstituted 1,2,3-triazoles (compounds 30–34).",
+  "soll": [
+   {
+    "namen": [
+     "Potassium carbonate",
+     "K2CO3"
+    ],
+    "n": 0.00043,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "methanol"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "azide"
+    ],
+    "n": 0.00027,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "trimethylsilylacetylene"
+    ],
+    "n": 0.00043,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "copper",
+     "sulfate",
+     "CuSO4"
+    ],
+    "n": 5.4e-05,
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "sodium ascorbate"
+    ],
+    "n": 0.000108,
+    "eq": 0.4
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC11552434_2",
+  "quelle": "Beilstein J Org Chem 2024 (CC BY 4.0, PMC11552434, doi:10.3762/bjoc.20.236)",
+  "text": "General procedure for preparation of N-R-7-oxo-5,6,7,8-tetrahydroimidazo[1,2-a]pyrimidine-5-carboxamides 4a–i: A mixture of 2-aminoimidazole hemisulfate (1, 0.66 g, 5 mmol), N-substituted maleimides 2a–i (5 mmol), sodium acetate (0.82 g, 10 mmol), and iPrOH (10 mL) was boiled for 1 h. The resulting precipitate was filtered off, washed with water (2 × 5 mL) and recrystallized from a mixture of DMF/iPrOH 1:2. The title compounds were obtained as white (4a–e) or pink (4f–i) solids.",
+  "soll": [
+   {
+    "namen": [
+     "2-aminoimidazole hemisulfate",
+     "aminoimidazole"
+    ],
+    "m": 0.66,
+    "n": 0.005
+   },
+   {
+    "namen": [
+     "maleimides",
+     "maleimide"
+    ],
+    "n": 0.005
+   },
+   {
+    "namen": [
+     "sodium acetate",
+     "NaOAc"
+    ],
+    "m": 0.82,
+    "n": 0.01
+   },
+   {
+    "namen": [
+     "iPrOH"
+    ],
+    "V": 10
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC11912639_3",
+  "quelle": "Beilstein J Org Chem 2025 (CC BY 4.0, PMC11912639, doi:10.3762/bjoc.21.46)",
+  "text": "A 30 mL microwave reactor vial was charged with ʟ-phenylalanine (5 mmol), distilled water (7 mL), and potassium cyanate (25 mmol) and irradiated in an Anton–Paar Monowave 400 microwave reactor at 80 °C for 1 hour. Upon completion of the N-carbamylation reaction, as confirmed by TLC analysis, the reaction mixture was treated with concentrated hydrochloric acid (7 mL) and microwave irradiated at 80 °C for 15 min. The precipitates in the reaction mixture were filtered, washed with 1 M HCl solution (2 × 7 mL), distilled water (2 × 10 mL), and dried to afford H2a as a white solid. Yield 89%. [α]D20 −100.9 (c 11, CH3CN); 1H NMR (400 MHz, DMSO-d6) δ 10.44 (s, 1H), 7.93 (s, 1H), 7.17–7.30 (m, J = 8 Hz, 5H), 4.33 (td, J = 5, 1 Hz, 1H), 2.92 (m, J = 5 Hz, 2H); 13C NMR (100 MHz, DMSO-d6) δ 175.2, 157.2, 135.6, 129.8, 128.1, 126.7, 58.4, 36.4; LC–MS (ESI) m/z: 191 [M + H]+, 163, 120; HRMS (ESI) m/z: [M + H]+ calcd for C10H11N2O2 191.0815; found, 191.0815. The procedure was repeated by substituting ʟ-phenylalanine with the corresponding amino acid to obtain H2b,c and H2e,f.",
+  "soll": [
+   {
+    "namen": [
+     "phenylalanine"
+    ],
+    "n": 0.005
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "V": 7
+   },
+   {
+    "namen": [
+     "potassium cyanate",
+     "KOCN"
+    ],
+    "n": 0.025
+   },
+   {
+    "namen": [
+     "hydrochloric acid",
+     "HCl"
+    ],
+    "V": 7
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12242276_4",
+  "quelle": "Chem Sci 2025 (CC BY 4.0, PMC12242276, doi:10.1039/d5sc04080a)",
+  "text": "Standard reaction conditions: 1a (0.12 mmol), 2a (0.10 mmol), Pd(OAc)2 (8 mol%), L10 (10 mol%) in MeOH (2 mL) at 50 °C for 24 h, the ee was determined by HPLC using a chiral stationary phase. The rr was determined by 1H NMR analysis of the crude reaction mixture.",
+  "soll": [
+   {
+    "namen": [
+     "1a"
+    ],
+    "n": 0.00012
+   },
+   {
+    "namen": [
+     "2a"
+    ],
+    "n": 0.0001
+   },
+   {
+    "namen": [
+     "Pd(OAc)2"
+    ],
+    "eq": 0.08
+   },
+   {
+    "namen": [
+     "L10"
+    ],
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "MeOH"
+    ],
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC11843258_5",
+  "quelle": "Chem Sci 2025 (CC BY 4.0, PMC11843258, doi:10.1039/d4sc08380f)",
+  "text": "Alcohols 4a–4p (0.48 mmol, 1.0 equiv.), 2a (0.72 mmol, 1.5 equiv.), PLY (O,O) (5 mol%, 0.024 mmol) and Na2CO3 (0.96 mmol, 2 equiv.) were taken in an oven-dried 25 mL high-pressure J-Young tube with a Teflon cap equipped with a stir bar. Subsequently, 1.5 mL MeCN was added to the reaction mixture, and the tube was closed. In the Schlenk line, a freeze–pump–thaw cycle was applied twice to maintain an inert atmosphere. Next, SO2 was purged into the reaction mixture. The reaction tube was closed properly and placed under blue LED irradiation at 456 nm for 12 h. After completion of the reaction, the product was extracted in 25 mL ethyl acetate and dried over anhydrous sodium sulfate. The solvent was removed under reduced pressure, and the crude product was purified by column chromatography on silica gel (100–200 mesh) using a hexane/EtOAc mixture to obtain the pure desired products, which were characterized by NMR spectroscopy.",
+  "soll": [
+   {
+    "namen": [
+     "Alcohols 4a",
+     "alcohol"
+    ],
+    "n": 0.00048,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "2a"
+    ],
+    "n": 0.00072,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "PLY"
+    ],
+    "n": 2.4e-05,
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "Na2CO3"
+    ],
+    "n": 0.00096,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "MeCN"
+    ],
+    "V": 1.5
+   },
+   {
+    "namen": [
+     "SO2"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12368894_6",
+  "quelle": "ChemistryOpen 2025 (CC BY 4.0, PMC12368894, doi:10.1002/open.202500001)",
+  "text": "Ag2O (3.2 g, 2.1 equiv) was added to a solution of 5 (1.0 g, 6.57 mmol, 1.0 equiv) and 6 (1.0 g, 6.57 mmol, 1.0 equiv) in CH2Cl2 (50 mL). The mixture was stirred at room temperature for 16 h under a nitrogen atmosphere. Next, AcOH (30 mL), water (15 mL), and zinc (430 mg, 1.0 equiv) were added to the crude reaction mixture, which was then stirred at room temperature for 4 h. The mixture was filtered through Celite, and the filtrate was diluted and extracted with EtOAc twice. The organic layer was washed with water and brine and subsequently dried over MgSO4. The solvent was removed under reduced pressures, and the residue was purified by flash chromatography on silica gel (hexane/acetone, 2 : 1) to yield 1 (1.6 g, 82 %). All spectroscopic data matched previously reported values. 1H NMR (600 MHz, DMSO‐d 6) δ 10.31 (s, 1H), 9.31 (s, 1H), 8.52 (s, 1H), 7.71 (d, J=9.0 Hz, 1H), 6.74 (d, J=8.7 Hz, 1H), 6.69 (d, J=8.7 Hz, 1H), 6.44 (d, J=8.9 Hz, 1H), 2.54 (s, 3H), 2.21 (s, 3H); 13C{1H} NMR (150 MHz, DMSO‐D 6) δ 203.15, 203.06, 162.50, 162.29, 147.95, 146.93, 132.21, 130.20, 118.10, 117.34, 115.75, 112.32, 111.49, 107.48, 30.70, 26.19.",
+  "soll": [
+   {
+    "namen": [
+     "Ag2O"
+    ],
+    "m": 3.2,
+    "eq": 2.1
+   },
+   {
+    "namen": [
+     "5"
+    ],
+    "m": 1.0,
+    "n": 0.00657,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "6"
+    ],
+    "m": 1.0,
+    "n": 0.00657,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "AcOH"
+    ],
+    "V": 30
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "V": 15
+   },
+   {
+    "namen": [
+     "zinc",
+     "Zn"
+    ],
+    "m": 0.43,
+    "eq": 1
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC11625937_7",
+  "quelle": "ChemistryOpen 2024 (CC BY 4.0, PMC11625937, doi:10.1002/open.202400139)",
+  "text": "In a typical experiment for the synthesis of 1,3‐diphenylpropan‐1‐ol, 1‐phenylethanol (91.6 mg, 0.75 mmol), benzyl alcohol (54.1 mg, 0.5 mmol), t‐BuONa (9.6 mg, 0.1 mmol) and toluene (0.75 mL) were added to a 12‐mL pressurized vial. The mixture was purged with argon in 90 s before being tightly sealed to ensure an inert atmosphere. The reaction was performed at 140 °C for 20 h under vigorous stirring. Upon the completion, the reaction mixture was cooled to room temperature and a predetermined amount of diphenyl ether was added to the reaction mixture as an internal standard. Subsequently, an aliquot of the resulting mixture was withdrawn and quenched with brine (2.0 mL). The organic phase was extracted into ethyl acetate (3.0 mL), dried over anhydrous Na2SO4, filtered by a cotton layer, and analyzed by gas chromatography to determine the yield of the desired product.",
+  "soll": [
+   {
+    "namen": [
+     "1-phenylethanol",
+     "phenylethanol"
+    ],
+    "m": 0.0916,
+    "n": 0.00075
+   },
+   {
+    "namen": [
+     "benzyl alcohol"
+    ],
+    "m": 0.0541,
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "t-BuONa",
+     "BuONa"
+    ],
+    "m": 0.0096,
+    "n": 0.0001
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 0.75
+   },
+   {
+    "namen": [
+     "diphenyl ether"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12368887_8",
+  "quelle": "ChemistryOpen 2025 (CC BY 4.0, PMC12368887, doi:10.1002/open.202400494)",
+  "text": "(Route 1) An aqueous solution of KOH (0.200 g, 3.56 mmol, 2 mL H2O) was added to a solution of 1 (0.225 g, 0.36 mmol) in CH2Cl2 (5 mL) and stirred vigorously for 20 minutes. The reaction mixture was then extracted with CH2Cl2 (2x10 mL) and the resulting organic phases were combined and dried over Na2SO4. The title compound was obtained quantitatively as a colourless oil after filtration and removal of the organic solvent.",
+  "soll": [
+   {
+    "namen": [
+     "KOH"
+    ],
+    "m": 0.2,
+    "n": 0.00356
+   },
+   {
+    "namen": [
+     "H2O",
+     "water"
+    ],
+    "V": 2
+   },
+   {
+    "namen": [
+     "1"
+    ],
+    "m": 0.225,
+    "n": 0.00036
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 5
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC11833876_9",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC11833876, doi:10.1021/acs.joc.4c02869)",
+  "text": "Unless otherwise stated, boronic acid 1a–b (0.1 mmol), CuTC (0.01 mmol, 0.1 equiv) were dissolved in DCM (5 mL), and diazoketone 2a–e (0.15 mmol, 1.5 equiv in 1 mL of DCM) added over 1.5 h.",
+  "soll": [
+   {
+    "namen": [
+     "boronic acid"
+    ],
+    "n": 0.0001
+   },
+   {
+    "namen": [
+     "CuTC"
+    ],
+    "n": 1e-05,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "diazoketone"
+    ],
+    "n": 0.00015,
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12584111_10",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12584111, doi:10.1021/acs.joc.5c01765)",
+  "text": "The distillate (∼20 mL) following the Strecker degradation of l-isoleucine (250 mg, 1.91 mmol, 1.00 equiv), performed as per the procedure described above, was extracted with CH2Cl2 (3 × 8 mL) and dried (Na2SO4). The organic phase was filtrated directly into a solution of sodium borohydride (144 mg, 3.81 mmol, 2.00 equiv) in methanol (10 mL) at 0 °C and then allowed to warm up to room temperature. The reaction mixture was stirred for 1 h and then quenched by the addition of sat. aq. NH4Cl (∼30 mL). The organic phase was separated, and the aqueous phase was extracted with pentane (3 × 10 mL), dried (Na2SO4), filtrated, and concentrated in vacuo to yield (S)-(−)-2-methylbutanol (102 mg, 1.16 mmol, 61%) as a clear oil. Careful optical rotation experiments with commercially available (S)-(−)-2-methylbutanol (Fluorochem, F473128, PO15579-100003) gave the following results: commercial: [α]D 20 = −5.2 (c = 1.0, EtOH); synthesized: [α]D 20 = −5.3 (c = 1.0, EtOH). These experiments were conducted at the alcohol oxidation level given the high volatility of (S)-2-methylbutanal, which made it challenging to perform the precise measurements needed to obtain reliable data.",
+  "soll": [
+   {
+    "namen": [
+     "sodium borohydride",
+     "NaBH4"
+    ],
+    "m": 0.144,
+    "n": 0.00381,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "methanol",
+     "MeOH"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "isoleucine"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "distillate"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "NH4Cl"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12519491_11",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12519491, doi:10.1021/acs.joc.5c01598)",
+  "text": "Compound 5 was prepared according to a published procedure with minor modifications. In a 50 mL flask equipped with a magnetic stirring bar, 2-mercaptobenzimidazole 4 (10 mmol, 1 equiv, 1.5 g) and dimethylformamide (DMF, 10 mL, 1 M) were added. The mixture was stirred at 0 °C. Then, 4 mL of a 2.5 M aqueous solution of NaOH (1 equiv, 0.4 g) was added, and the reaction mixture was stirred at 0 °C for 30 min. Then, iodomethane (10 mmol, 1 equiv, 1.42 g) was added, and the reaction mixture was stirred for 24 h at room temperature. After the reaction was completed, 50 mL of cold water was added, generating a white precipitate. The precipitate was isolated by filtration, dried, and used in the next step without purification. Yield: 90%.",
+  "soll": [
+   {
+    "namen": [
+     "2-mercaptobenzimidazole",
+     "mercaptobenzimidazole"
+    ],
+    "m": 1.5,
+    "n": 0.01,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "dimethylformamide",
+     "DMF"
+    ],
+    "V": 10
+   },
+   {
+    "namen": [
+     "NaOH"
+    ],
+    "m": 0.4,
+    "V": 4,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "iodomethane",
+     "MeI"
+    ],
+    "m": 1.42,
+    "n": 0.01,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12029303_12",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12029303, doi:10.3390/molecules30081785)",
+  "text": "General procedure for the model reaction: In total, 0.20 mmol of 1,3-diene (2 equiv.) and 0.10 mmol of sulfinic acid (1 equiv.) were added to a 25 mL round-bottom flask, followed by the addition of 3.0 mL of DCM. The mixture was stirred at room temperature for 8 h. Upon completing the reaction, it was quenched with saturated ammonium chloride solution, and the organic phase was sequentially washed with water and saturated sodium chloride solution. The solvent was then removed under reduced pressure. The resulting crude product was purified via flash chromatography on silica gel using petroleum ether and ethyl acetate as eluents in a PE/EA ratio ranging from 10:1 to 4:1.",
+  "soll": [
+   {
+    "namen": [
+     "1,3-diene",
+     "diene"
+    ],
+    "n": 0.0002,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "sulfinic acid"
+    ],
+    "n": 0.0001,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 3.0
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12526227_13",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12526227, doi:10.3390/molecules30194032)",
+  "text": "Synthesis of phenethyl p henyl sulfane (J) [18]. AlCl3 (2 mmol) was added at room temperature under an inert atmosphere to a solution of dry THF (5 mL) containing compound 3a (0.5 mmol). After brief stirring, LiAlH4 (0.5 mmol) was introduced in one portion, and the mixture was stirred for 10 min until TLC indicated the complete disappearance of the starting sulfide. The reaction was quenched by slow addition of saturated aqueous Na2CO3 (5 mL). The aqueous layer was extracted with Et2O (3 × 5 mL), the combined organic phases were washed with brine, dried over Na2SO4, and the solvent was evaporated to afford the sulfide in 84% yield.",
+  "soll": [
+   {
+    "namen": [
+     "AlCl3"
+    ],
+    "n": 0.002
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "3a",
+     "compound 3a"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "LiAlH4"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "Na2CO3"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12073298_14",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12073298, doi:10.3390/molecules30091938)",
+  "text": "General procedure A: A flask was loaded with BH10 analogues (1a–h) (0.2 mmol, 1.0 equiv.), acetonitrile (5.0 mL), and MeI (0.4 mmol, 2.0 equiv.). The reaction was stirred at room temperature for 12 h under a nitrogen atmosphere. The solvent was then evaporated, the residue filtered, and the precipitate washed with EtOAc under vacuum to afford salt compounds 2a–h.",
+  "soll": [
+   {
+    "namen": [
+     "BH10",
+     "analogues"
+    ],
+    "n": 0.0002,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "acetonitrile",
+     "MeCN"
+    ],
+    "V": 5.0
+   },
+   {
+    "namen": [
+     "MeI"
+    ],
+    "n": 0.0004,
+    "eq": 2
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12608622_15",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12608622, doi:10.3390/molecules30214153)",
+  "text": "A turbid solution of NSAIDs (ibuprofen, flurbiprofen or fenoprofen) (0.13 mmol, 1 equiv.) and coupling agent HATU (103 mg, 0.27 mmol, 2 equiv.) in dry DCM was prepared at room temperature. The addition of DIPEA (90 μL, 0.51 mmol, 3.8 equiv.) as a base caused the solution to turn pale yellow. After allowing the mixture to stir for 5 min, 3a or 3b (1.32 mmol, 1.0 equiv.) was introduced. The reaction mixture was then stirred at room temperature for 48 h to achieve maximum conversion. The precipitate derived from the coupling reagent was removed by filtration. The crude product was purified via column chromatography using a gradient of 10–30% EtOAc in n-hexane. Subsequent solvent evaporation yielded compounds 4a, 4b, 5b, and 6b as air-stable yellow solids. These products demonstrated good solubility in acetone, THF, acetonitrile, DMSO, chloroform, and dichloromethane.",
+  "soll": [
+   {
+    "namen": [
+     "NSAIDs",
+     "ibuprofen"
+    ],
+    "n": 0.00013,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "HATU"
+    ],
+    "m": 0.103,
+    "n": 0.00027,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "DIPEA"
+    ],
+    "n": 0.00051,
+    "V": 0.09,
+    "eq": 3.8
+   },
+   {
+    "namen": [
+     "3a",
+     "3b"
+    ],
+    "n": 0.00132,
+    "eq": 1.0
+   }
+  ]
+ },
+ {
+  "id": "dev2_PMC12305527_16",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC12305527, doi:10.1039/d5ra02824h)",
+  "text": "An amine (1.2 equiv., 1.2 mmol), an alkyne (1 equiv., 1 mmol) and a catalyst (50 mg, 1 mol% Pd) were transferred into a vial. Then, 5 mL of the 2 wt% HPMC solution and a base (2 equiv., 2 mmol) were added and stirred. Upon completion of the reactions, extraction of products was done with 3 × 5 mL ethyl acetate. Further drying of the product was done with magnesium sulphate. Purification of the product was done through silica packed column.",
+  "soll": [
+   {
+    "namen": [
+     "amine"
+    ],
+    "n": 0.0012,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "alkyne"
+    ],
+    "n": 0.001,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "catalyst"
+    ],
+    "m": 0.05,
+    "eq": 0.01
+   },
+   {
+    "namen": [
+     "HPMC"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "base"
+    ],
+    "n": 0.002,
+    "eq": 2
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12713494_0",
+  "quelle": "ACS Omega 2025 (CC BY 4.0, PMC12713494, doi:10.1021/acsomega.5c08304)",
+  "text": "Diphenyl-λ5-phosphanothione was synthesized using a modified version of the procedure described by Semenzin et al. To a solution of diphenylphosphine (7.7 g, 41.4 mmol) in 60 mL of dried toluene was added S8 (1.38 g, 43.4 mmol) under argon. The solution was heated at 70 °C for 3 h, and the solvent was removed under vacuum. 5 mL of ethanol was added to the residue and stirred until a white product was formed. The ethanol was removed under vacuum and the white residue was recrystallized from a mixture of methanol/water (4:2) to yield 3.3 g (38%) of white crystals. 31P NMR (162 MHz, CDCl3) δ 20.9 (d, 1 J HP = 467 Hz); 1H NMR (400 MHz, CDCl3) δ 8.0 (d, 1 J HP = 467 Hz, 1H), 7.8–7.4 (m, 10H).",
+  "soll": [
+   {
+    "namen": [
+     "diphenylphosphine"
+    ],
+    "m": 7.7,
+    "n": 0.0414
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 60
+   },
+   {
+    "namen": [
+     "S8",
+     "sulfur"
+    ],
+    "m": 1.38,
+    "n": 0.0434
+   },
+   {
+    "namen": [
+     "ethanol"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12079576_1",
+  "quelle": "Chem Sci 2025 (CC BY 4.0, PMC12079576, doi:10.1039/d5sc02670a)",
+  "text": "Unless otherwise noted, the reaction conditions are as follows: 4-phenyl-1-butene 1a (0.3 mmol, 1 equiv.), (diborylmethyl)iodide 2a (0.36 mmol, 1.2 equiv.), photocatalyst (10 mol%), solvent (1 mL), 3 h, 440 nm blue LED (40 W), 25–40 °C, under argon. The reaction mixture was cooled to −20 °C, followed by the addition of base and stirring for 2 h at 0 °C.",
+  "soll": [
+   {
+    "namen": [
+     "4-phenyl-1-butene",
+     "butene",
+     "1a"
+    ],
+    "n": 0.0003,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "(diborylmethyl)iodide",
+     "iodide",
+     "2a"
+    ],
+    "n": 0.00036,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "photocatalyst"
+    ],
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "solvent"
+    ],
+    "V": 1
+   },
+   {
+    "namen": [
+     "base"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12272014_2",
+  "quelle": "Chemistry 2025 (CC BY 4.0, PMC12272014, doi:10.1002/chem.202501596)",
+  "text": "A 2.5 mL J. Young NMR tube in a glovebox was charged with alcohol (0.1 mmol), TMDS (1.0 mmol, 1.0 equiv.), Sc(OTf)3 (5 mol%), CD2Cl2 (0.5 mL), and mesitylene (5 µL) as internal standard. The tube was sealed and brought out of the glovebox, and the mixture was then stirred at 80 °C for the required time. Yields were determined by 1H NMR integration versus mesitylene.",
+  "soll": [
+   {
+    "namen": [
+     "alcohol"
+    ],
+    "n": 0.0001
+   },
+   {
+    "namen": [
+     "TMDS"
+    ],
+    "n": 0.001,
+    "eq": 1.0
+   },
+   {
+    "namen": [
+     "Sc(OTf)3"
+    ],
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "CD2Cl2"
+    ],
+    "V": 0.5
+   },
+   {
+    "namen": [
+     "mesitylene"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12548506_3",
+  "quelle": "Chemistry 2025 (CC BY 4.0, PMC12548506, doi:10.1002/chem.202502043)",
+  "text": "Catalyst recyclability experiments for the synthesis of model compound 3aa. The reaction conditions were: 1 (0.2 mmol), 2 (0.3 mmol), 2,6‐lutidine (0.6 mmol), CD (3 mg/mL) were dissolved in 2 mL of DMSO, degassed with Ar for 20 minutes and left stirring under irradiation for 65 hours.",
+  "soll": [
+   {
+    "namen": [
+     "1"
+    ],
+    "n": 0.0002
+   },
+   {
+    "namen": [
+     "2"
+    ],
+    "n": 0.0003
+   },
+   {
+    "namen": [
+     "2,6-lutidine",
+     "lutidine"
+    ],
+    "n": 0.0006
+   },
+   {
+    "namen": [
+     "CD"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "DMSO"
+    ],
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12510139_4",
+  "quelle": "Chemistry 2025 (CC BY 4.0, PMC12510139, doi:10.1002/chem.202502254)",
+  "text": "The scope of the O‐alkylation reaction. Reaction conditions: Phenol (0.3 mmol, 1 equiv), Na2CO3 (0.6 mmol, 2 equiv) and MeCN (3 mL) were stirred at −20 °C for 5 min then 1 (0.36 mmol, 1.2 equiv) was added. The mixture was stirred at −20 °C for further 15 min then RT for 60 minutes.",
+  "soll": [
+   {
+    "namen": [
+     "Phenol"
+    ],
+    "n": 0.0003,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "Na2CO3"
+    ],
+    "n": 0.0006,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "MeCN"
+    ],
+    "V": 3
+   },
+   {
+    "namen": [
+     "1"
+    ],
+    "n": 0.00036,
+    "eq": 1.2
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11467728_5",
+  "quelle": "ChemistryOpen 2024 (CC BY 4.0, PMC11467728, doi:10.1002/open.202400006)",
+  "text": "Procedure for the synthesis of (−)‐ambrox. To a stirred solution of 5 (2.0 g, 8.5 mmol, 1.0 equiv.) in 1,2‐dichloroethane (16.0 mL) and CH2Cl2 (8.0 mL) was added SiO2 (70–220 μm) (507.6 mg, 8.5 mmol, 1.0 equiv.) at 23 °C. Then FeCl3 (686.1 mg, 4.2 mmol, 0.5 equiv.) was added. After being stirred for 20 minutes, a saturated solution of 10 % HCl (30 mL) was added. The mixture was extracted with EtOAc (3×30 mL). The combined organic extracts were washed with water (30 mL), NaHCO3 (2×30 mL) and saturated brine, and dried over anhydrous Na2SO4. The solvent was removed under vacuum, and residue was purified using column chromatography on silica gel (petroleum ether: EtOAc=30 : 1 v/v) to give (−)‐ambrox (1.6 g, 6.7 mmol, 79 %).",
+  "soll": [
+   {
+    "namen": [
+     "5"
+    ],
+    "m": 2.0,
+    "n": 0.0085,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "1,2-dichloroethane",
+     "dichloroethane",
+     "DCE"
+    ],
+    "V": 16.0
+   },
+   {
+    "namen": [
+     "CH2Cl2"
+    ],
+    "V": 8.0
+   },
+   {
+    "namen": [
+     "SiO2"
+    ],
+    "m": 0.5076,
+    "n": 0.0085,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "FeCl3"
+    ],
+    "m": 0.6861,
+    "n": 0.0042,
+    "eq": 0.5
+   },
+   {
+    "namen": [
+     "HCl"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12518051_6",
+  "quelle": "ChemistryOpen 2025 (CC BY 4.0, PMC12518051, doi:10.1002/open.202500183)",
+  "text": "General procedure A using D‐ribose 4a (83 mg, 0.56 mmol), triethylamine (0.69 mL, 5.00 mmol), D2O (2 mL) pyridine (0.40 mL, 5.00 mmol), and CDMBI 1b (362 mg, 1.67 mmol) gave compound 4b (89 mg, 66%) as an orange oil (1:6 mixture of α and β anomers). IR (neat, cm−1): ν max = 3217 (br) (O—H), 3172 (w) (C—H), 1628 (s) (C=C); β‐anomer: 1H NMR (400 MHz, D2O, 25 °C): δ = 9.03 (d, 3 J(H,H) = 6.7 Hz, 2 H; 2 × NCHCH), 8.70 (t, 3 J(H,H) = 7.8 Hz, 1 H; NCHCHCH), 8.18 (t, 3 J(H,H) = 7.1 Hz, 2 H; 2 × NCHCH), 5.84 (d, 3 J(H,H) = 9.0 Hz, 1 H; H‐1), 4.35 (bs, 1 H; H‐3), 4.19–4.09 (m, 2 H; H‐4, H‐5’), 3.95 (at, 2 J(H,H) = 12.3 Hz, 1 H; H‐5), 3.87 (dd, 3 J(H,H) = 9.0 Hz, 1.7 Hz, 1 H; H‐2); 13C NMR (100 MHz, D2O, 25 °C): δ = 148.2 (d, NCHCHCH), 142.1 (d, 2 × NCHCH), 128.1 (d, 2 × NCHCH), 93.5 (d, C‐1), 71.4 (d, C‐2), 70.6 (d, C‐3), 65.7 (d, C‐4), 65.3 (t, C‐5); HRMS‐ES: calcd for C10H14NO4 [M]+: 212.0917, found: 212.0909.",
+  "soll": [
+   {
+    "namen": [
+     "D-ribose",
+     "ribose",
+     "4a"
+    ],
+    "m": 0.083,
+    "n": 0.00056
+   },
+   {
+    "namen": [
+     "triethylamine",
+     "Et3N"
+    ],
+    "n": 0.005,
+    "V": 0.69
+   },
+   {
+    "namen": [
+     "D2O"
+    ],
+    "V": 2
+   },
+   {
+    "namen": [
+     "pyridine"
+    ],
+    "n": 0.005,
+    "V": 0.4
+   },
+   {
+    "namen": [
+     "CDMBI",
+     "1b"
+    ],
+    "m": 0.362,
+    "n": 0.00167
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11959527_7",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC11959527, doi:10.1021/acs.joc.5c00258)",
+  "text": "To a solution of resorcinol (550.1 mg, 5.0 mmol) and I2 (1.39 g, 5.5 mmol) in water (5.0 mL) was cooled at 0 °C in an ice bath, NaHCO3 was slowly added, and vigorously stirred at 0 °C for 30 min. After warming up to room temperature, the reaction was stirred for 10 min. The precipitate was filtrated off, and the filtrate was extracted with EtOAc (3 × 30 mL). The combined organic layer was dried over anhydrous Na2SO4, filtered, and concentrated under reduced pressure. The crude product was purified by column chromatography (silica gel, 10% EtOAc/Hexane) to afford 2-Iodobenzene −1,3-diol (7) (891.2 mg, 75%) as a white solid. 1H NMR (400 MHz, CDCl3) δ: 7.11 (t, J = 8.1 Hz, 1H), 6.56 (d, J = 8.1 Hz, 2H), 5.29 (br s, 2H); 13C{1H} NMR (100 MHz, CDCl3) δ: 155.8, 130.5, 107.5, 77.8.",
+  "soll": [
+   {
+    "namen": [
+     "resorcinol"
+    ],
+    "m": 0.5501,
+    "n": 0.005
+   },
+   {
+    "namen": [
+     "I2",
+     "iodine"
+    ],
+    "m": 1.39,
+    "n": 0.0055
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "V": 5.0
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12261325_8",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12261325, doi:10.1021/acs.joc.5c00638)",
+  "text": "To the mixture of substituted aniline 1 (0.1 mmol, 1 equiv) and C1 (10 mol %, 0,01 mmol) in 0.25 mL of toluene in the presence of molecular sieves (5Å) at −55 °C, substituted salicylaldehyde 2 (0.12 equiv), dissolved in 0.25 mL, was added (0.2M). The mixture was stirred until full conversion and after that directly transferred to the column and separated on silica to yield the final product 3. Method B: To the mixture of substituted aniline 1 (0.1 mmol, 1 equiv) and C1 (10 mol %, 0,01 mmol) in 0.25 mL of toluene in the presence of molecular sieves (5Å) at −55 °C, substituted salicylaldehyde 2 (0.12 equiv), dissolved in 0.25 mL, was added (0.2M). The mixture was stirred until full conversion and after that the mixture was filtered through cotton, solvent was evaporated and reaction mixture was crystallized from hexane/DCM (20:1) to yield the final product 3.",
+  "soll": [
+   {
+    "namen": [
+     "aniline"
+    ],
+    "n": 0.0001,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "C1"
+    ],
+    "n": 1e-05,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 0.25
+   },
+   {
+    "namen": [
+     "molecular sieves",
+     "sieves"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "salicylaldehyde"
+    ],
+    "eq": 0.12
+   },
+   {
+    "namen": [
+     "aniline"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "C1"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "molecular sieves",
+     "sieves"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "salicylaldehyde"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11894645_9",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC11894645, doi:10.1021/acs.joc.4c01864)",
+  "text": "Substrate scope of the sequential Sonogashira cross-coupling–hydrogenation reaction. Reaction conditions: aryl iodide 3 (0.5 mmol, 1 equiv), terminal alkyne 4 (0.6 mmol, 1.2 equiv), PdCl2(PPh3)3 (4 mol %), CuI (5 mol %), and Et3N (3 mL) stirred under a nitrogen atmosphere at room temperature for 4 h; then addition of Grubbs catalyst M102 (10 mol %), KOtBu (1 mmol, 2 equiv), and BnOH (5 mmol, 10 equiv) and stirring under a nitrogen atmosphere for 20 h at 100 °C. The yields of the isolated products after column chromatography are given. aOn a 2.0 mmol scale. b4-Iodobromobenzene used. cReaction conditions for (E)-selective reduction were employed, i.e., 3.33 mol % Ru3(CO)12 and KOtBu (0.5 equiv).",
+  "soll": [
+   {
+    "namen": [
+     "aryl iodide"
+    ],
+    "n": 0.0005,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "terminal alkyne",
+     "alkyne"
+    ],
+    "n": 0.0006,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "PdCl2(PPh3)3",
+     "PdCl2"
+    ],
+    "eq": 0.04
+   },
+   {
+    "namen": [
+     "CuI"
+    ],
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "Et3N"
+    ],
+    "V": 3
+   },
+   {
+    "namen": [
+     "Grubbs catalyst",
+     "M102"
+    ],
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "KOtBu"
+    ],
+    "n": 0.001,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "BnOH"
+    ],
+    "n": 0.005,
+    "eq": 10
+   },
+   {
+    "namen": [
+     "Ru3(CO)12"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "KOtBu"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12322964_10",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12322964, doi:10.1021/acs.joc.5c01295)",
+  "text": "Reaction conditions: (bromoethynyl)­benzene 1a (0.5 mmol), thiols 2a–o (0.7 mmol), and rhodamine B (3 mol %) were stirred in DMSO (2 mL) under purple LED for 16 h under in an open-air atmosphere.",
+  "soll": [
+   {
+    "namen": [
+     "(bromoethynyl)",
+     "benzene",
+     "1a"
+    ],
+    "n": 0.0005
+   },
+   {
+    "namen": [
+     "thiols",
+     "thiol"
+    ],
+    "n": 0.0007
+   },
+   {
+    "namen": [
+     "rhodamine B",
+     "rhodamine"
+    ],
+    "eq": 0.03
+   },
+   {
+    "namen": [
+     "DMSO"
+    ],
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12706790_11",
+  "quelle": "J Org Chem 2025 (CC BY 4.0, PMC12706790, doi:10.1021/acs.joc.5c02277)",
+  "text": "Lithium aluminum hydride 11.1 mg, 1 equiv was added to a solution of bis-amide 29 (100 mg, 0.294 mmol) in THF (15 mL) and the resulting mixture stirred at room temperature for 30 min under a nitrogen atmosphere. The reaction was cautiously quenched with several drops of water and extracted with ethyl acetate. The resulting organic layer was dried of anhydrous sodium sulfate and the solvent removed under reduced pressure to give dialdehyde 21 (64.1 mg, 0.288 mmol, 98%) as red crystals. Due to rapid degradation, the crude product was immediately used without further purification.",
+  "soll": [
+   {
+    "namen": [
+     "Lithium aluminum hydride",
+     "LiAlH4"
+    ],
+    "m": 0.0111,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "bis-amide",
+     "29"
+    ],
+    "m": 0.1,
+    "n": 0.000294
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "V": 15
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11547561_12",
+  "quelle": "Molecules 2024 (CC BY 4.0, PMC11547561, doi:10.3390/molecules29215207)",
+  "text": "A flask (10 mL) was charged with aldehyde 1 (0.3 mmol, 1 equiv.), (S)-Cu1 catalyst (13.2 mg, 10 mol %), and NaOAc (2.4 mg, 10 mol %) under Ar atmosphere. Then, a solvent mixture of THF/DCM (0.25 mL/0.25 mL) and nitromethane (0.160 mL, 3 mmol, 10 equiv.) was added and the reaction mixture was stirred for 24 h at RT. After the reaction was complete, the reaction mixture was purified by flash SiO2 chromatography (eluent: CH2Cl2). The solvent was evaporated on a rotary evaporator, and the residue was purified by column SiO2 chromatography (eluent: hexane/acetone (5:1)) to afford the desired (S)-product 2.",
+  "soll": [
+   {
+    "namen": [
+     "aldehyde"
+    ],
+    "n": 0.0003,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "Cu1",
+     "catalyst"
+    ],
+    "m": 0.0132,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "NaOAc"
+    ],
+    "m": 0.0024,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "THF"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "nitromethane"
+    ],
+    "n": 0.003,
+    "V": 0.16,
+    "eq": 10
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11676634_13",
+  "quelle": "Molecules 2024 (CC BY 4.0, PMC11676634, doi:10.3390/molecules29245880)",
+  "text": "[a] Reaction conditions: 1a (0.15 mmol), 2 (0.25 mmol), Rh2(OAc)4 (2.3 mol%), Pd-complex (2.7 mol%), ligand (3.0 mol%), Rh2(OAc)4, Pd-complex, ligand, and 2 in solvent (1 mL) were stirred for 15 min at rt. 1a dissolved in solvent (1 mL) were slowly added dropwise; [b] Diastereoselectivities were determined by 1H NMR spectroscopy of the crude reaction mixture; [c] Isolated yield; [d] The reaction produced byproduct 4, unless otherwise note.",
+  "soll": [
+   {
+    "namen": [
+     "1a"
+    ],
+    "n": 0.00015
+   },
+   {
+    "namen": [
+     "2"
+    ],
+    "n": 0.00025
+   },
+   {
+    "namen": [
+     "Rh2(OAc)4"
+    ],
+    "eq": 0.023
+   },
+   {
+    "namen": [
+     "Pd-complex",
+     "complex"
+    ],
+    "eq": 0.027
+   },
+   {
+    "namen": [
+     "ligand"
+    ],
+    "eq": 0.03
+   },
+   {
+    "namen": [
+     "solvent"
+    ],
+    "V": 1
+   },
+   {
+    "namen": [
+     "solvent"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "1a"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12388569_14",
+  "quelle": "Molecules 2025 (CC BY 4.0, PMC12388569, doi:10.3390/molecules30163362)",
+  "text": "To a stirred solution of 2-aminofluorene (2 g, 11 mmol) and DIPEA (2.7 mL, 15.5 mmol) in DMF (30 mL), ethyl chloroformate (1.21 mL, 12.7 mmol) was added dropwise. The reaction was carried out at room temperature under argon for 24 h. The reaction mixture was washed with 0.5 M HCl solution (30 mL) and extracted with DCM (2 × 30 mL). Combined organic layers were washed with water (30 mL) and dried over anhydrous Na2SO4. Solvent removal yielded 2.49 g (9.8 mmol, 89%) of ethyl N-(fluorenyl)carbamate as an off-white crystalline solid. HRMS (ESI): calcd for C16H15NO2Na [M + Na] + 276.0995, found 276.0998. 1H NMR (300 MHz, DMSO-d6, δ ppm): 9.71 (s, 1H), 7.86–7.68 (m, 3H), 7.58–7.50 (d, 1H), 7.50–7.42 (d, 1H), 7.34 (t, 1H), 7.24 (t, 1H), 4.24–4.05 (q, 2H), 3.88 (s, 2H), 1.26 (t, 3H). 13C NMR (75 MHz, DMSO-d6, δ ppm): 154.1, 144.3, 143.1, 141.5, 138.8, 136.0, 127.1, 126.4, 125.4, 120.6, 119.8, 117.5, 115.3, 60.6, 36.9, 15.0.",
+  "soll": [
+   {
+    "namen": [
+     "2-aminofluorene",
+     "aminofluorene"
+    ],
+    "m": 2,
+    "n": 0.011
+   },
+   {
+    "namen": [
+     "DIPEA"
+    ],
+    "n": 0.0155,
+    "V": 2.7
+   },
+   {
+    "namen": [
+     "DMF"
+    ],
+    "V": 30
+   },
+   {
+    "namen": [
+     "ethyl chloroformate"
+    ],
+    "n": 0.0127,
+    "V": 1.21
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC11875112_15",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC11875112, doi:10.1039/d5ra00909j)",
+  "text": "Reaction conditions: (1) 1 (1 mmol), 2 (1.2 mmol), and TDAE (1.2 mmol) in MeCN (4 mL) were stirred at r.t. for 1 h under an inert atmosphere. (2) After evaporation of MeCN, MeOH (5 mL), Pd/C (5%, 46 mg), and hydrazine hydrate (50–60%, 312 μL) were added and the reaction was stirred at 70 °C for 18 h under an inert atmosphere. (3) Intermediate 3, Pd(OAc)2 (22.5 mg, 0.1 mmol, 0.1 equiv.), Xantphos (58 mg, 0.1 mmol, 0.1 equiv.), K2CO3 (276 mg, 2 mmol, 2 equiv.) and anhydrous toluene (2 mL) were stirred under microwave irradiation at 135 °C for 8 h.",
+  "soll": [
+   {
+    "namen": [
+     "1"
+    ],
+    "n": 0.001
+   },
+   {
+    "namen": [
+     "2"
+    ],
+    "n": 0.0012
+   },
+   {
+    "namen": [
+     "TDAE"
+    ],
+    "n": 0.0012
+   },
+   {
+    "namen": [
+     "MeCN"
+    ],
+    "V": 4
+   },
+   {
+    "namen": [
+     "MeOH"
+    ],
+    "V": 5
+   },
+   {
+    "namen": [
+     "Pd/C"
+    ],
+    "m": 0.046
+   },
+   {
+    "namen": [
+     "hydrazine hydrate",
+     "hydrazine"
+    ],
+    "V": 0.312
+   },
+   {
+    "namen": [
+     "Intermediate 3",
+     "intermediate"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "Pd(OAc)2"
+    ],
+    "m": 0.0225,
+    "n": 0.0001,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "Xantphos"
+    ],
+    "m": 0.058,
+    "n": 0.0001,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "K2CO3"
+    ],
+    "m": 0.276,
+    "n": 0.002,
+    "eq": 2
+   },
+   {
+    "namen": [
+     "toluene"
+    ],
+    "V": 2
+   }
+  ]
+ },
+ {
+  "id": "dev3_PMC12482906_16",
+  "quelle": "RSC Adv 2025 (CC BY 4.0, PMC12482906, doi:10.1039/d5ra05581d)",
+  "text": "Unless otherwise noted, all reactions were conducted with 1a (0.2 mmol), 2a (0.24 mmol, 1.2 equiv.) and cat. (0.04 mmol, 20 mol%) in the solvent (2.0 mL) stirred at room temperature for 6 h.",
+  "soll": [
+   {
+    "namen": [
+     "1a"
+    ],
+    "n": 0.0002
+   },
+   {
+    "namen": [
+     "2a"
+    ],
+    "n": 0.00024,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "cat"
+    ],
+    "n": 4e-05,
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "solvent"
+    ],
+    "V": 2.0
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC11897656_0",
+  "quelle": "SI-PDF über PDFKit (PMC11897656, CC BY 4.0)",
+  "text": "To a solution of\n13 (151 mg, 448 µmol) and triethylamine (187 µL, 134 µmol, 3 equiv) in N,N-dimethylformamide (2.0\nmL) at 0 °C was added methanesulfonyl chloride (42 µL, 537 µmol, 1.2 equiv). After 1.5 h, the volatiles\nwere removed in vacuo and the residue was coevaporated with toluene twice. Swift column\nchromatography on silica gel (5–8% MeOH in CH2Cl2) provided compound as a white foam. TLC: 15%\nMeOH in CH2Cl2; Rf : 0.58. Due to the instability of the Boc-protected compound, purified product 14\nwas directly dissolved in chloroform (2.0 mL) and treated with trifluoroacetic acid (300 µL). After 1 h at\nroom temperature the volatiles were removed in vacuo and the residual oil was coevaporated with\ndichloromethane 3 times until a white crystalline solid was obtained. The crude product was\nrecrystallized from acetonitrile (approx. 25 µL per mg of crude material, the hot solution was filtered).\nUpon cooling to –20 °C, crystals appeared which were collected and dried to give 3b as a white\ncrystalline solid (109 mg, 45%). TLC: 15% MeOH in CH2Cl2; Rf : baseline. ESI-MS (m/z): [M+H]+ found:\n316.1072; [M+H]+ calculated: 316.1074. 1H-NMR (400 MHz, DMSO-d6, 25 °C): δ 11.32 (d, JHH = 2.1 Hz,\n1H, HN(9)), 10.97 (s, 1H, HN(1)), 9.06 (bs, 2H, H2N+), 6.83 (d, JHH = 2.1 Hz, 1H, HN(9)), 6.43 (bs, 2",
+  "soll": [
+   {
+    "namen": [
+     "13"
+    ],
+    "m": 0.151,
+    "n": 0.000448
+   },
+   {
+    "namen": [
+     "triethylamine",
+     "Et3N"
+    ],
+    "n": 0.000134,
+    "V": 0.187,
+    "eq": 3
+   },
+   {
+    "namen": [
+     "dimethylformamide",
+     "DMF"
+    ],
+    "V": 2.0
+   },
+   {
+    "namen": [
+     "methanesulfonyl chloride",
+     "MsCl"
+    ],
+    "n": 0.000537,
+    "V": 0.042,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "14"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "chloroform"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "trifluoroacetic acid",
+     "TFA"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12080305_0",
+  "quelle": "SI-PDF über PDFKit (PMC12080305, CC BY 4.0)",
+  "text": "was charged with sodium tert-butoxide (1.5 equiv), Pd(tBu3P)2 (5 mol %) and CMPE (3.4\nequiv), then amine (1 equiv) and aryl halide (1.5 equiv) were added. The reaction mixture was\nreacted under IR irradiation and magnetic stirring. After 2h, the mixture was cooled to room\ntemperature, diluted with water and extracted with ethyl acetate. The organic extracts were\nwashed with an aqueous solution of brine, dried with Na2SO4 and concentrated under vacuum.\n￼",
+  "soll": [
+   {
+    "namen": [
+     "sodium tert-butoxide",
+     "NaOtBu"
+    ],
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "Pd(tBu3P)2"
+    ],
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "CMPE"
+    ],
+    "eq": 3.4
+   },
+   {
+    "namen": [
+     "amine"
+    ],
+    "eq": 1
+   },
+   {
+    "namen": [
+     "aryl halide"
+    ],
+    "eq": 1.5
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12080305_1",
+  "quelle": "SI-PDF über PDFKit (PMC12080305, CC BY 4.0)",
+  "text": "General procedure. A Carius tube (ø=1.5 cm) with a screw cap and equipped with a magnetic\nstirrer was charged with sodium tert-butoxide (1.5 equiv), Pd(tBu3P)2 (5 mol %) and CMPE (3.4\nequiv), then amine (1 equiv) and aryl halide (1.5 equiv) were added. The reaction mixture was\nreacted under IR irradiation and magnetic stirring. After 2h, the mixture was cooled to room\ntemperature, diluted with water and extracted with ethyl acetate. The organic extracts were\nwashed with an aqueous solution of brine, dried with Na2SO4 and concentrated under vacuum.\n￼",
+  "soll": [
+   {
+    "namen": [
+     "sodium tert-butoxide",
+     "NaOtBu"
+    ],
+    "eq": 1.5
+   },
+   {
+    "namen": [
+     "Pd(tBu3P)2"
+    ],
+    "eq": 0.05
+   },
+   {
+    "namen": [
+     "CMPE"
+    ],
+    "eq": 3.4
+   },
+   {
+    "namen": [
+     "amine"
+    ],
+    "eq": 1
+   },
+   {
+    "namen": [
+     "aryl halide"
+    ],
+    "eq": 1.5
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12508946_0",
+  "quelle": "SI-PDF über PDFKit (PMC12508946, CC BY 4.0)",
+  "text": "A mixture of dichloromethane and water (1.0 mL, 9:1) was added. The\nreaction mixture was irradiated with a 70 W violet LED (405 nm) under ventilation and stirred\nfor 3 - 10 h.\nFor the hydrodecarboxylation of the real mixture of fatty acids obtained by hydrolysis of\nvegetable oils, 100 mg of starting material (~0.4 mmol based on the average molar mass of the\nfatty acid mixture) was used, and the amount of catalysts was determined for a 0.4 mmol scale\nfollowing the general procedure. The gram-scale hydrodecarboxylation of palm oil fatty acids\nwas carried out using the same procedure with 1 g of starting material.\nFigure S1 – Reaction layout\n￼\n￼",
+  "soll": [
+   {
+    "namen": [
+     "dichloromethane"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "starting material"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12508946_1",
+  "quelle": "SI-PDF über PDFKit (PMC12508946, CC BY 4.0)",
+  "text": "General procedure for the hydrodecarboxylation of fatty acids\nFatty acid (1.0 eq., 0.4 mmol), acridine (0.1 eq., 0.04 mmol), and thiophenol (0.2 eq., 0.08\nmmol) were added to a 10 mL glass vial that had been previously dried in an oven and equipped\nwith a magnetic stirring bar. The vial was then sealed, evacuated under pressure, and purged\nwith nitrogen gas. A mixture of dichloromethane and water (1.0 mL, 9:1) was added. The\nreaction mixture was irradiated with a 70 W violet LED (405 nm) under ventilation and stirred\nfor 3 - 10 h.\nFor the hydrodecarboxylation of the real mixture of fatty acids obtained by hydrolysis of\nvegetable oils, 100 mg of starting material (~0.4 mmol based on the average molar mass of the\nfatty acid mixture) was used, and the amount of catalysts was determined for a 0.4 mmol scale\nfollowing the general procedure. The gram-scale hydrodecarboxylation of palm oil fatty acids\nwas carried out using the same procedure with 1 g of starting material.\nFigure S1 – Reaction layout\n￼\n￼",
+  "soll": [
+   {
+    "namen": [
+     "Fatty acid"
+    ],
+    "n": 0.0004,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "acridine"
+    ],
+    "n": 4e-05,
+    "eq": 0.1
+   },
+   {
+    "namen": [
+     "thiophenol"
+    ],
+    "n": 8e-05,
+    "eq": 0.2
+   },
+   {
+    "namen": [
+     "dichloromethane"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "water"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "starting material"
+    ],
+    "optional": true
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12548753_0",
+  "quelle": "SI-PDF über PDFKit (PMC12548753, CC BY 4.0)",
+  "text": "was charged with 4-phenyl-\n1-butene (1.32 g, 10.0 mmol, 1.0 equiv), thianthrene 5-oxide (2.32 g, 10.0 mmol, 1.0 equiv), and MeCN\n(50 mL). After cooling to 0 °C, trifluoroacetic anhydride (6.3 g, 30.0 mmol, 3.0 equiv) was added\ndropwise within 2 minutes, followed by dropwise addition of TfOH (1.8 g, 12.0 mmol, 1.2 equiv) within\n10 minutes. After stirring the lilac mixture at 0 °C for 1h followed by stirring for 1h at room temperature,\nthe resulting mixture was concentrated under reduced pressure, and subsequently diluted with DCM. The\n5",
+  "soll": [
+   {
+    "namen": [
+     "4-phenyl-1-butene",
+     "phenyl-1-butene",
+     "butene"
+    ],
+    "m": 1.32,
+    "n": 0.01,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "thianthrene 5-oxide",
+     "thianthrene"
+    ],
+    "m": 2.32,
+    "n": 0.01,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "MeCN"
+    ],
+    "V": 50
+   },
+   {
+    "namen": [
+     "trifluoroacetic anhydride",
+     "TFAA"
+    ],
+    "m": 6.3,
+    "n": 0.03,
+    "eq": 3
+   },
+   {
+    "namen": [
+     "TfOH"
+    ],
+    "m": 1.8,
+    "n": 0.012,
+    "eq": 1.2
+   }
+  ]
+ },
+ {
+  "id": "pdfdev_PMC12548753_1",
+  "quelle": "SI-PDF über PDFKit (PMC12548753, CC BY 4.0)",
+  "text": "General Procedures for Synthesis of TT salt\nTable S4 Alkenyl Sulfonium Salts Substrates.\n3.1 Synthesis of thianthrenium salts 1a,1, 2 1b.2\nThe known thianthrenium salts 1a and 1b were prepared according to the reported procedures.\n1, 2\nTo a round-bottom flask equipped with a stirring bar was charged with alkene, thianthrene-S-oxide 2 (5.9\ng, 25 mmol, 1.0 equiv.) and DCM (250 mL). The flask was capped with a rubber septum and cooled\ndown to –40°C. A balloon filled with alkene was connected to the flask to maintain the alkene atmosphere\nthroughout the reaction. Triflic anhydride (5.1 mL, 30.2 mmol, 1.20 equiv.) was added dropwise to the\nreaction, and a dark purple suspension was progressively formed. After 30 minutes, the cooling bath was\nremoved and the mixture was stirred for 1.5 hour at room temperature. The balloon and the rubber septum\nwere removed, and sat. aqueous NaHCO3 (250 mL) was added carefully. The mixture was vigorously\nshaken in a separation funnel, phases were separated and the aqueous layer was extracted with DCM (3\n× 100 mL). All organic phases were combined, washed with aqueous solutions of NaBF4 (3 × 100 mL,\n5 % w/w), dried over Na2SO4, filtered, and the solvent was removed under reduced pressure. The residue\nwas purified by chromatography on silica gel eluting",
+  "soll": [
+   {
+    "namen": [
+     "alkene"
+    ],
+    "optional": true
+   },
+   {
+    "namen": [
+     "thianthrene-S-oxide",
+     "thianthrene"
+    ],
+    "m": 5.9,
+    "n": 0.025,
+    "eq": 1
+   },
+   {
+    "namen": [
+     "DCM"
+    ],
+    "V": 250
+   },
+   {
+    "namen": [
+     "Triflic anhydride",
+     "Tf2O"
+    ],
+    "n": 0.0302,
+    "V": 5.1,
+    "eq": 1.2
+   },
+   {
+    "namen": [
+     "NaHCO3"
+    ],
+    "optional": true
+   }
+  ]
+ }
+]

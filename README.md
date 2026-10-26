@@ -26,10 +26,10 @@ Get the latest version from the **[Releases page](../../releases/latest)**:
 
 | System | File |
 |---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.2-macOS.dmg` |
-| Linux x86_64 (most PCs) | `ChemJournal-1.0.2-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.2-arm64.AppImage` |
-| Linux, as plain archive | `ChemJournal-1.0.2-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.3-macOS.dmg` |
+| Linux x86_64 (most PCs) | `ChemJournal-1.0.3-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.3-arm64.AppImage` |
+| Linux, as plain archive | `ChemJournal-1.0.3-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
@@ -38,8 +38,8 @@ and click **Open Anyway**.
 **Linux:** make the AppImage executable and start it – no installation needed:
 
 ```bash
-chmod +x ChemJournal-1.0.2-x86_64.AppImage
-./ChemJournal-1.0.2-x86_64.AppImage
+chmod +x ChemJournal-1.0.3-x86_64.AppImage
+./ChemJournal-1.0.3-x86_64.AppImage
 ```
 
 Want to try it with data? Import one of the [example experiments](examples/) via
@@ -92,8 +92,10 @@ temperatures, times, concentrations, flask sizes and work-up steps, and assigns 
 macOS, an equivalent n-gram classifier on Linux).
 
 Measured on hand-annotated paragraphs from real papers (`macos/Tools/SmartExtractEval`): **100 % of rows
-correct** (33/33 public cases, 146 rows; also 58/58 on the larger private corpus). Everything runs locally –
-no text leaves your computer.
+correct** (33/33 public cases, 146 rows; also 58/58 on the larger private corpus). On 95 further paragraphs from
+2024/25 open-access articles (CC BY 4.0, via Europe PMC), the 28 held-out ones that were never looked at during
+development come out at **85.7 % of rows completely correct on macOS and 87.5 % on Linux** (before 1.0.3: 83.0 % /
+83.9 %). Everything runs locally – no text leaves your computer.
 
 ## Privacy
 

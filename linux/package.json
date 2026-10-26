@@ -1,7 +1,7 @@
 {
   "name": "chemjournal",
   "productName": "ChemJournal",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Elektronisches Laborjournal für die Synthesechemie – Linux-Version von ChemJournal",
   "author": {
     "name": "Niklas Neubert"

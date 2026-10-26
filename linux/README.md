@@ -46,7 +46,9 @@ automatisch übernommen. Das ist das Gegenstück zu iCloud Drive auf dem Mac.
 - **ChemDraw** gibt es nicht für Linux → Reaktionsgleichung per Drag & Drop, Strg+V, „Aus Zwischenablage einfügen“
   oder „Datei wählen …“ (Bilder und PDFs, z. B. aus ChemSketch, MarvinSketch oder Ketcher).
 - **Smart Extract** nutzt statt Core ML einen Namensklassifikator, der auf denselben Trainingsdaten trainiert ist
-  (siehe unten). Ergebnis auf dem annotierten Korpus: 100 % (33/33 öffentliche Fälle), wie das Modell auf dem Mac.
+  (siehe unten). Ergebnis auf dem annotierten Korpus: 100 % (33/33 öffentliche Fälle), wie das Modell auf dem Mac; auf den
+  95 Absätzen aus Open-Access-Artikeln (Europe PMC, CC BY 4.0) 99.6 % im Entwicklungsteil und 87.5 % im ungesehenen
+  Kontrollset (Mac: 85.7 %).
 - Tastenkürzel mit **Strg** statt ⌘.
 
 ## Entwickeln und bauen

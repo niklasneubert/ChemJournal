@@ -179,9 +179,43 @@
     return s.trim();
   }
 
+  // Mengenangaben vereinheitlichen -------------------------------------------
+
+  const numberWords = {
+    one: '1', two: '2', three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8', nine: '9', ten: '10',
+    ein: '1', eine: '1', einem: '1', zwei: '2', drei: '3', vier: '4', 'fünf': '5', zehn: '10',
+  };
+
+  /** Schreibweisen in echten Vorschriften, die der Parser sonst missversteht. */
+  function normalizeQuantityPhrases(input) {
+    let s = input;
+    // Molmasse und Dichte als Zusatz in der Mengenklammer: "(MW = 151.12 g/mol, 1.00 equiv, …, density 0.948 g/mL)"
+    s = s.replace(/\b(?:MW|M\.W\.|Mw|molecular weight)\s*[=:]?\s*\d+(?:[.,]\d+)?\s*g\s*\/\s*mol\b\s*,?\s*/gi, '');
+    s = s.replace(/,?\s*(?:\b(?:density|dichte|d)|ρ)\s*[=:]?\s*\d+(?:[.,]\d+)?\s*g\s*\/\s*(?:mL|ml|cm3|cm³)\b/gi, '');
+    // Fußnotenbuchstabe vor dem ersten Wort einer Tabellenfußnote: "aReaction conditions: …", "bTitration by I2"
+    s = s.replace(/(^|(?<=[.:;]\s))[a-f](?=[A-Z][a-z]{3,})/gm, '$1');
+    // Nummerierte Teilschritte: "Reaction conditions: (1) 1 (1 mmol), 2 (1.2 mmol) … (2) After evaporation …"
+    s = s.replace(/(^|(?<=[.:;]\s))\((?:\d{1,2}|i{1,3}|iv|vi{0,3})\)\s+(?=\S)/gm, '$1');
+    // "20 mmol %" (Tippfehler für mol%)
+    s = s.replace(/(\d)\s*mmol\s*%/g, '$1 mol%');
+    // Zahlwörter vor Einheiten: "One equiv of …", "Two equiv …", "One mmol (1.4 equiv)"
+    s = rep(s, /\b(one|two|three|four|five|six|seven|eight|nine|ten|ein|eine|einem|zwei|drei|vier|fünf|zehn)\s+(?=(?:equiv|equivalents?|eq|mmol|mol|äquivalente?|äq)(?![A-Za-z0-9_]))/gi,
+      m => (numberWords[m[1].toLowerCase()] || m[1]) + ' ');
+    // Semikolon in Klammern trennt nur Angaben, keinen Satz: "(5.6 mg, 0.1 mmol; 20 mol %)"
+    let depth = 0;
+    s = Array.from(s).map(c => {
+      if (c === '(') depth += 1; else if (c === ')') depth = Math.max(0, depth - 1);
+      return c === ';' && depth > 0 ? ',' : c;
+    }).join('');
+    // "Triphenylphosphine (PPh3) (0.02 mmol, …)", "BBr3 (1 M in DCM) (0.15 mmol)" → eine Klammer
+    s = s.replace(/\(([^()]{1,60})\)\s*\((?=\s*\d)/g, '($1, ');
+    return s;
+  }
+
   function normalizeSynthesisText(input) {
     let s = cleanUnicode(input);
     s = repairLineBreaks(s);
+    s = normalizeQuantityPhrases(s);
     s = normalizeTemperatures(s);
     s = normalizeDashes(s);
     s = normalizeAdductDots(s);

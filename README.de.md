@@ -26,10 +26,10 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 
 | System | Datei |
 |---|---|
-| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.2-macOS.dmg` |
-| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.2-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.2-arm64.AppImage` |
-| Linux als Archiv | `ChemJournal-1.0.2-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.3-macOS.dmg` |
+| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.3-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.3-arm64.AppImage` |
+| Linux als Archiv | `ChemJournal-1.0.3-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -38,8 +38,8 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 **Linux:** AppImage ausführbar machen und starten, keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.0.2-x86_64.AppImage
-./ChemJournal-1.0.2-x86_64.AppImage
+chmod +x ChemJournal-1.0.3-x86_64.AppImage
+./ChemJournal-1.0.3-x86_64.AppImage
 ```
 
 Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
@@ -83,7 +83,10 @@ Aufarbeitungsschritte und ordnet die Mengen den Namen zu. Was ein Chemikaliennam
 Modell, trainiert auf synthetischen Sätzen (Create ML auf dem Mac, gleichwertiger Klassifikator unter Linux).
 
 Gemessen an von Hand annotierten Absätzen aus echten Veröffentlichungen: **100 % der Zeilen richtig** (33/33
-öffentliche Fälle). Alles läuft lokal – kein Text verlässt deinen Rechner.
+öffentliche Fälle). Auf 95 weiteren Absätzen aus Open-Access-Artikeln 2024/25 (CC BY 4.0, über Europe PMC) sind
+in den 28 zurückgehaltenen, während der Entwicklung nie angesehenen Absätzen **85,7 % der Zeilen komplett richtig
+(macOS) bzw. 87,5 % (Linux)** – vor 1.0.3 waren es 83,0 % bzw. 83,9 %. Alles läuft lokal – kein Text verlässt
+deinen Rechner.
 
 ## Datenschutz
 

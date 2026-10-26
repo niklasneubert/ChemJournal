@@ -19,7 +19,7 @@ const nameModel = flag('--no-model') ? 'none' : flag('--lexicon') ? 'lexicon' : 
 const verbose = flag('-v');
 const only = opt('--case');
 const minQuote = opt('--min');
-const files = args.length ? args : ['korpus.json', 'kontrollset.json'].map(f => path.join(__dirname, '../test/korpus', f));
+const files = args.length ? args : ['korpus.json', 'kontrollset.json', 'korpus_europepmc.json', 'kontrollset_europepmc.json'].map(f => path.join(__dirname, '../test/korpus', f));
 
 const key = s => s.toLowerCase().replace(/[\s-]/g, '');
 function namePasst(soll, ist) {

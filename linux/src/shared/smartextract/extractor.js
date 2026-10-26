@@ -172,11 +172,33 @@
       'aufgearbeitet', 'dekantiert', 'decanted', 'beendet', 'ausbeute', 'yield', 'rohprodukt', 'rohproduktes',
       'erhielt', 'quench', 'quenching', 'poured', 'gegossen', 'silica', 'kieselgel', 'slurry', 'brine',
       'filtration', 'evaporation', 'extraction', 'eingedampft', 'rotiert',
+      'afford', 'affords', 'affording', 'furnishing',
+    ]),
+    // Verben, hinter denen im selben Teilsatz nur noch das Produkt steht ("… to give 3a (45 mg)", "… gave 4b")
+    productVerbs: new Set(['gave', 'give', 'gives', 'giving', 'provided', 'providing']),
+    // Wörter direkt hinter einer Mengenangabe, die kein Stoff sind ("0.4 mmol scale", "1 mmol batch")
+    notNamesAfterQuantity: new Set([
+      'scale', 'scales', 'batch', 'batches', 'excess', 'total', 'overall', 'quantity', 'quantities', 'amount', 'amounts',
+      'yield', 'conversion', 'loading', 'run', 'runs', 'experiment', 'experiments', 'sample', 'samples', 'aliquot',
+      'aliquots', 'fraction', 'fractions', 'each', 'per', 'respectively', 'maßstab', 'ansatz', 'überschuss',
+    ]),
+    // Zugabe-Verben, hinter denen eine Mengenklammer zum Stoff davor gehört ("X was added (79 mg, 0.96 mmol)")
+    additionVerbs: new Set([
+      'added', 'introduced', 'charged', 'dissolved', 'suspended', 'placed', 'transferred', 'combined', 'loaded', 'mixed',
+      'zugegeben', 'hinzugegeben', 'addiert', 'zugetropft', 'gelöst', 'vorgelegt', 'suspendiert', 'zugefügt', 'hinzugefügt',
+    ]),
+    // Aufarbeitungswörter, die auch als Eigenschaft vor einem Reagenz stehen ("purified LiBH4", "dried THF")
+    adjectivalParticiples: new Set(['purified', 'dried', 'concentrated', 'filtered', 'distilled', 'gereinigt', 'getrocknet']),
+    // Folgt eines dieser Wörter, ist das Partizip ein Arbeitsschritt ("dried over", "concentrated in vacuo")
+    participleFollowers: new Set([
+      'by', 'under', 'in', 'with', 'over', 'through', 'via', 'on', 'to', 'and', 'at', 'from', 'for', 'using', 'off',
+      'again', 'twice', 'thoroughly', 'briefly', 'overnight', 'carefully', 'first', 'as', 'until', 'unter', 'über',
+      'mit', 'im', 'bei', 'durch', 'und',
     ]),
     abbreviations: new Set([
       'eq', 'equiv', 'äq', 'äquiv', 'abs', 'ca', 'approx', 'conc', 'konz', 'ges', 'sat', 'aq', 'wässr', 'bzw', 'vgl',
       'resp', 'ref', 'nr', 'no', 'fig', 'abb', 'tab', 'lit', 'et', 'al', 'e.g', 'i.e', 'z.b', 'u.a', 'techn', 'dest', 'anhyd',
-      'frisch', 'ca', 'vs', 'wt',
+      'frisch', 'ca', 'vs', 'wt', 'cat', 'kat',
     ]),
     labelNouns: new Set([
       'compound', 'verbindung', 'substrat', 'substrate', 'edukt', 'ester', 'amin', 'amine', 'alkohol', 'alcohol',
@@ -187,10 +209,12 @@
       'acetylene', 'alkyne', 'nitrile', 'nitril', 'sulfone', 'sulfon', 'phenylsulfone', 'carbonate', 'carbonat', 'tosylate',
       'mesylate', 'boronate', 'lactone', 'lacton', 'imine', 'imin', 'oxime', 'oxim', 'sulfide', 'thiol', 'phenol', 'aniline',
       'anilin', 'indole', 'indol', 'pyridine', 'pyridin', 'olefine', 'alcohols', 'esters', 'derivative', 'derivat', 'nitrone',
+      'acceptor', 'donor', 'thiols', 'amines', 'aldehydes', 'ketones', 'acids', 'halide', 'halides',
     ]),
     apparatus: [
       'kolben', 'flask', 'vial', 'tube', 'gefäß', 'reaktor', 'reactor', 'schlenk', 'ampulle', 'ampoule', 'autoklav',
       'autoclave', 'trichter', 'funnel', 'spritze', 'syringe', 'becherglas', 'beaker', 'atmosph', 'ballon', 'balloon',
+      'vessel', 'eppendorf', 'jar', 'bottle', 'cuvette', 'küvette', 'container', 'young',
     ],
     solutionSuffixes: ['-lösung', ' lösung', '-solution', ' solution', '-suspension', ' suspension'],
   };
@@ -330,6 +354,10 @@
       this.lastFlushed = null;
       this.parenDepth = 0;
       this.lastRejectedWord = null;
+      // Ende der zuletzt gelesenen Einheit ("1 mmol| diene"): ein direkt folgendes Wort ist der Name
+      this.lastQuantityEnd = null;
+      // "azide (13, 14, or 17; 0.27 mmol)": Nummern/Namen am Anfang der Klammer sind Aliasse des Namens davor
+      this.skippingAliases = false;
     }
 
     wt(w) { return this.text.slice(w.start, w.end); }
@@ -339,8 +367,26 @@
         this.flush();
         this.parenDepth = 0;
         const firstRow = this.rows.length;
+        let previousWasWorkup = false;
         for (const clause of this.splitClauses(sentence)) {
-          if (this.isWorkupOrProduct(clause)) continue;
+          // "washed with NaHCO3 (5 mL), and water (5 mL)": Fortsetzung eines Aufarbeitungsteils ohne neues Zugabe-Verb
+          let continuesWorkup = previousWasWorkup && ['and', 'und'].includes(this.wt(this.words[clause.start]).toLowerCase());
+          if (continuesWorkup) {
+            for (let k = clause.start; k < clause.end; k++) {
+              if (Vocabulary.reactionVerbs.has(this.wt(this.words[k]).toLowerCase())) { continuesWorkup = false; break; }
+            }
+          }
+          if (continuesWorkup || this.isWorkupOrProduct(clause)) { previousWasWorkup = true; continue; }
+          // "General procedure A using X (…), Y (…) gave compound 4b (89 mg, 66%)": ab dem Produktverb ist es das Produkt
+          let k = clause.start;
+          while (k < clause.end && !Vocabulary.productVerbs.has(this.wt(this.words[k]).toLowerCase())) k++;
+          if (k < clause.end) {
+            this.parse({ start: clause.start, end: k });
+            this.flush();
+            previousWasWorkup = true;
+            continue;
+          }
+          previousWasWorkup = false;
           this.parse(clause);
           this.flush();
         }
@@ -354,14 +400,19 @@
     splitSentences() {
       const result = [];
       let start = 0;
-      for (let i = 1; i < this.words.length; i++) {
-        if (this.isSentenceBoundary(i)) { result.push({ start, end: i }); start = i; }
+      let depth = 0;
+      for (let i = 0; i < this.words.length; i++) {
+        const w = this.words[i];
+        const depthAtGap = Math.max(0, depth + countOf(w.gapBefore, '(') - countOf(w.gapBefore, ')'));
+        if (i > 0 && this.isSentenceBoundary(i, depthAtGap)) { result.push({ start, end: i }); start = i; depth = 0; }
+        const span = this.text.slice(w.gapStart, w.end);
+        depth = Math.max(0, depth + countOf(span, '(') - countOf(span, ')'));
       }
       if (start < this.words.length) result.push({ start, end: this.words.length });
       return result;
     }
 
-    isSentenceBoundary(i) {
+    isSentenceBoundary(i, parenDepth) {
       const words = this.words;
       const gap = words[i].gapBefore;
       if (gap.includes('\n') || gap.includes(';')) return true;
@@ -370,28 +421,57 @@
       const firstChar = chars(this.wt(words[i]))[0];
       if (chars(lastToken).length > 1 && lastToken.endsWith('.') && chars(gap).some(isWS) && (isUpper(firstChar) || isNumber(firstChar))) {
         const stem = lastToken.slice(0, -1).toLowerCase();
-        if (!Vocabulary.abbreviations.has(stem) && !stem.includes('.')) return true;
+        // Initiale wie "J. Young" sind kein Satzende
+        if (!Vocabulary.abbreviations.has(stem) && !stem.includes('.') && !this.isInitial(i - 1)) return true;
       }
-      if (gap.includes(':') && isUpper(firstChar)) return true;
+      // Doppelpunkt beendet den Satz, aber nicht in einer Klammer: "(petroleum ether: EtOAc = 30 : 1)"
+      if (gap.includes(':') && parenDepth === 0 && isUpper(firstChar)) return true;
+      // "… 1.5 equiv.). The reaction": Punkt nach der Klammer beendet den Satz, auch hinter einer Abkürzung
+      if (gap.includes(').') && gap.length && isWS(gap[gap.length - 1]) && isUpper(firstChar)) return true;
       const dot = gap.indexOf('.');
       if (dot < 0) return false;
       const after = gap[dot + 1];
       if (after !== undefined && !isWS(after)) return false;
+      // "cat. (0.04 mmol, 20 mol%)": Mengenklammer nach dem Punkt gehört noch zum Wort davor
+      if (gap.slice(dot).includes('(') && parseDecimal(this.wt(words[i])) !== null) return false;
+      if (this.isInitial(i - 1)) return false;
       const previous = this.wt(words[i - 1]).toLowerCase();
       return !Vocabulary.abbreviations.has(previous);
+    }
+
+    /** Einzelner Großbuchstabe als Initiale ("J. Young tube") – nicht "°C." oder Einheiten wie "M", "K", "L". */
+    isInitial(k) {
+      const w = trimSet(this.wt(this.words[k]), ['.']);
+      if (chars(w).length !== 1 || !isUpper(w) || 'CFKLMN'.includes(w)) return false;
+      return !this.words[k].gapBefore.includes('°');
     }
 
     splitClauses(sentence) {
       const result = [];
       let start = sentence.start;
       const lower = i => (i < sentence.end ? this.wt(this.words[i]).toLowerCase() : '');
+      // "After evaporation of MeCN, MeOH (5 mL) … were added": einleitende Zeitangabe bis zum ersten Komma
+      // außerhalb von Klammern ist ein eigener Teilsatz
+      let leadingPhraseOpen = ['after', 'upon', 'following', 'once'].includes(lower(sentence.start));
+      let depth = 0;
       for (let i = sentence.start; i < sentence.end; i++) {
         if (!(i > start)) continue;
-        const comma = this.words[i].gapBefore.includes(',');
+        const word = this.words[i];
+        const comma = word.gapBefore.includes(',');
+        const depthAtGap = Math.max(0, depth + countOf(word.gapBefore, '(') - countOf(word.gapBefore, ')'));
+        const span = this.text.slice(word.gapStart, word.end);
+        depth = Math.max(0, depth + countOf(span, '(') - countOf(span, ')'));
+        if (leadingPhraseOpen && comma && depthAtGap === 0) {
+          leadingPhraseOpen = false;
+          result.push({ start, end: i }); start = i;
+          continue;
+        }
         const w = lower(i), next = lower(i + 1);
-        const boundary = (comma && Vocabulary.clauseOpeners.has(w))
+        const previous = i > sentence.start ? lower(i - 1) : '';
+        const vesselClause = ['that', 'which', 'der', 'die', 'das'].includes(w) && Vocabulary.apparatus.some(a => previous.includes(a));
+        const boundary = (comma && Vocabulary.clauseOpeners.has(w)) || vesselClause
           || (['and', 'und'].includes(w) && ['then', 'anschließend', 'danach', 'dann'].includes(next))
-          || (comma && ['and', 'und'].includes(w) && ['the', 'die', 'der', 'das', 'to', 'zu'].includes(next));
+          || (comma && ['and', 'und'].includes(w) && next !== '');
         if (boundary) { result.push({ start, end: i }); start = i; }
       }
       result.push({ start, end: sentence.end });
@@ -401,12 +481,22 @@
     isWorkupOrProduct(clause) {
       const lowers = [];
       for (let i = clause.start; i < clause.end; i++) lowers.push(this.wt(this.words[i]).toLowerCase());
-      if (lowers.some(w => Vocabulary.workupWords.has(w))) return true;
+      for (let k = 0; k < lowers.length; k++) {
+        const w = lowers[k];
+        if (!Vocabulary.workupWords.has(w)) continue;
+        // Partizip als Eigenschaft eines Reagenzes: "purified lithium borohydride", "dried THF" – kein Aufarbeitungsschritt
+        if (Vocabulary.adjectivalParticiples.has(w) && k + 1 < lowers.length && !Vocabulary.participleFollowers.has(lowers[k + 1]) &&
+            (k === 0 || !['was', 'were', 'is', 'are', 'been', 'be', 'being', 'wurde', 'wurden'].includes(lowers[k - 1])) &&
+            isLetter(chars(lowers[k + 1])[0])) continue;
+        return true;
+      }
+      // Stoffmengen oder Äquivalente im Teilsatz: Reaktionsansatz, auch wenn "ges. NH4Cl" vorkommt
+      const hasAmounts = lowers.some(w => ['mmol', 'µmol', 'umol', 'mol', 'equiv', 'eq', 'äq', 'äquiv'].includes(trimSet(w, ['.'])));
       for (let k = 0; k + 1 < lowers.length; k++) {
         if (lowers[k] === 'crude' && ['product', 'residue', 'mixture', 'material', 'oil', 'solid', 'aldehyde', 'ketone', 'alcohol', 'diol'].includes(lowers[k + 1])) return true;
       }
       const saturated = lowers.some(w => ['saturated', 'sat', 'gesättigter', 'gesättigte', 'gesättigtem', 'ges'].includes(w));
-      if (saturated && lowers.some(w => ['aqueous', 'aq', 'wässriger', 'wässrige', 'nh4cl', 'nahco3', 'nacl', 'na2s2o3'].some(p => w.startsWith(p)) || w.endsWith('-lösung'))) return true;
+      if (saturated && !hasAmounts && lowers.some(w => ['aqueous', 'aq', 'wässriger', 'wässrige', 'nh4cl', 'nahco3', 'nacl', 'na2s2o3'].some(p => w.startsWith(p)) || w.endsWith('-lösung'))) return true;
       if (lowers.some(w => ['diluted', 'verdünnt'].includes(w)) && !lowers.some(w => Vocabulary.reactionVerbs.has(w))) return true;
       return false;
     }
@@ -425,18 +515,34 @@
           this.nameOpen = false;
           skip.carrier = false;
         }
+        // "1a (0.12 mmol), 2a (0.10 mmol)": Komma außerhalb der Klammer schließt eine vollständige Zeile ab
+        if (word.gapBefore.includes(',') && (word.gapBefore.includes(')') || this.parenDepth === 0) &&
+            this.current.nameRange !== null && hasQuantity(this.current) && !this.continuesBareQuantity(i, sentence)) this.flush();
         const span = this.text.slice(word.gapStart, word.end);
         this.parenDepth = Math.max(0, this.parenDepth + countOf(span, '(') - countOf(span, ')'));
         if (skip.carrier) { i += 1; continue; }
+        if (word.gapBefore.includes(')')) this.skippingAliases = false;
+        if (word.gapBefore.includes('(') && this.current.nameRange !== null && !hasQuantity(this.current) && this.parenDepth > 0 &&
+            !this.startsQuantity(i, sentence) && this.parenGroupHasQuantity(i, sentence) && this.aliasListFollows(i, sentence)) {
+          this.skippingAliases = true;
+        }
+        if (this.skippingAliases) {
+          if (this.startsQuantity(i, sentence)) this.skippingAliases = false; else { i += 1; continue; }
+        }
         const rejectedBefore = this.lastRejectedWord;
         this.lastRejectedWord = null;
 
         // Zahl (+ Einheit)
         const value = word.tokens.length === 1 ? parseDecimal(wordText) : null;
         if (value !== null) {
-          if (word.gapBefore.includes('(') && this.current.nameRange === null && !hasQuantity(this.current) &&
+          if (word.gapBefore.includes('(') && !hasQuantity(this.current) &&
               rejectedBefore && i > sentence.start && rejectedBefore.start === this.words[i - 1].start && rejectedBefore.end === this.words[i - 1].end) {
-            this.addNameWord(rejectedBefore);
+            // "Standard reaction conditions: 1a (0.12 mmol)": Nummer direkt vor der Mengenklammer ist der Name,
+            // auch wenn vorher schon ein (falscher) Name stand
+            if (this.current.nameRange === null) this.addNameWord(rejectedBefore);
+            else if (isCompoundLabel(this.wt(rejectedBefore)) && !rejectedBefore.gapBefore.includes('[') && !word.gapBefore.includes(']')) {
+              this.flush(); this.addNameWord(rejectedBefore);
+            }
           }
           i = this.handleNumber(value, i, sentence, skip);
           continue;
@@ -452,6 +558,31 @@
           }
         }
 
+        // Molsieb: "AW-500 MS (25 mg)", "4 Å MS" – nicht das Analytik-Kürzel
+        if (lower === 'ms' && (this.nameOpen || (i > sentence.start && this.wt(this.words[i - 1]).includes('Å')))) {
+          this.addNameWord(word);
+          i += 1;
+          continue;
+        }
+        // Menge zuerst: "1 mmol diene, 1.3 mmol formalin" – das Wort direkt hinter der Einheit ist der Name
+        if (this.lastQuantityEnd !== null && word.gapStart === this.lastQuantityEnd && /^ +$/.test(word.gapBefore) &&
+            hasQuantity(this.current) && this.current.nameRange === null && this.parenDepth === 0 &&
+            isLetter(chars(wordText)[0]) && chars(wordText).length >= 3 &&
+            !Vocabulary.stopwords.has(lower) && !Vocabulary.apparatus.some(a => lower.includes(a)) &&
+            !Vocabulary.notNamesAfterQuantity.has(lower) && Units.quantity(lower, '') === null && !Units.isIgnoredUnit(lower)) {
+          this.lastQuantityEnd = null;
+          this.addNameWord(word);
+          i += 1;
+          continue;
+        }
+        // "0.4 mmol scale": kein Stoff, auch wenn der Klassifikator das Wort für einen Namen hält
+        if (this.lastQuantityEnd !== null && word.gapStart === this.lastQuantityEnd && Vocabulary.notNamesAfterQuantity.has(lower)) {
+          this.lastQuantityEnd = null;
+          this.nameOpen = false;
+          i += 1;
+          continue;
+        }
+        this.lastQuantityEnd = null;
         // Stoppwörter schließen den aktuellen Namen
         if (word.tokens.length === 1 && Vocabulary.stopwords.has(lower)) {
           this.nameOpen = false;
@@ -486,6 +617,8 @@
           this.nameOpen = false;
           this.pendingNameStart = null;
           this.lastRejectedWord = word;
+          // "tube in a glovebox was charged with alcohol (…)": "in" gehörte nicht zu einem Lösemittel
+          this.sawInAfterName = false;
         }
         i += 1;
       }
@@ -508,6 +641,10 @@
         this.current = this.lastFlushed;
         this.solventAfterIn = false;
       }
+      if (numberWord.gapBefore.includes('(') && this.nameClosedByStopword && this.current.nameRange !== null && !hasQuantity(this.current) &&
+          i > sentence.start && Vocabulary.additionVerbs.has(this.wt(words[i - 1]).toLowerCase())) {
+        this.nameClosedByStopword = false;
+      }
       const next = i + 1 < sentence.end ? words[i + 1] : null;
       const nextText = next ? this.wt(next) : '';
       const gapToNext = next ? next.gapBefore : '';
@@ -525,7 +662,24 @@
         const quantity = Units.quantity(nextText, gapAfterNext);
         if (quantity) {
           if (quantity.kind === 'volume' && this.isApparatus(i + 1, sentence)) return i + 2;
+          // "KOH (0.200 g, 3.56 mmol, 2 mL H2O)": Volumen direkt vor einem Lösemittel in der Klammer ist eine eigene Zeile
+          if (quantity.kind === 'volume' && this.parenDepth > 0 && this.current.nameRange !== null && i + 2 < sentence.end &&
+              /^ *$/.test(words[i + 2].gapBefore)) {
+            const solvent = words[i + 2];
+            const solventText = this.wt(solvent);
+            if (!Vocabulary.stopwords.has(solventText.toLowerCase()) &&
+                (this.isChemicalName(solvent, solventText) || ChemicalHeuristics.looksLikeChemical(solventText))) {
+              this.flush();
+              this.current.volume = value * quantity.factor;
+              this.addNameWord(solvent);
+              this.nameOpen = false;
+              return i + 3;
+            }
+          }
+          if (quantity.kind === 'volume' && numberWord.gapBefore.includes('(') && i > sentence.start &&
+              Vocabulary.apparatus.some(a => this.wt(words[i - 1]).toLowerCase().includes(a))) return i + 2;
           this.setQuantity(quantity.kind, value * quantity.factor);
+          this.lastQuantityEnd = next.end;
           return i + 2;
         }
         if (Units.isConcentration(nextText)) {
@@ -546,6 +700,45 @@
       return i + 1;
     }
 
+    /** "Lithium aluminum hydride 11.1 mg, 1 equiv was added": weitere Menge ohne Klammer gehört zur selben Zeile, wenn diese Mengenart noch fehlt. */
+    continuesBareQuantity(i, sentence) {
+      const w = this.words[i];
+      if (this.parenDepth !== 0 || w.gapBefore.includes(')') || i + 1 >= sentence.end || w.tokens.length !== 1) return false;
+      if (parseDecimal(this.wt(w)) === null) return false;
+      const q = Units.quantity(this.wt(this.words[i + 1]), '');
+      return q !== null && this.current[q.kind] === null;
+    }
+
+    /** Beginnt bei Wort i eine Mengenangabe ("0.27 mmol", "5 mol%")? */
+    startsQuantity(i, sentence) {
+      if (parseDecimal(this.wt(this.words[i])) === null || i + 1 >= sentence.end) return false;
+      const gapAfter = i + 2 < sentence.end ? this.words[i + 2].gapBefore : '';
+      return Units.quantity(this.wt(this.words[i + 1]), gapAfter) !== null;
+    }
+
+    /** Enthält die Klammer ab Wort i irgendwo eine Mengenangabe? */
+    parenGroupHasQuantity(i, sentence) {
+      for (let j = i; j < sentence.end; j++) {
+        if (j > i && this.words[j].gapBefore.includes(')')) return false;
+        if (this.startsQuantity(j, sentence)) return true;
+      }
+      return false;
+    }
+
+    /** Steht vor der ersten Menge der Klammer eine Aufzählung ("13, 14, or 17;", "O,O,")? */
+    aliasListFollows(i, sentence) {
+      let j = i, count = 0;
+      while (j < sentence.end && !this.startsQuantity(j, sentence)) {
+        if (j > i && this.words[j].gapBefore.includes(')')) return false;
+        // Konzentrationen und Prozentangaben sind keine Aliasse: "(1.43 M, 9.8 mL)", "(5% w/v, …)"
+        const w = this.wt(this.words[j]);
+        if (Units.isConcentration(w) || this.words[j].gapBefore.includes('%') || w.includes('%')) return false;
+        count += 1;
+        j += 1;
+      }
+      return count >= 2 || this.wt(this.words[i]).includes(',');
+    }
+
     parenGroupHasAmount(i, sentence) {
       for (let j = i; j < sentence.end; j++) {
         if (j > i && this.words[j].gapBefore.includes(')')) break;
@@ -558,14 +751,18 @@
     }
 
     isApparatus(unitIndex, sentence) {
-      for (let j = unitIndex + 1; j < Math.min(unitIndex + 3, sentence.end); j++) {
+      for (let j = unitIndex + 1; j < Math.min(unitIndex + 5, sentence.end); j++) {
+        // Nur die Wörter direkt dahinter ("25 mL high-pressure J-Young tube"), nicht über "in", Kommas oder Klammern hinaus
+        if (j > unitIndex + 1 && chars(this.words[j].gapBefore).some(c => ',;()'.includes(c))) break;
         const w = this.wt(this.words[j]).toLowerCase();
+        if (j > unitIndex + 1 && Vocabulary.stopwords.has(w) && !Vocabulary.apparatus.some(a => w.includes(a))) break;
         if (Vocabulary.apparatus.some(a => w.includes(a))) return true;
       }
       return false;
     }
 
     acceptCompoundLabel(i, sentence) {
+      if (this.isAlternativeLabel(i, sentence)) return true;
       if (hasQuantity(this.current) && this.current.nameRange === null) return true;
       if (this.nameOpen && allWS(this.words[i].gapBefore)) return true;
       if (i > sentence.start) {
@@ -575,9 +772,20 @@
       return false;
     }
 
+    /** "9 or 10": zweite Nummer direkt nach "or"/"oder" hinter einer Nummer desselben Namens. */
+    isAlternativeLabel(i, sentence) {
+      if (i - 2 < sentence.start || this.current.nameRange === null || hasQuantity(this.current)) return false;
+      const previous = this.wt(this.words[i - 1]).toLowerCase();
+      return ['or', 'oder', 'and', 'und'].includes(previous) && isCompoundLabel(this.wt(this.words[i - 2]));
+    }
+
     // Namen ------------------------------------------------------------------
 
     addLabelWord(word, i, sentence) {
+      if (this.isAlternativeLabel(i, sentence)) {
+        this.nameOpen = true;
+        this.nameClosedByStopword = false;
+      }
       if (!this.nameOpen && i > sentence.start && allWS(word.gapBefore)) {
         const previous = this.words[i - 1];
         const prevText = this.wt(previous).toLowerCase();
