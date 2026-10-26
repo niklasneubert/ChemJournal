@@ -50,7 +50,9 @@ struct ChemJournalApp: App {
                 Button("Ansatz importieren (.chemjournal)...") { NotificationCenter.default.post(name: .importChemjournal, object: nil) }
                     .keyboardShortcut("i", modifiers: [.command, .shift])
             }
-            CommandMenu("Darstellung") {
+            // Ins System-Menü „Darstellung“ (ein eigenes Menü gleichen Namens stünde sonst doppelt da)
+            CommandGroup(after: .toolbar) {
+                Divider()
                 Picker("Erscheinungsbild", selection: $appTheme) {
                     Text("System").tag(AppTheme.system)
                     Text("Hell").tag(AppTheme.light)

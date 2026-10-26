@@ -13,6 +13,13 @@ into a clean PDF when you need it on paper.
 
 ![ChemJournal overview](docs/screenshots/overview.png)
 
+### See it in action
+
+[![ChemJournal demo: reagent table with CAS autofill, search and Smart Extract](docs/demo.gif)](docs/ChemJournal-Demo.mp4)
+
+<sub>70-second tour (shown at double speed) – click for the full-resolution video
+([MP4](docs/ChemJournal-Demo.mp4)).</sub>
+
 ## Download
 
 Get the latest version from the **[Releases page](../../releases/latest)**:
@@ -48,6 +55,9 @@ Want to try it with data? Import one of the [example experiments](examples/) via
   [PubChem](https://pubchem.ncbi.nlm.nih.gov) – and stored locally, so they appear instantly (and offline) next time
 - **Smart Extract:** paste an experimental procedure from a paper or SI and get the reagent table filled in
   (German and English, see below)
+- **ChemDraw integration (macOS):** click *In ChemDraw zeichnen*, draw the reaction scheme in ChemDraw and press
+  ⌘S – it lands in the experiment as a high-resolution image (the scheme in the screenshots was made this way).
+  Without ChemDraw, just drop in any image or PDF
 - **Formulas:** write `$…$` LaTeX or `\ce{…}` (mhchem) in summaries, procedures and observations – rendered
   automatically when you leave the field, entirely offline (bundled MathJax)
 - **Search by chemical:** `n-BuLi` also finds “n-Butyllithium”, “BuLi” and rows that only carry CAS 109-72-8
@@ -60,10 +70,12 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 
 | | |
 |---|---|
-| ![Reagent and yield tables](docs/screenshots/tables.png) | ![Dark mode](docs/screenshots/dark-mode.png) |
-| ![Smart Extract](docs/screenshots/smart-extract.png) | ![PDF export](docs/screenshots/pdf-export.png) |
+| ![Reagent table](docs/screenshots/tables.png) | ![Procedure, observation and yield](docs/screenshots/yields.png) |
+| ![Smart Extract](docs/screenshots/smart-extract.png) | ![Search by chemical: "toluene" finds "Toluol"](docs/screenshots/search.png) |
+| ![Dark mode](docs/screenshots/dark-mode.png) | ![PDF export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots show the Linux build with example data; the macOS app looks the same.</sub>
+<sub>Screenshots and video: the macOS app with example data. The Linux version has the same features and file
+format.</sub>
 
 ## Smart Extract
 
@@ -108,7 +120,7 @@ macos/      SwiftUI app (Xcode project), tests, Smart Extract evaluation tool
 linux/      Electron app with the same features and file format
 training/   Generator for the Smart Extract training data (synthetic sentences) and the data itself
 examples/   Example experiments to import
-docs/       Screenshots
+docs/       Screenshots and demo video
 ```
 
 ## How this app was made

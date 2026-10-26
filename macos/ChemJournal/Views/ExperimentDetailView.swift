@@ -40,7 +40,10 @@ struct DetailView: View {
                     }.buttonStyle(.plain).padding(.top, 10)
                 }
                 .padding(30)
-                .frame(minWidth: max(scrollGeo.size.width, contentNeededWidth), alignment: .leading)
+                // Feste Breite statt nur Mindestbreite: Der waagrechte ScrollView schlägt sonst keine Breite vor,
+                // breite Bilder (z. B. aus ChemDraw) machen die Seite breiter als das Fenster und der Titel rutscht
+                // unter die Symbolleiste.
+                .frame(width: max(scrollGeo.size.width, contentNeededWidth), alignment: .leading)
             }
             .background(.regularMaterial)
             .sheet(isPresented: $showHistory) { VersionHistoryView(experimentID: experiment.id, currentTitle: experiment.title) }

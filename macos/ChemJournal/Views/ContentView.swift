@@ -9,6 +9,7 @@ struct ContentView: View {
     @Environment(\.appearsActive) private var appearsActive
     @State private var selection: SidebarItem?
     @State private var searchText = ""
+    @FocusState private var searchFieldFocused: Bool
     @State private var showExportDialog = false
     @State private var exportExperiments: [Experiment] = []
     @State private var exportProjectName: String = ""
@@ -91,7 +92,16 @@ struct ContentView: View {
                     }
                 }
             }
+            // Liste bei jedem Suchbegriff neu aufbauen: Beim Filtern während des Tippens blieben sonst Zeilen aus
+            // halb fertigen Übergängen übereinander stehen (Treffer doppelt gezeichnet). Die neue Liste würde den
+            // Fokus übernehmen – deshalb geht er ans Suchfeld zurück.
+            .id(searchText)
             .searchable(text: $searchText, prompt: "Suchen: Ansatz, Chemikalie, CAS …")
+            .searchFocused($searchFieldFocused)
+            .onChange(of: searchText) { _, _ in
+                guard searchFieldFocused else { return }
+                DispatchQueue.main.async { searchFieldFocused = true }
+            }
             .scrollContentBackground(.hidden).background(.ultraThinMaterial)
             .navigationSplitViewColumnWidth(min: 150, ideal: 250, max: 400)
             .toolbar {

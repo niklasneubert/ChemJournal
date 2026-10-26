@@ -12,7 +12,6 @@ struct ReactionImageView: View {
     @State private var showImportError = false
     @State private var localMonitor: Any? = nil
     @State private var fileWatcherTimer: Timer?
-    @State private var openedDate = Date()
     @State private var isImporting = false
 
     var body: some View {
@@ -151,7 +150,6 @@ struct ReactionImageView: View {
         chemDrawBridge.openChemDraw()
         isChemDrawActive = chemDrawBridge.isActive
         guard isChemDrawActive else { return }
-        openedDate = Date()
         startKeyboardMonitors()
         startFileWatcher()
     }
@@ -168,6 +166,7 @@ struct ReactionImageView: View {
                 stopChemDraw()
             } else {
                 showImportError = true
+                chemDrawBridge.markFileSeen()
                 if isChemDrawActive { startFileWatcher() }
             }
         }
@@ -183,14 +182,14 @@ struct ReactionImageView: View {
     private func startFileWatcher() {
         stopFileWatcher()
         let bridge = chemDrawBridge
-        let opened = openedDate
         fileWatcherTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
             Task { @MainActor in
-                guard isChemDrawActive, let url = bridge.tempFileURL,
-                      let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
-                      let modDate = attrs[.modificationDate] as? Date, modDate > opened else { return }
-                // In ChemDraw wurde ⌘S (Speichern) gedrückt
-                importFromChemDraw()
+                guard isChemDrawActive, let url = bridge.tempFileURL else { return }
+                bridge.refreshDocumentState()
+                guard let modDate = ChemDrawBridge.modificationDate(of: url), modDate > bridge.lastSeenFileDate else { return }
+                bridge.lastSeenFileDate = modDate
+                // ChemDraw sichert auch von selbst – nur bei ⌘S (Speichern) übernehmen
+                if bridge.isExplicitSave(fileDate: modDate) { importFromChemDraw() }
             }
         }
     }

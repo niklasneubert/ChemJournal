@@ -6,6 +6,74 @@ final class ChemDrawBridge {
     private(set) var tempFileURL: URL?
     var isActive: Bool { tempFileURL != nil }
 
+    // ChemDraw speichert CDXML-Dateien beim Bearbeiten von selbst (macOS-Autosichern, ca. 10–15 s nach einer
+    // Änderung). Eine geänderte Datei heißt also nicht, dass ⌘S gedrückt wurde. So unterscheiden wir:
+    // - ⌘S nach Änderungen legt eine neue Dateiversion mit dem Zeitstempel der Datei an. Das Autosichern nicht
+    //   (beim ersten Mal sichert es nur den Stand beim Öffnen, mit dessen altem Zeitstempel).
+    // - ⌘S ohne neue Änderungen schreibt die Datei, obwohl das Dokument gespeichert war. Das Autosichern
+    //   schreibt nur Dokumente mit ungespeicherten Änderungen.
+    private var documentWasClean: Bool?     // letzter bekannter Zustand in ChemDraw (nil = unbekannt)
+    private var documentStateDate = Date.distantPast
+    private var stateQueryRunning = false
+    private var lastStateQuery = Date.distantPast
+    /// Zeitstempel der Datei, den der Dateiwächter zuletzt gesehen hat.
+    var lastSeenFileDate = Date.distantPast
+
+    /// Fragt (höchstens einmal pro Sekunde, im Hintergrund) ab, ob unser Dokument in ChemDraw ungespeicherte
+    /// Änderungen hat.
+    func refreshDocumentState() {
+        guard let url = tempFileURL, !stateQueryRunning, Date().timeIntervalSince(lastStateQuery) >= 1 else { return }
+        stateQueryRunning = true
+        lastStateQuery = Date()
+        let name = url.lastPathComponent.replacingOccurrences(of: "\"", with: "")
+        let script = """
+        tell application "System Events"
+            if not (exists (process "ChemDraw")) then return "none"
+        end tell
+        tell application "ChemDraw"
+            if not (exists document "\(name)") then return "none"
+            return modified of document "\(name)" as text
+        end tell
+        """
+        Task.detached(priority: .utility) {
+            let answer = Self.runAppleScript(script, wait: true)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.stateQueryRunning = false
+                guard self.tempFileURL == url else { return }
+                switch answer {
+                case "false": self.documentWasClean = true; self.documentStateDate = Date()
+                case "true": self.documentWasClean = false; self.documentStateDate = Date()
+                default: break
+                }
+            }
+        }
+    }
+
+    /// Merkt sich den aktuellen Zeitstempel der Datei, damit der Dateiwächter ihn nicht als neues ⌘S zählt
+    /// (der Import speichert das Dokument selbst).
+    func markFileSeen() {
+        guard let url = tempFileURL, let date = Self.modificationDate(of: url) else { return }
+        lastSeenFileDate = max(lastSeenFileDate, date)
+    }
+
+    /// Ungecachter Zeitstempel (URL.resourceValues merkt sich Werte pro URL-Objekt).
+    static func modificationDate(of url: URL) -> Date? {
+        (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date
+    }
+
+    /// `true`, wenn die Änderung der Datei vom Speichern mit ⌘S stammt und nicht vom Autosichern.
+    func isExplicitSave(fileDate: Date) -> Bool {
+        guard let url = tempFileURL else { return false }
+        let versions = NSFileVersion.otherVersionsOfItem(at: url) ?? []
+        if versions.contains(where: { abs(($0.modificationDate ?? .distantPast).timeIntervalSince(fileDate)) < 2 }) { return true }
+        // Nur einem frischen Zustand trauen (hängt ChemDraw, kommen keine Antworten mehr)
+        if documentWasClean == true, fileDate.timeIntervalSince(documentStateDate) < 3 { return true }
+        // Autosichern: danach ist das Dokument gespeichert, bis wieder etwas geändert wird
+        documentWasClean = nil
+        return false
+    }
+
     private static var tempDirectory: URL {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("ChemJournal", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
@@ -30,6 +98,9 @@ final class ChemDrawBridge {
             return
         }
         tempFileURL = fileURL
+        documentWasClean = nil
+        documentStateDate = .distantPast
+        lastSeenFileDate = Self.modificationDate(of: fileURL) ?? Date()
 
         let config = NSWorkspace.OpenConfiguration()
         config.activates = true
@@ -128,7 +199,9 @@ final class ChemDrawBridge {
         Task.detached { Self.runAppleScript(quitScript, wait: false) }
     }
 
-    nonisolated private static func runAppleScript(_ source: String, wait: Bool) {
+    /// Führt ein AppleScript aus; mit `wait` kommt die Ausgabe zurück.
+    @discardableResult
+    nonisolated private static func runAppleScript(_ source: String, wait: Bool) -> String? {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
         process.arguments = ["-e", source]
@@ -137,9 +210,13 @@ final class ChemDrawBridge {
         process.standardError = pipe
         do {
             try process.run()
-            if wait { process.waitUntilExit() }
+            guard wait else { return nil }
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            process.waitUntilExit()
+            return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
         } catch {
             print("ChemDraw Bridge: osascript Fehler: \(error)")
+            return nil
         }
     }
 }

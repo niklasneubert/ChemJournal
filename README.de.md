@@ -13,6 +13,13 @@ als sauberes PDF.
 
 ![ChemJournal](docs/screenshots/overview.png)
 
+### Kurz vorgestellt
+
+[![ChemJournal in Aktion: Ansatzgrößen mit CAS-Autofill, Suche und Smart Extract](docs/demo.gif)](docs/ChemJournal-Demo.mp4)
+
+<sub>70 Sekunden Rundgang (hier doppelt so schnell) – Klick öffnet das Video in voller Auflösung
+([MP4](docs/ChemJournal-Demo.mp4)).</sub>
+
 ## Download
 
 Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
@@ -46,6 +53,9 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 - **CAS-Autofill:** CAS-Nummer eintippen, Molmasse und Dichte kommen aus PubChem – und werden lokal gespeichert,
   beim nächsten Mal also sofort und auch offline eingetragen
 - **Smart Extract:** Vorschrift aus einem Paper oder einer SI einfügen, die Tabelle füllt sich (Deutsch und Englisch)
+- **ChemDraw-Anbindung (macOS):** *In ChemDraw zeichnen* klicken, Reaktionsgleichung in ChemDraw zeichnen, ⌘S –
+  sie landet als hochaufgelöstes Bild im Ansatz (so ist das Schema in den Screenshots entstanden). Ohne ChemDraw
+  einfach ein Bild oder PDF hineinziehen
 - **Formeln:** `$…$` (LaTeX) und `\ce{…}` (mhchem) in Zusammenfassung, Vorgehen und Beobachtung, automatisch
   gesetzt beim Verlassen des Feldes, komplett offline
 - **Suche nach Chemikalien:** `n-BuLi` findet auch „n-Butyllithium“, „BuLi“ und Zeilen, die nur CAS 109-72-8 haben
@@ -54,6 +64,15 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 - **Versionsverlauf je Ansatz**, tägliche Backups, gelöschte Ansätze wiederherstellen, Rückgängig/Wiederholen
 - **Sync** über iCloud Drive (macOS) oder einen Sync-Ordner wie Nextcloud/Dropbox (Linux) – gleiches Dateiformat
 - Hell- und Dunkelmodus
+
+| | |
+|---|---|
+| ![Ansatzgrößen](docs/screenshots/tables.png) | ![Vorgehen, Beobachtung, Ausbeute](docs/screenshots/yields.png) |
+| ![Smart Extract](docs/screenshots/smart-extract.png) | ![Suche: „toluene“ findet „Toluol“](docs/screenshots/search.png) |
+| ![Dunkelmodus](docs/screenshots/dark-mode.png) | ![PDF-Export](docs/screenshots/pdf-export.png) |
+
+<sub>Screenshots und Video: die Mac-App mit Beispieldaten. Die Linux-Version hat dieselben Funktionen und dasselbe
+Dateiformat.</sub>
 
 ## Smart Extract
 
