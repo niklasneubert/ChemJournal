@@ -31,7 +31,7 @@ final class ChemDrawBridge {
             if not (exists (process "ChemDraw")) then return "none"
         end tell
         tell application "ChemDraw"
-            if not (exists document "\(name)") then return "none"
+            if not ((name of every document) contains "\(name)") then return "none"
             return modified of document "\(name)" as text
         end tell
         """
@@ -117,29 +117,35 @@ final class ChemDrawBridge {
         let baseName = "ChemDraw_Export_\(UUID().uuidString.prefix(8))"
         let pngURL = Self.tempDirectory.appendingPathComponent(baseName + ".png")
         let pdfURL = Self.tempDirectory.appendingPathComponent(baseName + ".pdf")
+        // ChemDraw versteht kein „exists“ – deshalb Abgleich über die Dokumentnamen.
+        // Gezielt das von ChemJournal geöffnete Dokument – nicht das vorderste. Liegt in ChemDraw ein anderes
+        // Dokument vorne, würde sonst dessen Zeichnung übernommen und es ohne Sichern geschlossen.
+        guard let docURL = tempFileURL else { completion(nil); return }
+        let docName = docURL.lastPathComponent.replacingOccurrences(of: "\"", with: "")
         let script = """
         tell application "System Events"
             set isRunning to (exists (process "ChemDraw"))
         end tell
         if isRunning then
             tell application "ChemDraw"
-                if (count of documents) > 0 then
+                if (name of every document) contains "\(docName)" then
+                    set d to document "\(docName)"
                     try
-                        save front document
+                        save d
                     end try
                     try
-                        save front document in POSIX file "\(pngURL.path)" as "PNG"
+                        save d in POSIX file "\(pngURL.path)" as "PNG"
                     end try
                     try
-                        save front document in POSIX file "\(pdfURL.path)" as "PDF"
+                        save d in POSIX file "\(pdfURL.path)" as "PDF"
                     end try
                     try
-                        close front document saving no
+                        close d saving no
                     end try
                     if (count of documents) = 0 then quit
                     return "ok"
                 else
-                    quit
+                    if (count of documents) = 0 then quit
                     return "no_doc"
                 end if
             end tell
