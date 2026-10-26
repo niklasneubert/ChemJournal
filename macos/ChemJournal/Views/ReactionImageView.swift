@@ -13,6 +13,7 @@ struct ReactionImageView: View {
     @State private var localMonitor: Any? = nil
     @State private var fileWatcherTimer: Timer?
     @State private var isImporting = false
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -47,7 +48,12 @@ struct ReactionImageView: View {
                     .fill(isHovering ? Color.blue.opacity(0.1) : Color(NSColor.textBackgroundColor).opacity(0.5))
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(isHovering ? Color.blue : (isChemDrawActive ? Color.orange : Color.gray.opacity(0.2)), style: StrokeStyle(lineWidth: isHovering || isChemDrawActive ? 2 : 1, dash: isHovering ? [8] : [])))
                 if let data = imageData, let image = NSImage(data: data) {
-                    Image(nsImage: image).resizable().scaledToFit().frame(maxHeight: 250).padding()
+                    // ChemDraw-Bilder sind schwarz auf transparent – im Dunkelmodus auf heller Karte zeigen
+                    Image(nsImage: image).resizable().scaledToFit().frame(maxHeight: 250)
+                        .padding(8)
+                        .background(colorScheme == .dark ? Color.white.opacity(0.92) : Color.clear,
+                                    in: RoundedRectangle(cornerRadius: 6))
+                        .padding(8)
                         .contextMenu {
                             Button(role: .destructive, action: removeImage) { Label("Bild entfernen", systemImage: "xmark") }
                         }
