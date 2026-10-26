@@ -7,10 +7,16 @@ struct ChemJournalApp: App {
     /// Ein Datenbestand für alle Fenster.
     @State private var store = JournalStore()
 
+    init() {
+        // Sprache der Oberfläche (Standard Deutsch) vor dem ersten Text festlegen
+        AppLanguage.activate()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(store)
+                .environment(\.locale, AppLanguage.current.locale)
                 .frame(minWidth: 480, minHeight: 320)
                 .preferredColorScheme(appTheme == .system ? nil : (appTheme == .light ? .light : .dark))
                 .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
@@ -69,6 +75,7 @@ struct ChemJournalApp: App {
         Settings {
             SettingsView()
                 .environment(store)
+                .environment(\.locale, AppLanguage.current.locale)
                 .preferredColorScheme(appTheme == .system ? nil : (appTheme == .light ? .light : .dark))
         }
     }

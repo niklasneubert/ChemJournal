@@ -298,6 +298,35 @@ struct StorageSwitchTests {
         #expect(await store.versions(for: e.id).isEmpty == false)
     }
 
+    @Test("Backup zurückspielen: aktueller Stand wird vorher gesichert und lässt sich widerrufen")
+    func restoreBackup() async throws {
+        let p = paths(try tempDirectory())
+        let store = JournalStore(paths: p)
+        await store.loadIfNeeded()
+        store.projects = [Project(title: "Alt", experiments: [experiment("Alt")])]
+        store.waitForPendingWrites()
+        guard let backup = await store.backupNow() else { Issue.record("kein Backup"); return }
+        store.projects = [Project(title: "Neu", experiments: [experiment("Neu")])]
+        store.waitForPendingWrites()
+
+        let info = BackupInfo(url: backup, date: Date(), size: 0)
+        guard case .restored(let safety) = await store.restoreBackup(info) else { Issue.record("nicht wiederhergestellt"); return }
+        #expect(store.projects.map(\.title) == ["Alt"])
+        let safetyURL = try #require(safety)
+        #expect(safetyURL.lastPathComponent.hasPrefix("ChemJournal-vor-Wiederherstellen-"))
+        let saved = try JSONDecoder().decode([Project].self, from: Data(contentsOf: safetyURL))
+        #expect(saved.map(\.title) == ["Neu"])
+        store.waitForPendingWrites()
+        let onDisk = try JSONDecoder().decode([Project].self, from: Data(contentsOf: p.journalFile))
+        #expect(onDisk.map(\.title) == ["Alt"])
+        #expect(store.undo())
+        #expect(store.projects.map(\.title) == ["Neu"])
+
+        let broken = p.backupsDirectory.appendingPathComponent("kaputt.json")
+        try Data("kein json".utf8).write(to: broken)
+        #expect(await store.restoreBackup(BackupInfo(url: broken, date: Date(), size: 0)) == .unreadable)
+    }
+
     @Test("Liegt am Ziel schon ein Journal, kann es übernommen werden – das bisherige wird als Backup aufbewahrt")
     func useExistingTarget() async throws {
         let source = paths(try tempDirectory()), target = paths(try tempDirectory())

@@ -53,9 +53,9 @@ struct ContentView: View {
                         ForEach(project.experiments) { experiment in
                             NavigationLink(value: SidebarItem.experiment(experiment.id)) {
                                 VStack(alignment: .leading) {
-                                    Text(experiment.title.isEmpty ? "Unbenannter Ansatz" : experiment.title).font(.headline)
-                                    Text(experiment.summary.isEmpty ? "Keine Beschreibung" : experiment.summary).font(.subheadline).foregroundColor(.secondary).lineLimit(1)
-                                    Text(experiment.createdAt, style: .date).font(.caption2).foregroundColor(.secondary)
+                                    Text(experiment.title.isEmpty ? String(localized: "Unbenannter Ansatz") : experiment.title).font(.headline)
+                                    Text(experiment.summary.isEmpty ? String(localized: "Keine Beschreibung") : experiment.summary).font(.subheadline).foregroundColor(.secondary).lineLimit(1)
+                                    Text(experiment.createdAt.appFormatted(date: .long, time: .omitted)).font(.caption2).foregroundColor(.secondary)
                                     if let hits = results.hits[experiment.id], !hits.isEmpty {
                                         ForEach(hits.prefix(3), id: \.self) { hit in
                                             Label(hit.label, systemImage: "magnifyingglass").font(.caption2).foregroundStyle(.tint).lineLimit(1)
@@ -170,11 +170,11 @@ struct ContentView: View {
     }
 
     // MARK: - Navigation
-    func addProject() { let p = Project(title: "Neues Projekt"); projects.append(p); selection = .project(p.id) }
+    func addProject() { let p = Project(title: String(localized: "Neues Projekt")); projects.append(p); selection = .project(p.id) }
 
     func addExperiment() {
         if projects.isEmpty { addProject() }
-        let newExp = Experiment(title: "Neuer Ansatz", summary: "")
+        let newExp = Experiment(title: String(localized: "Neuer Ansatz"), summary: "")
         let pIdx = targetProjectIndex()
         projects[pIdx].experiments.append(newExp); projects[pIdx].isExpanded = true
         selection = .experiment(newExp.id)
@@ -203,9 +203,9 @@ struct ContentView: View {
         let name = projects[pIdx].title
         let count = projects[pIdx].experiments.count
         let alert = NSAlert()
-        alert.messageText = "Projekt \"\(name)\" löschen?"
-        alert.informativeText = "Alle \(count) Ansätze in diesem Projekt werden gelöscht. Sie bleiben im Versionsverlauf und lassen sich unter Einstellungen › Gelöschte Ansätze wiederherstellen."
-        alert.alertStyle = .warning; alert.addButton(withTitle: "Löschen"); alert.addButton(withTitle: "Abbrechen")
+        alert.messageText = String(localized: "Projekt „\(name)“ löschen?")
+        alert.informativeText = String(localized: "Alle \(count) Ansätze in diesem Projekt werden gelöscht. Sie bleiben im Versionsverlauf und lassen sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.")
+        alert.alertStyle = .warning; alert.addButton(withTitle: String(localized: "Löschen")); alert.addButton(withTitle: String(localized: "Abbrechen"))
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         for exp in projects[pIdx].experiments { store.recordBeforeDeletion(exp, in: projects[pIdx]) }
         if case .project(let sid) = selection, sid == id { selection = nil }
@@ -218,9 +218,9 @@ struct ContentView: View {
               let eIdx = projects[pIdx].experiments.firstIndex(where: { $0.id == id }) else { return }
         let name = projects[pIdx].experiments[eIdx].title
         let alert = NSAlert()
-        alert.messageText = "Ansatz \"\(name)\" löschen?"
-        alert.informativeText = "Der Ansatz bleibt im Versionsverlauf und lässt sich unter Einstellungen › Gelöschte Ansätze wiederherstellen."
-        alert.alertStyle = .warning; alert.addButton(withTitle: "Löschen"); alert.addButton(withTitle: "Abbrechen")
+        alert.messageText = String(localized: "Ansatz „\(name)“ löschen?")
+        alert.informativeText = String(localized: "Der Ansatz bleibt im Versionsverlauf und lässt sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.")
+        alert.alertStyle = .warning; alert.addButton(withTitle: String(localized: "Löschen")); alert.addButton(withTitle: String(localized: "Abbrechen"))
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         store.recordBeforeDeletion(projects[pIdx].experiments[eIdx], in: projects[pIdx])
         if case .experiment(let sid) = selection, sid == id { selection = nil }
@@ -230,7 +230,7 @@ struct ContentView: View {
     func duplicateExperiment(id: UUID) {
         guard let pIdx = projects.firstIndex(where: { $0.experiments.contains(where: { $0.id == id }) }),
               let exp = projects[pIdx].experiments.first(where: { $0.id == id }) else { return }
-        var copy = exp; copy.id = UUID(); copy.title = exp.title + " (Kopie)"; copy.createdAt = Date(); copy.updatedAt = Date()
+        var copy = exp; copy.id = UUID(); copy.title = exp.title + String(localized: " (Kopie)"); copy.createdAt = Date(); copy.updatedAt = Date()
         copy.stages = exp.stages.map { s in var ns = s; ns.id = UUID(); ns.createdAt = Date(); return ns }
         projects[pIdx].experiments.append(copy)
         selection = .experiment(copy.id)
@@ -246,11 +246,11 @@ struct ContentView: View {
 
     func importExperimentFromFile() {
         let panel = NSOpenPanel(); panel.allowedContentTypes = [.chemjournal]; panel.allowsMultipleSelection = false
-        panel.message = "Wähle eine .chemjournal-Datei zum Importieren"
+        panel.message = String(localized: "Wähle eine .chemjournal-Datei zum Importieren")
         guard panel.runModal() == .OK, let url = panel.url,
               let data = try? Data(contentsOf: url),
               var exp = try? JSONDecoder().decode(Experiment.self, from: data) else { return }
-        exp.id = UUID(); exp.title = exp.title + " (importiert)"
+        exp.id = UUID(); exp.title = exp.title + String(localized: " (importiert)")
         if projects.isEmpty { addProject() }
         let targetPIdx = targetProjectIndex()
         projects[targetPIdx].experiments.append(exp); projects[targetPIdx].isExpanded = true
@@ -284,12 +284,12 @@ struct ContentView: View {
                 self.isExporting = false
                 guard let pdfData = pdfData else { self.showExportError = true; return }
                 let panel = NSSavePanel(); panel.allowedContentTypes = [.pdf]
-                panel.nameFieldStringValue = self.exportExperiments.count == 1 ? "\(safeFileName(self.exportExperiments[0].title)).pdf" : "Laborjournal_Export.pdf"
+                panel.nameFieldStringValue = self.exportExperiments.count == 1 ? "\(safeFileName(self.exportExperiments[0].title)).pdf" : String(localized: "Laborjournal_Export") + ".pdf"
                 if panel.runModal() == .OK, let url = panel.url { try? pdfData.write(to: url) }
             }
         } else {
             let panel = NSOpenPanel(); panel.canChooseFiles = false; panel.canChooseDirectories = true; panel.canCreateDirectories = true
-            panel.message = "Wähle den Ordner für den Export der einzelnen PDFs"
+            panel.message = String(localized: "Wähle den Ordner für den Export der einzelnen PDFs")
             if panel.runModal() == .OK, let folderURL = panel.url { exportNext(index: 0, folder: folderURL) }
             else { isExporting = false }
         }

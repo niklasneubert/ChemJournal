@@ -38,9 +38,9 @@ export const store = {
     if (result.kind === 'loaded') this.projects = result.projects;
     else if (result.kind === 'recovered') {
       this.projects = result.projects;
-      this.loadMessage = `Die Datendatei war beschädigt. Der letzte Stand aus dem Backup wurde geladen. Die beschädigte Datei liegt unter ${result.preserved}.`;
+      this.loadMessage = window.CJ.t('Die Datendatei war beschädigt. Der letzte Stand aus dem Backup wurde geladen. Die beschädigte Datei liegt unter {0}.', result.preserved);
     } else if (result.kind === 'failed') {
-      this.loadMessage = `Die Datendatei konnte nicht gelesen werden und wurde unter ${result.preserved || '–'} gesichert. ChemJournal startet mit einem leeren Journal.`;
+      this.loadMessage = window.CJ.t('Die Datendatei konnte nicht gelesen werden und wurde unter {0} gesichert. ChemJournal startet mit einem leeren Journal.', result.preserved || '–');
     }
   },
 
@@ -114,6 +114,18 @@ export const store = {
     clearTimeout(this.saveTimer);
     if (this.loaded) api.saveSync(this.projects, true);
     this.dirty = false;
+  },
+
+  /** Backup zurückspielen (Einstellungen). Der aktuelle Stand wird vorher gesichert; Widerrufen bleibt möglich.
+   *  Gibt { safety } zurück oder null, wenn das Backup nicht lesbar ist. */
+  async restoreBackup(url) {
+    clearTimeout(this.saveTimer);
+    const r = await api.restoreBackup(url, this.projects);
+    if (!r) return null;
+    this.lastEditTime = 0;   // eigener Widerrufen-Schritt
+    this.setProjects(r.projects);
+    await this.saveNow();
+    return { safety: r.safety };
   },
 
   /** Änderungen eines anderen Rechners (Sync-Ordner) – nur ohne eigene ungespeicherte Änderungen. */

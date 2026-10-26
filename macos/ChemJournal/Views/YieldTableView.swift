@@ -76,7 +76,7 @@ struct YieldRowView: View {
         guard CASNumber.isValid(yieldData.cas) else { return }
         CASAutofill.saveUserValues(cas: yieldData.cas, values: Self.values(yieldData))
         if let entry = CASDatabase.shared.entry(for: yieldData.cas) {
-            casStatus = .saved("Als eigene Eingabe gespeichert: M \(entry.molarMass.isEmpty ? "–" : entry.molarMass) g/mol, d \(entry.density.isEmpty ? "–" : entry.density) g/cm³")
+            casStatus = .saved(String(localized: "Als eigene Eingabe gespeichert: M \(entry.molarMass.isEmpty ? "–" : entry.molarMass) g/mol, d \(entry.density.isEmpty ? "–" : entry.density) g/cm³"))
         }
     }
 

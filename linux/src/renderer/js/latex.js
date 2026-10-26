@@ -67,7 +67,7 @@ export function LaTeXEditor({ title, value, onChange, onContextMenu }) {
     <div class="section-head"><span class="headline">${title}</span></div>
     <div class=${'text-area-box' + (focused ? ' focused' : '')} onContextMenu=${onContextMenu}>
       ${showPreview
-        ? html`<div class="formula-preview" title="Zum Bearbeiten klicken" onClick=${() => setEditing(true)}
+        ? html`<div class="formula-preview" title=${window.CJ.t('Zum Bearbeiten klicken')} onClick=${() => setEditing(true)}
             dangerouslySetInnerHTML=${{ __html: rendered.html }}></div>`
         : html`<textarea ref=${ref} class="text-area" value=${value} spellcheck="true"
             onInput=${e => onChange(e.target.value)}

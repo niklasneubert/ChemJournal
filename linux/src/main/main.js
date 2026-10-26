@@ -10,6 +10,8 @@ const { PubChem } = require('../shared/pubchem');
 const { safeFileName } = require('../shared/smartformat');
 const { normalizeExperiment, normalizeProjects, isoNoMs } = require('./model');
 const { writeAtomic } = require('./history');
+const i18n = require('../shared/i18n');
+const { t } = i18n;
 
 app.setName('ChemJournal');
 
@@ -26,7 +28,7 @@ if (process.platform === 'linux') app.setAppUserModelId?.('de.chemjournal.app');
 // MARK: Einstellungen ---------------------------------------------------------------------------------
 
 const settingsFile = () => path.join(app.getPath('userData'), 'einstellungen.json');
-let settings = { storageMode: 'local', syncFolder: null, theme: 'system', windowBounds: null };
+let settings = { storageMode: 'local', syncFolder: null, theme: 'system', windowBounds: null, language: 'de' };
 
 function loadSettings() {
   try { settings = { ...settings, ...JSON.parse(fs.readFileSync(settingsFile(), 'utf8')) }; } catch (e) { /* Standard */ }
@@ -34,6 +36,8 @@ function loadSettings() {
     // Sync-Ordner nicht erreichbar → lokal weiterarbeiten statt Daten zu verlieren
     settings.storageMode = 'local';
   }
+  if (settings.language !== 'en') settings.language = 'de';
+  i18n.setLanguage(settings.language);
 }
 function saveSettings() {
   try { writeAtomic(settingsFile(), JSON.stringify(settings, null, 2)); } catch (e) { console.error(e); }
@@ -99,11 +103,22 @@ function registerIPC() {
     return persistence.history.manualBackup(persistence.saveURL);
   });
 
+  /** Backup zurückspielen: liest es (nur aus dem Backup-Ordner), speichert vorher den aktuellen Stand samt Versionen
+   *  und legt ihn zusätzlich als Backup ab. Die Oberfläche übernimmt dann den Inhalt (mit Widerrufen). */
+  ipcMain.handle('backups:restore', (_e, url, projects) => {
+    if (path.dirname(path.resolve(url)) !== path.resolve(paths.backupsDirectory)) return null;
+    let restored;
+    try { restored = normalizeProjects(JSON.parse(fs.readFileSync(url, 'utf8'))); } catch (e) { return null; }
+    persistence.save(normalizeProjects(projects), true);
+    const safety = persistence.history.safetyBackup(persistence.saveURL);
+    return { projects: restored, safety };
+  });
+
   ipcMain.handle('storage:info', () => storageInfo());
   ipcMain.handle('storage:chooseFolder', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: 'Sync-Ordner wählen', buttonLabel: 'Ordner wählen',
-      message: 'Wähle einen Ordner, der mit deinen anderen Rechnern synchronisiert wird (z. B. Nextcloud oder Dropbox).',
+      title: t('Sync-Ordner wählen'), buttonLabel: t('Ordner wählen'),
+      message: t('Wähle einen Ordner, der mit deinen anderen Rechnern synchronisiert wird (z. B. Nextcloud oder Dropbox).'),
       properties: ['openDirectory', 'createDirectory'],
     });
     return r.canceled ? null : r.filePaths[0];
@@ -163,7 +178,7 @@ function registerIPC() {
   ipcMain.handle('file:exportExperiment', async (_e, experiment, name) => {
     const r = await dialog.showSaveDialog(mainWindow, {
       defaultPath: path.join(app.getPath('documents'), `${safeFileName(name)}.chemjournal`),
-      filters: [{ name: 'ChemJournal-Ansatz', extensions: ['chemjournal'] }],
+      filters: [{ name: t('ChemJournal-Ansatz'), extensions: ['chemjournal'] }],
     });
     if (r.canceled || !r.filePath) return false;
     fs.writeFileSync(r.filePath, JSON.stringify(normalizeExperiment(experiment)));
@@ -171,20 +186,20 @@ function registerIPC() {
   });
   ipcMain.handle('file:importExperiment', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: 'Ansatz importieren', message: 'Wähle eine .chemjournal-Datei zum Importieren',
-      filters: [{ name: 'ChemJournal-Ansatz', extensions: ['chemjournal'] }], properties: ['openFile'],
+      title: t('Ansatz importieren'), message: t('Wähle eine .chemjournal-Datei zum Importieren'),
+      filters: [{ name: t('ChemJournal-Ansatz'), extensions: ['chemjournal'] }], properties: ['openFile'],
     });
     if (r.canceled || !r.filePaths[0]) return null;
     return readExperimentFile(r.filePaths[0]);
   });
   ipcMain.handle('file:chooseAnalysisFiles', async () => {
-    const r = await dialog.showOpenDialog(mainWindow, { title: 'Dateien verknüpfen', properties: ['openFile', 'multiSelections'] });
+    const r = await dialog.showOpenDialog(mainWindow, { title: t('Dateien verknüpfen'), properties: ['openFile', 'multiSelections'] });
     return r.canceled ? [] : r.filePaths;
   });
   ipcMain.handle('file:chooseImage', async () => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: 'Bild oder PDF wählen', properties: ['openFile'],
-      filters: [{ name: 'Bilder und PDF', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg', 'pdf'] }],
+      title: t('Bild oder PDF wählen'), properties: ['openFile'],
+      filters: [{ name: t('Bilder und PDF'), extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg', 'pdf'] }],
     });
     if (r.canceled || !r.filePaths[0]) return null;
     return readFileForRenderer(r.filePaths[0]);
@@ -208,7 +223,7 @@ function registerIPC() {
   });
   ipcMain.handle('pdf:exportSeparate', async (_e, jobs) => {
     const r = await dialog.showOpenDialog(mainWindow, {
-      title: 'Ordner wählen', message: 'Wähle den Ordner für den Export der einzelnen PDFs', properties: ['openDirectory', 'createDirectory'],
+      title: t('Ordner wählen'), message: t('Wähle den Ordner für den Export der einzelnen PDFs'), properties: ['openDirectory', 'createDirectory'],
     });
     if (r.canceled || !r.filePaths[0]) return { ok: true, canceled: true };
     for (const job of jobs) {
@@ -220,6 +235,10 @@ function registerIPC() {
   ipcMain.handle('window:setSnapWidths', (_e, widths) => { snapWidths = widths.filter(w => w >= 500); });
   ipcMain.handle('theme:get', () => settings.theme);
   ipcMain.handle('theme:set', (_e, theme) => { settings.theme = theme; applyTheme(); saveSettings(); buildMenu(); });
+  ipcMain.handle('lang:get', () => settings.language);
+  ipcMain.handle('lang:set', (_e, lang) => { settings.language = lang === 'en' ? 'en' : 'de'; saveSettings(); return settings.language; });
+  // Neustart: Fenster schließen (die Oberfläche speichert vorher alles), danach startet ChemJournal neu
+  ipcMain.handle('app:relaunch', () => { app.relaunch(); if (mainWindow) mainWindow.close(); });
   ipcMain.on('app:quit-ready', () => { quitReady = true; if (mainWindow) mainWindow.close(); });
 }
 
@@ -251,7 +270,8 @@ function createWindow() {
     minWidth: 480, minHeight: 320, title: 'ChemJournal', show: false,
     icon: path.join(__dirname, '../../build/icon.png'),
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#1e1e1e' : '#f5f5f7',
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, sandbox: true, spellcheck: true },
+    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, sandbox: true, spellcheck: true,
+      additionalArguments: [`--cj-lang=${settings.language}`] },
   });
   mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
   mainWindow.once('ready-to-show', () => mainWindow.show());
@@ -302,48 +322,48 @@ function buildMenu() {
   const cmd = name => () => send('menu', name);
   const template = [
     {
-      label: 'Ablage',
+      label: t('Ablage'),
       submenu: [
-        { label: 'Neuer Ansatz', accelerator: 'CmdOrCtrl+N', click: cmd('newExperiment') },
-        { label: 'Neues Projekt', accelerator: 'CmdOrCtrl+Shift+N', click: cmd('newProject') },
+        { label: t('Neuer Ansatz'), accelerator: 'CmdOrCtrl+N', click: cmd('newExperiment') },
+        { label: t('Neues Projekt'), accelerator: 'CmdOrCtrl+Shift+N', click: cmd('newProject') },
         { type: 'separator' },
-        { label: 'Laborjournal speichern', accelerator: 'CmdOrCtrl+S', click: cmd('save') },
+        { label: t('Laborjournal speichern'), accelerator: 'CmdOrCtrl+S', click: cmd('save') },
         { type: 'separator' },
-        { label: 'Als PDF exportieren …', accelerator: 'CmdOrCtrl+P', click: cmd('exportPDF') },
-        { label: 'Ansatz importieren (.chemjournal) …', accelerator: 'CmdOrCtrl+Shift+I', click: cmd('importExperiment') },
+        { label: t('Als PDF exportieren …'), accelerator: 'CmdOrCtrl+P', click: cmd('exportPDF') },
+        { label: t('Ansatz importieren (.chemjournal) …'), accelerator: 'CmdOrCtrl+Shift+I', click: cmd('importExperiment') },
         { type: 'separator' },
-        { label: 'Einstellungen …', accelerator: 'CmdOrCtrl+,', click: cmd('settings') },
+        { label: t('Einstellungen …'), accelerator: 'CmdOrCtrl+,', click: cmd('settings') },
         { type: 'separator' },
-        { label: 'Beenden', accelerator: 'CmdOrCtrl+Q', role: 'quit' },
+        { label: i18n.getLanguage() === 'en' ? 'Quit' : 'Beenden', accelerator: 'CmdOrCtrl+Q', role: 'quit' },
       ],
     },
     {
-      label: 'Bearbeiten',
+      label: t('Bearbeiten'),
       submenu: [
-        { label: 'Widerrufen', accelerator: 'CmdOrCtrl+Z', click: cmd('undo') },
-        { label: 'Wiederholen', accelerator: 'CmdOrCtrl+Shift+Z', click: cmd('redo') },
+        { label: t('Widerrufen'), accelerator: 'CmdOrCtrl+Z', click: cmd('undo') },
+        { label: t('Wiederholen'), accelerator: 'CmdOrCtrl+Shift+Z', click: cmd('redo') },
         { type: 'separator' },
-        { label: 'Ausschneiden', role: 'cut' },
-        { label: 'Kopieren', role: 'copy' },
-        { label: 'Einsetzen', role: 'paste' },
-        { label: 'Alles auswählen', role: 'selectAll' },
+        { label: t('Ausschneiden'), role: 'cut' },
+        { label: t('Kopieren'), role: 'copy' },
+        { label: t('Einsetzen'), role: 'paste' },
+        { label: t('Alles auswählen'), role: 'selectAll' },
       ],
     },
     {
-      label: 'Darstellung',
+      label: t('Darstellung'),
       submenu: [
         {
-          label: 'Erscheinungsbild',
+          label: t('Erscheinungsbild'),
           submenu: [['system', 'System'], ['light', 'Hell'], ['dark', 'Dunkel']].map(([value, label]) => ({
-            label, type: 'radio', checked: settings.theme === value,
+            label: t(label), type: 'radio', checked: settings.theme === value,
             click: () => { settings.theme = value; applyTheme(); saveSettings(); send('menu', 'themeChanged'); },
           })),
         },
         { type: 'separator' },
-        { label: 'Auf optimale Breite einrasten', accelerator: 'CmdOrCtrl+Alt+0', click: snapToPerfectWidth },
+        { label: t('Auf optimale Breite einrasten'), accelerator: 'CmdOrCtrl+Alt+0', click: snapToPerfectWidth },
         { type: 'separator' },
-        { label: 'Vollbild', role: 'togglefullscreen' },
-        { label: 'Entwicklerwerkzeuge', accelerator: 'CmdOrCtrl+Alt+I', role: 'toggleDevTools', visible: !app.isPackaged },
+        { label: t('Vollbild'), role: 'togglefullscreen' },
+        { label: t('Entwicklerwerkzeuge'), accelerator: 'CmdOrCtrl+Alt+I', role: 'toggleDevTools', visible: !app.isPackaged },
       ],
     },
   ];

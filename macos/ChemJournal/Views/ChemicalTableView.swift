@@ -21,7 +21,7 @@ struct ChemicalTableView: View {
                         .background(Color.orange.opacity(0.1)).cornerRadius(6)
                 }.buttonStyle(.plain)
                 Button(action: { showSmartExtract = true }) {
-                    Label("Smart Extract", systemImage: "apple.logo")
+                    Label("Smart Extract", systemImage: "wand.and.stars")
                         .font(.subheadline).foregroundColor(.purple)
                         .padding(.horizontal, 8).padding(.vertical, 4)
                         .background(Color.purple.opacity(0.1)).cornerRadius(6)
@@ -33,8 +33,9 @@ struct ChemicalTableView: View {
                         Text("Name").fontWeight(.bold).frame(maxWidth: .infinity, alignment: .leading)
                         ColumnResizeHandle(width: $nameWidth)
                     }.frame(width: nameWidth)
-                    Text("eq").fontWeight(.bold); Text("CAS").fontWeight(.bold); Text("M (g/mol)").fontWeight(.bold)
-                    Text("d (g/cm3)").fontWeight(.bold); Text("n (mol)").fontWeight(.bold); Text("V (ml)").fontWeight(.bold); Text("m (g)").fontWeight(.bold); Text("")
+                    // Gleiche Mindestbreiten wie die Felder darunter – sonst rücken die Köpfe einer leeren Tabelle zusammen
+                    columnHeader("eq", minWidth: 40); columnHeader("CAS", minWidth: 70); columnHeader("M (g/mol)", minWidth: 60)
+                    columnHeader("d (g/cm3)", minWidth: 60); columnHeader("n (mol)", minWidth: 60); columnHeader("V (ml)", minWidth: 60); columnHeader("m (g)", minWidth: 60); Text("").frame(width: 16)
                 }.padding(.bottom, 4)
                 Divider()
                 ForEach($chemicals) { $chem in
@@ -59,6 +60,10 @@ struct ChemicalTableView: View {
         .sheet(isPresented: $showSmartExtract) {
             SmartExtractSheet { rows in chemicals.append(contentsOf: rows) }
         }
+    }
+
+    private func columnHeader(_ title: LocalizedStringKey, minWidth: CGFloat) -> some View {
+        Text(title).fontWeight(.bold).frame(minWidth: minWidth, maxWidth: .infinity, alignment: .leading)
     }
 
     func applyScale() {
@@ -98,8 +103,8 @@ struct SmartExtractSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Apple Intelligence Extraktion").font(.title2.bold())
-            Text("Füge hier den Text aus einem Paper ein.").font(.subheadline).foregroundColor(.secondary)
+            Label("Smart Extract", systemImage: "wand.and.stars").font(.title2.bold())
+            Text("Füge hier die Versuchsvorschrift aus einem Paper oder einer SI ein. Die Auswertung läuft komplett auf deinem Mac.").font(.subheadline).foregroundColor(.secondary)
             TextEditor(text: $inputText).font(.body).frame(minHeight: 150).padding(4).background(Color(NSColor.textBackgroundColor)).cornerRadius(8).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2), lineWidth: 1))
             HStack {
                 if isExtracting { ProgressView().controlSize(.small); Text("Analysiere…").font(.caption).foregroundColor(.secondary) }
@@ -173,7 +178,7 @@ struct ChemicalRowView: View {
         guard CASNumber.isValid(chemical.cas) else { return }
         CASAutofill.saveUserValues(cas: chemical.cas, values: Self.values(chemical))
         if let entry = CASDatabase.shared.entry(for: chemical.cas) {
-            casStatus = .saved("Als eigene Eingabe gespeichert: M \(entry.molarMass.isEmpty ? "–" : entry.molarMass) g/mol, d \(entry.density.isEmpty ? "–" : entry.density) g/cm³")
+            casStatus = .saved(String(localized: "Als eigene Eingabe gespeichert: M \(entry.molarMass.isEmpty ? "–" : entry.molarMass) g/mol, d \(entry.density.isEmpty ? "–" : entry.density) g/cm³"))
         }
     }
 

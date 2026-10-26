@@ -6,6 +6,11 @@ const invoke = (channel, ...args) => ipcRenderer.invoke(channel, ...args);
 
 contextBridge.exposeInMainWorld('chemjournal', {
   platform: process.platform,
+  // Sprache dieses Starts (Hintergrundprozess übergibt sie als Startparameter)
+  language: (process.argv.find(a => a.startsWith('--cj-lang=')) || '--cj-lang=de').slice('--cj-lang='.length) === 'en' ? 'en' : 'de',
+  getLanguage: () => invoke('lang:get'),
+  setLanguage: lang => invoke('lang:set', lang),
+  relaunch: () => invoke('app:relaunch'),
   // Journal
   load: () => invoke('journal:load'),
   save: (projects, force) => invoke('journal:save', projects, force),
@@ -18,6 +23,7 @@ contextBridge.exposeInMainWorld('chemjournal', {
   purgeHistory: id => invoke('history:purge', id),
   backups: () => invoke('backups:list'),
   backupNow: projects => invoke('backups:now', projects),
+  restoreBackup: (url, projects) => invoke('backups:restore', url, projects),
   // Speicherort
   storageInfo: () => invoke('storage:info'),
   chooseSyncFolder: () => invoke('storage:chooseFolder'),

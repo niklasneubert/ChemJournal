@@ -26,10 +26,10 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 
 | System | Datei |
 |---|---|
-| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.0-macOS.dmg` |
-| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.0-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.0-arm64.AppImage` |
-| Linux als Archiv | `ChemJournal-1.0.0-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.1-macOS.dmg` |
+| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.1-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.1-arm64.AppImage` |
+| Linux als Archiv | `ChemJournal-1.0.1-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -38,8 +38,8 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
 **Linux:** AppImage ausführbar machen und starten, keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.0.0-x86_64.AppImage
-./ChemJournal-1.0.0-x86_64.AppImage
+chmod +x ChemJournal-1.0.1-x86_64.AppImage
+./ChemJournal-1.0.1-x86_64.AppImage
 ```
 
 Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
@@ -61,7 +61,8 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 - **Suche nach Chemikalien:** `n-BuLi` findet auch „n-Butyllithium“, „BuLi“ und Zeilen, die nur CAS 109-72-8 haben
 - **Ausbeute** gegen einen wählbaren Bezugs-Reaktanden, mit theoretischer Masse
 - **PDF-Export** auf A4 mit Seitenzahlen, je Ansatz oder für ein ganzes Projekt
-- **Versionsverlauf je Ansatz**, tägliche Backups, gelöschte Ansätze wiederherstellen, Rückgängig/Wiederholen
+- **Versionsverlauf je Ansatz**, tägliche Backups, die sich **per Klick zurückspielen** lassen, gelöschte Ansätze wiederherstellen, Rückgängig/Wiederholen
+- **Oberfläche auf Deutsch oder Englisch** – Standard Deutsch, umschaltbar in den Einstellungen
 - **Sync** über iCloud Drive (macOS) oder einen Sync-Ordner wie Nextcloud/Dropbox (Linux) – gleiches Dateiformat
 - Hell- und Dunkelmodus
 

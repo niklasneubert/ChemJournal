@@ -1,10 +1,12 @@
 import AppKit
 import SwiftUI
 
-/// Einstellungen (⌘,): Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
+/// Einstellungen (⌘,): Allgemein (Sprache), Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
 struct SettingsView: View {
     var body: some View {
         TabView {
+            GeneralSettingsView()
+                .tabItem { Label("Allgemein", systemImage: "gearshape") }
             StorageSettingsView()
                 .tabItem { Label("Speicherort & Backups", systemImage: "externaldrive") }
             DeletedExperimentsView()
@@ -13,6 +15,35 @@ struct SettingsView: View {
                 .tabItem { Label("CAS-Datenbank", systemImage: "flask") }
         }
         .frame(width: 640, height: 500)
+    }
+}
+
+// MARK: - Allgemein
+
+private struct GeneralSettingsView: View {
+    @State private var language = AppLanguage.stored
+
+    var body: some View {
+        Form {
+            Section {
+                Picker("Sprache", selection: $language) {
+                    ForEach(AppLanguage.allCases) { Text($0.nativeName).tag($0) }
+                }
+                .onChange(of: language) { _, new in AppLanguage.stored = new }
+                Text("Standard ist Deutsch, unabhängig von der Sprache des Macs. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.")
+                    .font(.caption).foregroundStyle(.secondary)
+                if language != AppLanguage.current {
+                    HStack {
+                        Label("Die neue Sprache gilt nach einem Neustart von ChemJournal.", systemImage: "arrow.clockwise")
+                            .font(.callout)
+                        Spacer()
+                        Button("Jetzt neu starten") { AppLanguage.relaunch() }
+                            .buttonStyle(.borderedProminent)
+                    }
+                }
+            }
+        }
+        .formStyle(.grouped)
     }
 }
 
@@ -25,6 +56,7 @@ private struct StorageSettingsView: View {
     @State private var conflict: (experiments: Int, modified: Date?)?
     @State private var isSwitching = false
     @State private var message: String?
+    @State private var restoreCandidate: BackupInfo?
 
     var body: some View {
         Form {
@@ -37,15 +69,15 @@ private struct StorageSettingsView: View {
                 .disabled(isSwitching)
                 if isSwitching { ProgressView("Daten werden umgezogen …").controlSize(.small) }
                 Text(store.storageMode == .iCloud
-                     ? "Journal, Versionen, Backups und CAS-Datenbank liegen in iCloud Drive › ChemJournal und sind auf allen deinen Macs mit derselben Apple-ID verfügbar. Änderungen anderer Macs werden automatisch übernommen, solange du hier nichts Ungespeichertes hast."
-                     : "Alles bleibt auf diesem Mac. Mit „iCloud Drive“ sind die Daten zusätzlich in der Cloud gesichert und auf deinen anderen Macs verfügbar.")
+                     ? String(localized: "Journal, Versionen, Backups und CAS-Datenbank liegen in iCloud Drive › ChemJournal und sind auf allen deinen Macs mit derselben Apple-ID verfügbar. Änderungen anderer Macs werden automatisch übernommen, solange du hier nichts Ungespeichertes hast.")
+                     : String(localized: "Alles bleibt auf diesem Mac. Mit „iCloud Drive“ sind die Daten zusätzlich in der Cloud gesichert und auf deinen anderen Macs verfügbar."))
                     .font(.caption).foregroundStyle(.secondary)
                 if !AppPaths.isICloudAvailable {
                     Label("iCloud Drive ist auf diesem Mac nicht eingeschaltet (Systemeinstellungen › Apple-ID › iCloud).", systemImage: "exclamationmark.triangle")
                         .font(.caption).foregroundStyle(.orange)
                 }
                 if let date = store.lastExternalReload {
-                    Text("Zuletzt Änderungen von einem anderen Mac übernommen: \(date.formatted(date: .omitted, time: .shortened))")
+                    Text("Zuletzt Änderungen von einem anderen Mac übernommen: \(date.appFormatted(date: .omitted, time: .shortened))")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 LabeledContent("Journal") { PathButton(url: store.paths.journalFile) }
@@ -61,7 +93,7 @@ private struct StorageSettingsView: View {
                     Button("Jetzt sichern") {
                         Task {
                             let url = await store.backupNow()
-                            message = url == nil ? "Backup konnte nicht angelegt werden (noch keine Daten gespeichert?)." : "Backup angelegt: \(url!.lastPathComponent)"
+                            message = url == nil ? String(localized: "Backup konnte nicht angelegt werden (noch keine Daten gespeichert?).") : String(localized: "Backup angelegt: \(url!.lastPathComponent)")
                             await reloadBackups()
                         }
                     }
@@ -74,10 +106,12 @@ private struct StorageSettingsView: View {
                         HStack {
                             Image(systemName: b.url.lastPathComponent.contains("manuell") ? "hand.raised" : "calendar")
                                 .foregroundStyle(.secondary).frame(width: 18)
-                            Text(b.date.formatted(date: .abbreviated, time: .shortened)).monospacedDigit()
+                            Text(b.date.appFormatted(date: .abbreviated, time: .shortened)).monospacedDigit()
                             Text(ByteCountFormatter.string(fromByteCount: b.size, countStyle: .file)).foregroundStyle(.secondary)
                             Spacer()
                             Button("Im Finder zeigen") { NSWorkspace.shared.activateFileViewerSelecting([b.url]) }
+                                .buttonStyle(.link)
+                            Button("Wiederherstellen …") { restoreCandidate = b }
                                 .buttonStyle(.link)
                         }
                     }
@@ -86,13 +120,21 @@ private struct StorageSettingsView: View {
             } header: {
                 Text("Backups")
             } footer: {
-                Text("Zum Zurückspielen eines Backups: ChemJournal beenden, die Backup-Datei als „ChemJournalData.json“ an den Ort des Journals kopieren und neu starten.")
+                Text("Beim Wiederherstellen wird der aktuelle Stand vorher selbst als Backup gesichert. Mit ⌘Z lässt es sich außerdem rückgängig machen.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
         .task { await reloadBackups() }
         .onChange(of: store.storageMode) { _, _ in Task { await reloadBackups() } }
+        .confirmationDialog("Journal auf diesen Stand zurücksetzen?",
+                            isPresented: Binding(get: { restoreCandidate != nil }, set: { if !$0 { restoreCandidate = nil } }),
+                            presenting: restoreCandidate) { b in
+            Button("Wiederherstellen") { restore(b) }
+            Button("Abbrechen", role: .cancel) { restoreCandidate = nil }
+        } message: { b in
+            Text("Das ganze Journal wird durch das Backup vom \(b.date.appFormatted(date: .abbreviated, time: .shortened)) ersetzt. Der aktuelle Stand wird vorher als Backup gesichert.")
+        }
         .alert("In iCloud Drive liegt bereits ein Journal",
                isPresented: Binding(get: { conflict != nil }, set: { if !$0 { conflict = nil; pendingMode = nil } })) {
             Button("Vorhandenes Journal verwenden") { performSwitch(useExisting: true) }
@@ -100,7 +142,7 @@ private struct StorageSettingsView: View {
             Button("Abbrechen", role: .cancel) { conflict = nil; pendingMode = nil }
         } message: {
             if let conflict {
-                let date = conflict.modified.map { " (zuletzt geändert \($0.formatted(date: .abbreviated, time: .shortened)))" } ?? ""
+                let date = conflict.modified.map { String(localized: " (zuletzt geändert \($0.appFormatted(date: .abbreviated, time: .shortened)))") } ?? ""
                 Text("Am Ziel gibt es schon ein Journal mit \(conflict.experiments) Ansätzen\(date), z. B. von einem anderen Mac. Die jeweils andere Fassung wird in jedem Fall als Backup aufbewahrt.")
             }
         }
@@ -108,12 +150,26 @@ private struct StorageSettingsView: View {
 
     private func reloadBackups() async { backups = await store.backups() }
 
+    private func restore(_ backup: BackupInfo) {
+        restoreCandidate = nil
+        Task {
+            switch await store.restoreBackup(backup) {
+            case .restored(let safety):
+                message = safety.map { String(localized: "Backup wiederhergestellt. Der vorherige Stand liegt unter \($0.lastPathComponent).") }
+                    ?? String(localized: "Backup wiederhergestellt.")
+            case .unreadable:
+                message = String(localized: "Dieses Backup ist nicht lesbar und wurde nicht wiederhergestellt.")
+            }
+            await reloadBackups()
+        }
+    }
+
     private func requestSwitch(to mode: StorageMode) {
         guard mode != store.storageMode, !isSwitching else { return }
         Task {
             switch await store.checkSwitch(to: mode) {
             case .unavailable:
-                message = "iCloud Drive ist nicht verfügbar."
+                message = String(localized: "iCloud Drive ist nicht verfügbar.")
             case .targetHasJournal(let n, let modified):
                 pendingMode = mode
                 conflict = (n, modified)
@@ -132,7 +188,7 @@ private struct StorageSettingsView: View {
             await store.switchStorage(to: mode, useExistingJournal: useExisting)
             isSwitching = false
             pendingMode = nil
-            message = "Speicherort: \(mode.title). Die bisherigen Dateien am alten Ort bleiben unverändert liegen."
+            message = String(localized: "Speicherort: \(mode.title). Die bisherigen Dateien am alten Ort bleiben unverändert liegen.")
             await reloadBackups()
         }
     }
@@ -175,8 +231,8 @@ private struct DeletedExperimentsView: View {
                 HSplitView {
                     List(deleted, selection: $selectedID) { info in
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(info.title.isEmpty ? "Ohne Titel" : info.title).lineLimit(1)
-                            Text([info.projectTitle, info.date.formatted(date: .abbreviated, time: .shortened)].compactMap { $0 }.joined(separator: " · "))
+                            Text(info.title.isEmpty ? String(localized: "Ohne Titel") : info.title).lineLimit(1)
+                            Text([info.projectTitle, info.date.appFormatted(date: .abbreviated, time: .shortened)].compactMap { $0 }.joined(separator: " · "))
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                         .tag(info.id)
@@ -265,9 +321,9 @@ private struct CASDatabaseView: View {
                 TableColumn("M (g/mol)") { Text($0.molarMass.isEmpty ? "–" : $0.molarMass).monospacedDigit() }.width(min: 60, ideal: 70)
                 TableColumn("d (g/cm³)") { Text($0.density.isEmpty ? "–" : $0.density).monospacedDigit() }.width(min: 60, ideal: 70)
                 TableColumn("Quelle") { e in
-                    Text(e.source.rawValue).foregroundStyle(e.source == .user ? .primary : .secondary)
+                    Text(e.source.displayName).foregroundStyle(e.source == .user ? .primary : .secondary)
                 }.width(min: 70, ideal: 90)
-                TableColumn("Datum") { Text($0.updatedAt.formatted(date: .numeric, time: .omitted)).monospacedDigit() }.width(min: 60, ideal: 75)
+                TableColumn("Datum") { Text($0.updatedAt.appFormatted(date: .numeric, time: .omitted)).monospacedDigit() }.width(min: 60, ideal: 75)
             }
             .contextMenu(forSelectionType: String.self) { ids in
                 Button("Entfernen") { ids.forEach { db.remove(cas: $0) } }

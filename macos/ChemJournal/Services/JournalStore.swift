@@ -83,9 +83,9 @@ final class JournalStore {
             projects = p
         case .recoveredFromBackup(let p, let preserved):
             projects = p
-            loadMessage = "Die Datendatei war beschädigt. Der letzte Stand aus dem Backup wurde geladen. Die beschädigte Datei liegt unter \(preserved.lastPathComponent)."
+            loadMessage = String(localized: "Die Datendatei war beschädigt. Der letzte Stand aus dem Backup wurde geladen. Die beschädigte Datei liegt unter \(preserved.lastPathComponent).")
         case .failed(let preserved):
-            loadMessage = "Die Datendatei konnte nicht gelesen werden und wurde unter \(preserved?.lastPathComponent ?? "–") gesichert. ChemJournal startet mit einem leeren Journal."
+            loadMessage = String(localized: "Die Datendatei konnte nicht gelesen werden und wurde unter \(preserved?.lastPathComponent ?? "–") gesichert. ChemJournal startet mit einem leeren Journal.")
         }
     }
 
@@ -230,9 +230,9 @@ final class JournalStore {
     func restore(_ snap: VersionSnapshot, asCopy: Bool) -> UUID {
         var experiment = snap.experiment
         if asCopy {
-            let stamp = snap.date.formatted(date: .abbreviated, time: .shortened)
+            let stamp = snap.date.appFormatted(date: .abbreviated, time: .shortened)
             experiment.id = UUID()
-            experiment.title += " (Version vom \(stamp))"
+            experiment.title += String(localized: " (Version vom \(stamp))")
             experiment.stages = experiment.stages.map { var s = $0; s.id = UUID(); return s }
             experiment.updatedAt = Date()
             insert(experiment, preferredProject: snap.projectID, projectTitle: snap.projectTitle)
@@ -258,7 +258,7 @@ final class JournalStore {
             projects[p].experiments.append(experiment)
             projects[p].isExpanded = true
         } else {
-            projects.append(Project(title: projectTitle ?? "Wiederhergestellt", experiments: [experiment]))
+            projects.append(Project(title: projectTitle ?? String(localized: "Wiederhergestellt"), experiments: [experiment]))
         }
     }
 
@@ -278,6 +278,27 @@ final class JournalStore {
         persistence.save(projects)
         isDirty = false
         return await persistence.manualBackup()
+    }
+
+    enum BackupRestoreResult: Equatable {
+        /// Zurückgespielt; der vorherige Stand liegt als Backup unter `safetyBackup`.
+        case restored(safetyBackup: URL?)
+        case unreadable
+    }
+
+    /// Spielt ein Backup des ganzen Journals zurück. Der aktuelle Stand wird vorher gespeichert, jede Änderung als
+    /// Version gesichert und zusätzlich als Backup abgelegt; außerdem lässt sich das Zurückspielen mit ⌘Z widerrufen.
+    func restoreBackup(_ backup: BackupInfo) async -> BackupRestoreResult {
+        guard isLoaded, let persistence else { return .unreadable }
+        guard let restored = await persistence.loadBackup(backup.url) else { return .unreadable }
+        saveTask?.cancel()
+        persistence.saveAndWait(projects, forceVersions: true)
+        isDirty = false
+        let safety = await persistence.safetyBackup()
+        lastEditTime = .distantPast   // eigener Widerrufen-Schritt
+        projects = restored
+        saveNow()
+        return .restored(safetyBackup: safety)
     }
 
     // MARK: Speicherort
@@ -540,6 +561,8 @@ nonisolated final class JournalPersistence: @unchecked Sendable {
     func removeHistory(for id: UUID) async { await onQueue { self.history.removeHistory(for: id) } }
     func backups() async -> [BackupInfo] { await onQueue { self.history.backups() } }
     func manualBackup() async -> URL? { await onQueue { self.history.manualBackup(of: self.saveURL) } }
+    func safetyBackup() async -> URL? { await onQueue { self.history.safetyBackup(of: self.saveURL) } }
+    func loadBackup(_ url: URL) async -> [Project]? { await onQueue { self.history.loadBackup(url) } }
 
     func snapshot(_ experiment: Experiment, project: Project?, reason: String, pinned: Bool) {
         queue.async { self.history.snapshot(experiment, project: project, reason: reason, pinned: pinned) }

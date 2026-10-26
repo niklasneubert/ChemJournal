@@ -175,7 +175,7 @@ struct JournalSearch {
                     matched = true
                     let display = name.isEmpty ? (c ?? rawCAS) : name
                     let casPart = (c != nil && !name.isEmpty) ? " (\(c!))" : ""
-                    let hit = SearchHit(label: "\(display)\(casPart)\(isProduct ? " – Produkt" : "") · \(stage.title)")
+                    let hit = SearchHit(label: "\(display)\(casPart)\(isProduct ? String(localized: " – Produkt") : "") · \(stage.title)")
                     if !hits.contains(hit) { hits.append(hit) }
                 }
             }

@@ -154,6 +154,12 @@ class JournalHistory {
     return this.backup(journalFile, path.join(this.backupsDirectory, `ChemJournal-manuell-${stamp}.json`), now);
   }
 
+  /** Sicherung des aktuellen Stands, bevor ein Backup zurückgespielt wird. */
+  safetyBackup(journalFile, now = new Date()) {
+    const stamp = isoNoMs(now).replace(/:/g, '-');
+    return this.backup(journalFile, path.join(this.backupsDirectory, `ChemJournal-vor-Wiederherstellen-${stamp}.json`), now);
+  }
+
   backup(journalFile, target, now) {
     if (!fs.existsSync(journalFile)) return null;
     fs.mkdirSync(this.backupsDirectory, { recursive: true });

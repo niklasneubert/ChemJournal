@@ -8,6 +8,7 @@
 (function (g) {
   'use strict';
   const { normalizeCAS } = typeof module === 'object' && module.exports ? require('./casnumber.js') : g.CJ;
+  const { t } = typeof module === 'object' && module.exports ? require('./i18n.js') : g.CJ;
 
   const BASE = 'https://pubchem.ncbi.nlm.nih.gov/rest';
 
@@ -15,9 +16,9 @@
     constructor(kind, message) { super(message); this.kind = kind; }
   }
   const errors = {
-    invalidCAS: () => new LookupError('invalidCAS', 'Ungültige CAS-Nummer (Prüfziffer stimmt nicht).'),
-    notFound: () => new LookupError('notFound', 'In PubChem nicht gefunden.'),
-    network: m => new LookupError('network', `PubChem nicht erreichbar: ${m}`),
+    invalidCAS: () => new LookupError('invalidCAS', t('Ungültige CAS-Nummer (Prüfziffer stimmt nicht).')),
+    notFound: () => new LookupError('notFound', t('In PubChem nicht gefunden.')),
+    network: m => new LookupError('network', t('PubChem nicht erreichbar: {0}', m)),
   };
 
   const cache = new Map();
@@ -28,7 +29,7 @@
     try {
       res = await fetch(url, { signal: AbortSignal.timeout(10000) });
     } catch (e) {
-      throw errors.network(e && e.name === 'TimeoutError' ? 'Zeitüberschreitung' : (e.message || String(e)));
+      throw errors.network(e && e.name === 'TimeoutError' ? t('Zeitüberschreitung') : (e.message || String(e)));
     }
     if (res.status === 404 && allowNotFound) return null;
     if (!res.ok) throw errors.network(`HTTP ${res.status}`);

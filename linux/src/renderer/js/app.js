@@ -1,5 +1,5 @@
 // Hauptansicht – entspricht ContentView.swift und den Menübefehlen aus MyApp.swift.
-import { html, render, CJ, api, useState, useEffect, refToDate, nowRef, uuid, newExperiment, newProject } from './lib.js';
+import { html, render, CJ, api, t, useState, useEffect, refToDate, nowRef, uuid, newExperiment, newProject } from './lib.js';
 import { store, useStore } from './store.js';
 import { AlertHost, ContextMenuHost, ask, alertOK } from './ui.js';
 import { Sidebar, DetailView, ProjectDetail, Settings } from './views.js';
@@ -58,7 +58,7 @@ function App() {
       if (exp) actions.insertImported(exp);
     },
     insertImported(exp) {
-      const imported = { ...exp, id: uuid(), title: exp.title + ' (importiert)' };
+      const imported = { ...exp, id: uuid(), title: exp.title + t(' (importiert)') };
       if (!store.projects.length) actions.addProject();
       const target = store.projects[Math.min(selectedProjectIndex(), store.projects.length - 1)];
       store.updateProject(target.id, p => ({ ...p, isExpanded: true, experiments: p.experiments.concat([imported]) }));
@@ -90,9 +90,9 @@ function App() {
     async deleteProject(id) {
       const p = store.projects.find(x => x.id === id);
       if (!p) return;
-      const i = await ask({ title: `Projekt "${p.title}" löschen?`,
-        message: `Alle ${p.experiments.length} Ansätze in diesem Projekt werden gelöscht. Sie bleiben im Versionsverlauf und lassen sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.`,
-        buttons: [{ label: 'Löschen', role: 'destructive' }, { label: 'Abbrechen', role: 'cancel' }] });
+      const i = await ask({ title: t('Projekt „{0}“ löschen?', p.title),
+        message: t('Alle {0} Ansätze in diesem Projekt werden gelöscht. Sie bleiben im Versionsverlauf und lassen sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.', p.experiments.length),
+        buttons: [{ label: t('Löschen'), role: 'destructive' }, { label: t('Abbrechen'), role: 'cancel' }] });
       if (i !== 0) return;
       for (const e of p.experiments) await api.snapshot(e, p, 'Vor dem Löschen', true);
       if (selection && ((selection.kind === 'project' && selection.id === id) || (selection.kind === 'experiment' && p.experiments.some(e => e.id === selection.id)))) setSelection(null);
@@ -101,9 +101,9 @@ function App() {
     async deleteExperiment(id) {
       const found = store.findExperiment(id);
       if (!found) return;
-      const i = await ask({ title: `Ansatz "${found.experiment.title}" löschen?`,
-        message: 'Der Ansatz bleibt im Versionsverlauf und lässt sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.',
-        buttons: [{ label: 'Löschen', role: 'destructive' }, { label: 'Abbrechen', role: 'cancel' }] });
+      const i = await ask({ title: t('Ansatz „{0}“ löschen?', found.experiment.title),
+        message: t('Der Ansatz bleibt im Versionsverlauf und lässt sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.'),
+        buttons: [{ label: t('Löschen'), role: 'destructive' }, { label: t('Abbrechen'), role: 'cancel' }] });
       if (i !== 0) return;
       await api.snapshot(found.experiment, found.project, 'Vor dem Löschen', true);
       if (selection && selection.kind === 'experiment' && selection.id === id) setSelection(null);
@@ -113,7 +113,7 @@ function App() {
       const found = store.findExperiment(id);
       if (!found) return;
       const e = found.experiment;
-      const copy = { ...e, id: uuid(), title: e.title + ' (Kopie)', createdAt: nowRef(), updatedAt: nowRef(),
+      const copy = { ...e, id: uuid(), title: e.title + t(' (Kopie)'), createdAt: nowRef(), updatedAt: nowRef(),
         stages: e.stages.map(s => ({ ...s, id: uuid(), createdAt: nowRef() })) };
       store.updateProject(found.project.id, p => ({ ...p, experiments: p.experiments.concat([copy]) }));
       setSelection({ kind: 'experiment', id: copy.id });
@@ -131,9 +131,9 @@ function App() {
       if (combined) {
         const htmlDoc = CJ.generatePDFHTML(experiments, projectName, refToDate);
         const footer = projectName || (experiments[0] && experiments[0].title) || '';
-        const name = experiments.length === 1 ? `${CJ.safeFileName(experiments[0].title)}.pdf` : 'Laborjournal_Export.pdf';
+        const name = experiments.length === 1 ? `${CJ.safeFileName(experiments[0].title)}.pdf` : `${t('Laborjournal_Export')}.pdf`;
         const r = await api.exportPDF(htmlDoc, footer, name);
-        if (!r.ok) alertOK('PDF-Export fehlgeschlagen', 'Das PDF konnte nicht erstellt werden. Bitte versuche es erneut.');
+        if (!r.ok) alertOK(t('PDF-Export fehlgeschlagen'), t('Das PDF konnte nicht erstellt werden. Bitte versuche es erneut.'));
       } else {
         await api.exportPDFs(experiments.map(e => ({ html: CJ.generatePDFHTML([e], projectName, refToDate), footer: e.title, name: e.title })));
       }
@@ -150,8 +150,8 @@ function App() {
     } else {
       const p = store.projects.find(x => x.id === selection.id);
       if (!p || !p.experiments.length) return;
-      const i = await ask({ title: 'Wie möchtest du die Ansätze exportieren?', message: '',
-        buttons: [{ label: 'Als ein gemeinsames PDF', role: 'default' }, { label: 'Als getrennte Einzel-PDFs' }, { label: 'Abbrechen', role: 'cancel' }] });
+      const i = await ask({ title: t('Wie möchtest du die Ansätze exportieren?'), message: '',
+        buttons: [{ label: t('Als ein gemeinsames PDF'), role: 'default' }, { label: t('Als getrennte Einzel-PDFs') }, { label: t('Abbrechen'), role: 'cancel' }] });
       if (i === 0) runExport(p.experiments, p.title, true);
       if (i === 1) runExport(p.experiments, p.title, false);
     }
@@ -180,7 +180,7 @@ function App() {
     return () => { off.forEach(f => f()); window.removeEventListener('select-experiment', onSelect); };
   });
 
-  useEffect(() => { if (store.loadMessage) alertOK('Hinweis zu deinen Daten', store.loadMessage).then(() => { store.loadMessage = null; }); }, [store.loaded]);
+  useEffect(() => { if (store.loadMessage) alertOK(t('Hinweis zu deinen Daten'), store.loadMessage).then(() => { store.loadMessage = null; }); }, [store.loaded]);
   useEffect(() => { if (!selection || selection.kind !== 'experiment') api.setSnapWidths([1024]); }, [selection]);
 
   // MARK: Darstellung
@@ -192,13 +192,13 @@ function App() {
     const found = store.findExperiment(selection.id);
     if (found) detail = html`<${DetailView} key=${found.experiment.id} project=${found.project} experiment=${found.experiment} />`;
   }
-  if (!detail) detail = html`<div class="empty-detail title2 secondary">Wähle ein Projekt oder einen Ansatz aus, oder erstelle ein neues.</div>`;
+  if (!detail) detail = html`<div class="empty-detail title2 secondary">${t('Wähle ein Projekt oder einen Ansatz aus, oder erstelle ein neues.')}</div>`;
 
   return html`<div class="split">
     <${Sidebar} selection=${selection} setSelection=${setSelection} actions=${actions} />
     <div class="detail">
       ${detail}
-      ${exporting && html`<div class="overlay"><div class="box"><span class="spinner"></span>PDF wird generiert...</div></div>`}
+      ${exporting && html`<div class="overlay"><div class="box"><span class="spinner"></span>${t('PDF wird generiert...')}</div></div>`}
     </div>
     ${showSettings && html`<${Settings} onClose=${() => setShowSettings(false)} />`}
     <${AlertHost} />

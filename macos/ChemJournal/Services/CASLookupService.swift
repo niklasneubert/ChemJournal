@@ -24,9 +24,9 @@ actor CASLookupService {
         case invalidCAS, notFound, network(String)
         var errorDescription: String? {
             switch self {
-            case .invalidCAS: "Ungültige CAS-Nummer (Prüfziffer stimmt nicht)."
-            case .notFound: "In PubChem nicht gefunden."
-            case .network(let m): "PubChem nicht erreichbar: \(m)"
+            case .invalidCAS: String(localized: "Ungültige CAS-Nummer (Prüfziffer stimmt nicht).")
+            case .notFound: String(localized: "In PubChem nicht gefunden.")
+            case .network(let m): String(localized: "PubChem nicht erreichbar: \(m)")
             }
         }
     }

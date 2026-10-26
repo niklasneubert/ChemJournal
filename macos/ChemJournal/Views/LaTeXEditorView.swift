@@ -9,7 +9,7 @@ import WebKit
 /// - Klick auf die Vorschau: zurück in den Quelltext, Cursor sofort im Feld.
 /// - Text ohne Formeln bleibt einfach als Text stehen.
 struct LaTeXEditorView: View {
-    var title: String
+    var title: LocalizedStringKey
     @Binding var text: String
 
     @FocusState private var isFocused: Bool

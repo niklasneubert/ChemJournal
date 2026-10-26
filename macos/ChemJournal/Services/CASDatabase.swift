@@ -6,6 +6,9 @@ nonisolated struct CASEntry: Codable, Equatable, Sendable, Identifiable {
     enum Source: String, Codable, Sendable {
         case user = "eigene Eingabe"
         case pubChem = "PubChem"
+
+        /// Für die Anzeige (der Rohwert ist gespeichert und bleibt deutsch).
+        var displayName: String { self == .user ? String(localized: "eigene Eingabe") : "PubChem" }
     }
 
     var cas: String

@@ -12,7 +12,7 @@ nonisolated enum StorageMode: String, CaseIterable, Sendable {
 
     var title: String {
         switch self {
-        case .local: "Nur auf diesem Mac"
+        case .local: String(localized: "Nur auf diesem Mac")
         case .iCloud: "iCloud Drive"
         }
     }

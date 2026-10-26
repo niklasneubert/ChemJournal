@@ -31,7 +31,7 @@ const setAlert = s => { alertState = s; alertListeners.forEach(f => f()); };
 export function ask({ title, message, buttons }) {
   return new Promise(resolve => setAlert({ title, message, buttons, resolve }));
 }
-export const alertOK = (title, message) => ask({ title, message, buttons: [{ label: 'OK', role: 'default' }] });
+export const alertOK = (title, message) => ask({ title, message, buttons: [{ label: window.CJ.t('OK'), role: 'default' }] });
 
 export function AlertHost() {
   const [, tick] = useState(0);

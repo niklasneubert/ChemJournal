@@ -5,6 +5,7 @@
   const node = typeof module === 'object' && module.exports;
   const { htmlEscaped } = node ? require('./smartformat.js') : g.CJ;
   const { parseDecimal, format3 } = node ? require('./numberformat.js') : g.CJ;
+  const { t, locale, getLanguage } = node ? require('./i18n.js') : g.CJ;
 
   /** Nur Text mit $…$ oder \ce{…} braucht MathJax. */
   function containsFormulas(text) {
@@ -58,24 +59,24 @@
     const e = htmlEscaped;
     let h = "<section class='stage'>";
     h += `<h2>${rich(stage.title)}</h2>`;
-    if (stage.sourceURL) h += `<div class='source'><span class='label-inline'>Literatur</span> ${e(stage.sourceURL)}</div>`;
-    if (stage.summary) h += block('Zusammenfassung', rich(stage.summary));
+    if (stage.sourceURL) h += `<div class='source'><span class='label-inline'>${t('Literatur')}</span> ${e(stage.sourceURL)}</div>`;
+    if (stage.summary) h += block(t('Zusammenfassung'), rich(stage.summary));
     if (stage.reactionImageData) h += `<figure class='scheme'><img src='data:image/png;base64,${stage.reactionImageData}'></figure>`;
     if (stage.chemicals.length) {
-      h += `<div class='block${stage.chemicals.length <= keepTogetherRows ? ' keep' : ''}'><div class='label'>Reagenzien</div><table class='chem'>`;
+      h += `<div class='block${stage.chemicals.length <= keepTogetherRows ? ' keep' : ''}'><div class='label'>${t('Reagenzien')}</div><table class='chem'>`;
       h += "<colgroup><col style='width:27%'><col style='width:13%'><col style='width:7%'><col style='width:10%'><col style='width:9%'><col style='width:11%'><col style='width:11%'><col style='width:12%'></colgroup>";
-      h += `<thead><tr>${th('Verbindung', null, true)}${th('CAS', null, true)}${th('eq')}${th('M', 'g/mol')}${th('d', 'g/cm³')}${th('n', 'mol')}${th('V', 'mL')}${th('m', 'g')}</tr></thead><tbody>`;
+      h += `<thead><tr>${th(t('Verbindung'), null, true)}${th('CAS', null, true)}${th('eq')}${th('M', 'g/mol')}${th('d', 'g/cm³')}${th('n', 'mol')}${th('V', 'mL')}${th('m', 'g')}</tr></thead><tbody>`;
       for (const c of stage.chemicals) {
         h += `<tr><td class='name'>${nameHTML(c.name)}</td><td class='cas'>${e(c.cas)}</td>${num(c.equivalents)}${num(c.molarMass)}${num(c.density)}${num(c.amount)}${num(c.volume)}${num(c.mass)}</tr>`;
       }
       h += '</tbody></table></div>';
     }
-    if (stage.procedure) h += block('Durchführung', rich(stage.procedure));
-    if (stage.observation) h += block('Beobachtung', rich(stage.observation));
+    if (stage.procedure) h += block(t('Durchführung'), rich(stage.procedure));
+    if (stage.observation) h += block(t('Beobachtung'), rich(stage.observation));
     if (stage.yieldProducts.length) {
-      h += `<div class='block${stage.yieldProducts.length <= keepTogetherRows ? ' keep' : ''}'><div class='label'>Ausbeute</div><table class='yield'>`;
+      h += `<div class='block${stage.yieldProducts.length <= keepTogetherRows ? ' keep' : ''}'><div class='label'>${t('Ausbeute')}</div><table class='yield'>`;
       h += "<colgroup><col style='width:30%'><col style='width:14%'><col style='width:12%'><col style='width:12%'><col style='width:14%'><col style='width:18%'></colgroup>";
-      h += `<thead><tr>${th('Produkt', null, true)}${th('CAS', null, true)}${th('M', 'g/mol')}${th('m', 'g')}${th('m theor.', 'g')}${th('Ausbeute')}</tr></thead><tbody>`;
+      h += `<thead><tr>${th(t('Produkt'), null, true)}${th('CAS', null, true)}${th('M', 'g/mol')}${th('m', 'g')}${th(t('m theor.'), 'g')}${th(t('Ausbeute'))}</tr></thead><tbody>`;
       for (const y of stage.yieldProducts) {
         const ref = y.referenceChemicalID ? stage.chemicals.find(c => c.id === y.referenceChemicalID) : null;
         const refN = ref ? parseDecimal(ref.amount) : null;
@@ -141,24 +142,24 @@ mjx-container svg { max-width: 100%; height: auto; }`;
    */
   function generatePDFHTML(experiments, projectName, toDate) {
     const e = htmlEscaped;
-    const dateFmt = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' });
+    const dateFmt = new Intl.DateTimeFormat(locale(), { dateStyle: 'long' });
     let body = '';
     experiments.forEach((exp, index) => {
       body += `<article class='experiment${index > 0 ? ' new-page' : ''}'>`;
       const meta = [dateFmt.format(toDate(exp.createdAt))];
       if (projectName) meta.unshift(e(projectName));
-      meta.push(exp.stages.length === 1 ? '1 Stufe' : `${exp.stages.length} Stufen`);
+      meta.push(exp.stages.length === 1 ? t('1 Stufe') : t('{0} Stufen', exp.stages.length));
       body += `
       <header class="doc-header">
         <div class="eyebrow">ChemJournal</div>
-        <h1>${rich(exp.title || 'Ohne Titel')}</h1>
+        <h1>${rich(exp.title || t('Ohne Titel'))}</h1>
         <div class="meta">${meta.join("<span class='dot'>·</span>")}</div>
         ${exp.summary ? `<p class='lead'>${rich(exp.summary)}</p>` : ''}
       </header>`;
       for (const stage of exp.stages) body += stageHTML(stage);
       body += '</article>';
     });
-    return `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+    return `<!DOCTYPE html><html lang="${getLanguage()}"><head><meta charset="utf-8">
 <style>${css}</style></head><body>${body}</body></html>`;
   }
 

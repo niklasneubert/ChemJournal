@@ -212,6 +212,19 @@ nonisolated final class JournalHistory: @unchecked Sendable {
         return backup(journalFile, to: backupsDirectory.appendingPathComponent("ChemJournal-manuell-\(stamp).json"), now: now)
     }
 
+    /// Sicherung des aktuellen Stands, bevor ein Backup zurückgespielt wird.
+    @discardableResult
+    func safetyBackup(of journalFile: URL, now: Date = Date()) -> URL? {
+        let stamp = ISO8601DateFormatter().string(from: now).replacingOccurrences(of: ":", with: "-")
+        return backup(journalFile, to: backupsDirectory.appendingPathComponent("ChemJournal-vor-Wiederherstellen-\(stamp).json"), now: now)
+    }
+
+    /// Liest ein Backup (ganzes Journal). `nil`, wenn die Datei fehlt oder nicht lesbar ist.
+    func loadBackup(_ url: URL) -> [Project]? {
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode([Project].self, from: data)
+    }
+
     private func backup(_ journalFile: URL, to target: URL, now: Date) -> URL? {
         let fm = FileManager.default
         guard fm.fileExists(atPath: journalFile.path) else { return nil }

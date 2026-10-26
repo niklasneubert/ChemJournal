@@ -6,7 +6,7 @@ ChemJournal keeps your syntheses organised by project, experiment and stage: rea
 themselves, reaction schemes, procedures with chemical formulas, yields, analysis files – and it turns everything
 into a clean PDF when you need it on paper.
 
-> The user interface is in **German**. 🇩🇪 [Deutsche Version dieser Seite](README.de.md)
+> The user interface is in **German** by default and available in **English** (*Settings › General › Language*). 🇩🇪 [Deutsche Version dieser Seite](README.de.md)
 
 > 🤖 **Built with AI:** ChemJournal was programmed with the help of **Google Gemini Flash 3.8** and
 > **Claude Opus 5.5** (Anthropic). See [How this app was made](#how-this-app-was-made).
@@ -26,10 +26,10 @@ Get the latest version from the **[Releases page](../../releases/latest)**:
 
 | System | File |
 |---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.0-macOS.dmg` |
-| Linux x86_64 (most PCs) | `ChemJournal-1.0.0-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.0-arm64.AppImage` |
-| Linux, as plain archive | `ChemJournal-1.0.0-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | `ChemJournal-1.0.1-macOS.dmg` |
+| Linux x86_64 (most PCs) | `ChemJournal-1.0.1-x86_64.AppImage` |
+| Linux ARM64 | `ChemJournal-1.0.1-arm64.AppImage` |
+| Linux, as plain archive | `ChemJournal-1.0.1-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
@@ -38,8 +38,8 @@ and click **Open Anyway**.
 **Linux:** make the AppImage executable and start it – no installation needed:
 
 ```bash
-chmod +x ChemJournal-1.0.0-x86_64.AppImage
-./ChemJournal-1.0.0-x86_64.AppImage
+chmod +x ChemJournal-1.0.1-x86_64.AppImage
+./ChemJournal-1.0.1-x86_64.AppImage
 ```
 
 Want to try it with data? Import one of the [example experiments](examples/) via
@@ -63,7 +63,8 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 - **Search by chemical:** `n-BuLi` also finds “n-Butyllithium”, “BuLi” and rows that only carry CAS 109-72-8
 - **Yields** against a chosen reference reagent, including theoretical mass
 - **PDF export** on A4 with page numbers, one PDF per experiment or one for a whole project
-- **Version history per experiment**, daily backups, restore deleted experiments, undo/redo for everything
+- **Version history per experiment**, daily backups that you can **restore with one click**, restore deleted experiments, undo/redo for everything
+- **German or English interface** – German by default, switchable in the settings
 - **Sync** via iCloud Drive (macOS) or any synced folder such as Nextcloud or Dropbox (Linux) – the file format
   is the same on both platforms
 - Light and dark mode

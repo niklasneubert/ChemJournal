@@ -17,7 +17,7 @@ struct DetailView: View {
                     TextField("Kurze Zusammenfassung", text: $experiment.summary).font(.title3).foregroundColor(.secondary).textFieldStyle(.plain)
                         .onChange(of: experiment.summary) { _, _ in experiment.updatedAt = Date() }
                     HStack(spacing: 16) {
-                        Label(experiment.createdAt.formatted(date: .long, time: .omitted), systemImage: "calendar")
+                        Label(experiment.createdAt.appFormatted(date: .long, time: .omitted), systemImage: "calendar")
                         Button { showHistory = true } label: { Label("Verlauf", systemImage: "clock.arrow.circlepath") }
                             .buttonStyle(.link)
                             .help("Frühere Versionen dieses Ansatzes ansehen und wiederherstellen")
@@ -28,14 +28,14 @@ struct DetailView: View {
                         StageView(stage: $stage,
                             onDelete: { experiment.stages.removeAll { $0.id == stage.id } },
                             duplicateAction: {
-                                var copy = stage; copy.id = UUID(); copy.title = stage.title + " (Kopie)"; copy.createdAt = Date()
+                                var copy = stage; copy.id = UUID(); copy.title = stage.title + String(localized: " (Kopie)"); copy.createdAt = Date()
                                 if let idx = experiment.stages.firstIndex(where: { $0.id == stage.id }) {
                                     experiment.stages.insert(copy, at: experiment.stages.index(after: idx))
                                 }
                             })
                     }
                     .onMove { from, to in experiment.stages.move(fromOffsets: from, toOffset: to) }
-                    Button(action: { experiment.stages.append(Stage(title: "Stufe \(experiment.stages.count + 1)")) }) {
+                    Button(action: { experiment.stages.append(Stage(title: String(localized: "Stufe \(experiment.stages.count + 1)"))) }) {
                         HStack { Image(systemName: "plus.circle.fill"); Text("Neue Stufe hinzufügen") }.font(.headline).foregroundColor(.blue).padding().frame(maxWidth: .infinity).background(Color.blue.opacity(0.1)).cornerRadius(10)
                     }.buttonStyle(.plain).padding(.top, 10)
                 }

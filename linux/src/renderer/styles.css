@@ -302,3 +302,8 @@ select.field { padding: 0 4px; }
 .cas-table td { padding: 3px 6px; border-bottom: 1px solid var(--separator); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
 .cas-table tr.selected td { background: var(--accent); color: #fff; }
 .mono { font-variant-numeric: tabular-nums; }
+
+/* Reaktionsbilder (z. B. aus ChemDraw: schwarz auf transparent) im Dunkelmodus auf heller Karte – wie in der Mac-App */
+@media (prefers-color-scheme: dark) {
+  .drop-zone img { background: rgba(255, 255, 255, 0.92); border-radius: 6px; padding: 8px; margin: 8px; max-width: calc(100% - 32px); }
+}

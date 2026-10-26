@@ -104,11 +104,11 @@ private struct VersionRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 4) {
-                Text(info.date.formatted(date: .abbreviated, time: .shortened)).font(.body.monospacedDigit())
+                Text(info.date.appFormatted(date: .abbreviated, time: .shortened)).font(.body.monospacedDigit())
                 if info.pinned { Image(systemName: "pin.fill").font(.caption2).foregroundStyle(.orange).help("Wird nie automatisch entfernt") }
             }
-            Text(info.reason).font(.caption).foregroundStyle(.secondary)
-            Text("\(info.stageCount) \(info.stageCount == 1 ? "Stufe" : "Stufen") · \(info.chemicalCount) Chemikalien")
+            Text(LocalizedStringKey(info.reason)).font(.caption).foregroundStyle(.secondary)
+            Text(info.stageCount == 1 ? String(localized: "1 Stufe · \(info.chemicalCount) Chemikalien") : String(localized: "\(info.stageCount) Stufen · \(info.chemicalCount) Chemikalien"))
                 .font(.caption2).foregroundStyle(.tertiary)
         }
         .padding(.vertical, 2)
@@ -122,7 +122,7 @@ struct VersionPreview: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                Text(snapshot.experiment.title.isEmpty ? "Ohne Titel" : snapshot.experiment.title).font(.title2.bold())
+                Text(snapshot.experiment.title.isEmpty ? String(localized: "Ohne Titel") : snapshot.experiment.title).font(.title2.bold())
                 if !snapshot.experiment.summary.isEmpty {
                     Text(snapshot.experiment.summary).foregroundStyle(.secondary)
                 }
@@ -139,14 +139,14 @@ struct VersionPreview: View {
                             }
                         }
                         ForEach(stage.yieldProducts) { y in
-                            Text("Produkt: " + Self.line(name: y.name, cas: y.cas, values: [y.mass, y.amount]))
+                            Text(String(localized: "Produkt: ") + Self.line(name: y.name, cas: y.cas, values: [y.mass, y.amount]))
                                 .font(.callout).foregroundStyle(.secondary)
                         }
                         if !stage.procedure.isEmpty {
                             Text(stage.procedure).font(.callout).foregroundStyle(.secondary).lineLimit(8)
                         }
                         if !stage.observation.isEmpty {
-                            Text("Beobachtung: " + stage.observation).font(.callout).foregroundStyle(.secondary).lineLimit(4)
+                            Text(String(localized: "Beobachtung: ") + stage.observation).font(.callout).foregroundStyle(.secondary).lineLimit(4)
                         }
                     }
                     .padding(12)

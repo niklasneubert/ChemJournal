@@ -1,0 +1,2131 @@
+{
+  "sourceLanguage": "de",
+  "strings": {
+    " (Kopie)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (Copy)"
+          }
+        }
+      }
+    },
+    " (Version vom %@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (version from %@)"
+          }
+        }
+      }
+    },
+    " (importiert)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (imported)"
+          }
+        }
+      }
+    },
+    " (keine Dichte in PubChem)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (no density in PubChem)"
+          }
+        }
+      }
+    },
+    " (zuletzt geändert %@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (last modified %@)"
+          }
+        }
+      }
+    },
+    " Eigene Werte werden für diese CAS-Nummer gespeichert.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Your own values are saved for this CAS number."
+          }
+        }
+      }
+    },
+    " – Produkt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " – product"
+          }
+        }
+      }
+    },
+    " – eigene Werte beibehalten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " – your own values kept"
+          }
+        }
+      }
+    },
+    "%@lokal gespeichert (%@, %@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@saved locally (%2$@, %3$@)"
+          }
+        }
+      }
+    },
+    "%lld Ansätze in diesem Projekt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld experiments in this project"
+          }
+        }
+      }
+    },
+    "%lld Einträge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld entries"
+          }
+        }
+      }
+    },
+    "%lld Stufen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld stages"
+          }
+        }
+      }
+    },
+    "%lld Stufen · %lld Chemikalien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld stages · %2$lld chemicals"
+          }
+        }
+      }
+    },
+    "+ %lld weitere Treffer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+ %lld more matches"
+          }
+        }
+      }
+    },
+    "+ %lld ältere": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+ %lld older"
+          }
+        }
+      }
+    },
+    "1 Stufe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 stage"
+          }
+        }
+      }
+    },
+    "1 Stufe · %lld Chemikalien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 stage · %lld chemicals"
+          }
+        }
+      }
+    },
+    "Abbrechen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "Alle %lld Ansätze in diesem Projekt werden gelöscht. Sie bleiben im Versionsverlauf und lassen sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All %lld experiments in this project will be deleted. They stay in the version history and can be restored under Settings › Deleted Experiments."
+          }
+        }
+      }
+    },
+    "Alle Daten dieser Stufe werden gelöscht. Mit ⌘Z lässt sich das rückgängig machen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All data in this stage will be deleted. You can undo this with ⌘Z."
+          }
+        }
+      }
+    },
+    "Alle Mengen (n, m, V) werden mit dem Faktor multipliziert.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All quantities (n, m, V) are multiplied by the factor."
+          }
+        }
+      }
+    },
+    "Alle gespeicherten Versionen dieses Ansatzes werden gelöscht. Tägliche Backups des ganzen Journals bleiben davon unberührt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All saved versions of this experiment will be deleted. Daily backups of the whole journal are not affected."
+          }
+        }
+      }
+    },
+    "Alles bleibt auf diesem Mac. Mit „iCloud Drive“ sind die Daten zusätzlich in der Cloud gesichert und auf deinen anderen Macs verfügbar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything stays on this Mac. With “iCloud Drive” your data is also backed up in the cloud and available on your other Macs."
+          }
+        }
+      }
+    },
+    "Allgemein": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        }
+      }
+    },
+    "Als .chemjournal exportieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export as .chemjournal"
+          }
+        }
+      }
+    },
+    "Als Kopie hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add as Copy"
+          }
+        }
+      }
+    },
+    "Als PDF exportieren...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export as PDF…"
+          }
+        }
+      }
+    },
+    "Als eigene Eingabe gespeichert: M %@ g/mol, d %@ g/cm³": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved as your own entry: M %1$@ g/mol, d %2$@ g/cm³"
+          }
+        }
+      }
+    },
+    "Als ein gemeinsames PDF": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As One Combined PDF"
+          }
+        }
+      }
+    },
+    "Als getrennte Einzel-PDFs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As Separate PDFs"
+          }
+        }
+      }
+    },
+    "Alternativ hier ⌘D oder den Button oben nutzen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Or press ⌘D here, or use the button above"
+          }
+        }
+      }
+    },
+    "Am Ziel gibt es schon ein Journal mit %lld Ansätzen%@, z. B. von einem anderen Mac. Die jeweils andere Fassung wird in jedem Fall als Backup aufbewahrt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is already a journal with %1$lld experiments%2$@ at the destination, e.g. from another Mac. The other version is kept as a backup either way."
+          }
+        }
+      }
+    },
+    "Analyse & Daten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis & Data"
+          }
+        }
+      }
+    },
+    "Analysiere…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing…"
+          }
+        }
+      }
+    },
+    "Ansatz auswählen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select an experiment"
+          }
+        }
+      }
+    },
+    "Ansatz duplizieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicate Experiment"
+          }
+        }
+      }
+    },
+    "Ansatz importieren (.chemjournal)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Experiment (.chemjournal)"
+          }
+        }
+      }
+    },
+    "Ansatz importieren (.chemjournal)...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Experiment (.chemjournal)…"
+          }
+        }
+      }
+    },
+    "Ansatz löschen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Experiment"
+          }
+        }
+      }
+    },
+    "Ansatz skalieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scale Experiment"
+          }
+        }
+      }
+    },
+    "Ansatz „%@“ löschen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete experiment “%@”?"
+          }
+        }
+      }
+    },
+    "Ansatzgrößen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reagents"
+          }
+        }
+      }
+    },
+    "Auf optimale Breite einrasten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snap to Optimal Width"
+          }
+        }
+      }
+    },
+    "Aus PubChem übernommen: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taken from PubChem: %@"
+          }
+        }
+      }
+    },
+    "Ausbeute": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yield"
+          }
+        }
+      }
+    },
+    "Ausbeute (Produkt)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yield (Product)"
+          }
+        }
+      }
+    },
+    "Ausgewählte entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Selected"
+          }
+        }
+      }
+    },
+    "Automatisch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        }
+      }
+    },
+    "Automatisch: ein Backup pro Tag (30 Tage, danach eines pro Monat für ein Jahr) und Versionen je Ansatz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic: one backup per day (30 days, then one per month for a year) and versions per experiment."
+          }
+        }
+      }
+    },
+    "Backup angelegt: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup created: %@"
+          }
+        }
+      }
+    },
+    "Backup konnte nicht angelegt werden (noch keine Daten gespeichert?).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not create a backup (nothing saved yet?)."
+          }
+        }
+      }
+    },
+    "Backup wiederhergestellt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup restored."
+          }
+        }
+      }
+    },
+    "Backup wiederhergestellt. Der vorherige Stand liegt unter %@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup restored. The previous state was saved as %@."
+          }
+        }
+      }
+    },
+    "Backups": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backups"
+          }
+        }
+      }
+    },
+    "Beenden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        }
+      }
+    },
+    "Beim Beenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When quitting"
+          }
+        }
+      }
+    },
+    "Beim Wiederherstellen wird der aktuelle Stand vorher selbst als Backup gesichert. Mit ⌘Z lässt es sich außerdem rückgängig machen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before restoring, the current state is saved as a backup itself. You can also undo it with ⌘Z."
+          }
+        }
+      }
+    },
+    "Beobachtung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Observation"
+          }
+        }
+      }
+    },
+    "Beobachtung: ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Observation: "
+          }
+        }
+      }
+    },
+    "Beschreibung...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description…"
+          }
+        }
+      }
+    },
+    "Bezug": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reference"
+          }
+        }
+      }
+    },
+    "Bild entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Image"
+          }
+        }
+      }
+    },
+    "Bild oder PDF (ChemDraw) hier ablegen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop an image or PDF (ChemDraw) here"
+          }
+        }
+      }
+    },
+    "CAS": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAS"
+          }
+        }
+      }
+    },
+    "CAS oder Name": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAS or name"
+          }
+        }
+      }
+    },
+    "CAS-Datenbank": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAS Database"
+          }
+        }
+      }
+    },
+    "ChemDraw aktiv": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChemDraw active"
+          }
+        }
+      }
+    },
+    "ChemDraw speichert, schließt sich automatisch und importiert das Bild": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChemDraw saves, closes automatically and the image is imported"
+          }
+        }
+      }
+    },
+    "ChemJournal sichert automatisch: beim ersten Speichern, danach höchstens alle 10 Minuten, wenn sich etwas geändert hat, und beim Beenden.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChemJournal saves versions automatically: on the first save, then at most every 10 minutes when something has changed, and when quitting."
+          }
+        }
+      }
+    },
+    "Chemikalie hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Chemical"
+          }
+        }
+      }
+    },
+    "DOI, URL oder Buch...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DOI, URL or book…"
+          }
+        }
+      }
+    },
+    "Das PDF konnte nicht erstellt werden. Bitte versuche es erneut.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The PDF could not be created. Please try again."
+          }
+        }
+      }
+    },
+    "Das ganze Journal wird durch das Backup vom %@ ersetzt. Der aktuelle Stand wird vorher als Backup gesichert.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The whole journal will be replaced by the backup from %@. The current state is saved as a backup first."
+          }
+        }
+      }
+    },
+    "Dateien verknüpfen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link Files"
+          }
+        }
+      }
+    },
+    "Daten werden umgezogen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving data…"
+          }
+        }
+      }
+    },
+    "Datum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        }
+      }
+    },
+    "Der Ansatz bleibt im Versionsverlauf und lässt sich unter Einstellungen › Gelöschte Ansätze wiederherstellen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The experiment stays in the version history and can be restored under Settings › Deleted Experiments."
+          }
+        }
+      }
+    },
+    "Der aktuelle Stand wird vorher selbst als Version gesichert und bleibt im Verlauf.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current state is saved as a version first and stays in the history."
+          }
+        }
+      }
+    },
+    "Die Datendatei konnte nicht gelesen werden und wurde unter %@ gesichert. ChemJournal startet mit einem leeren Journal.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The data file could not be read and was saved as %@. ChemJournal starts with an empty journal."
+          }
+        }
+      }
+    },
+    "Die Datendatei war beschädigt. Der letzte Stand aus dem Backup wurde geladen. Die beschädigte Datei liegt unter %@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The data file was damaged. The last state from the backup was loaded. The damaged file was kept as %@."
+          }
+        }
+      }
+    },
+    "Die neue Sprache gilt nach einem Neustart von ChemJournal.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The new language applies after restarting ChemJournal."
+          }
+        }
+      }
+    },
+    "Diese Version als zusätzlichen Ansatz einfügen – der aktuelle Stand bleibt unverändert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insert this version as an additional experiment – the current state stays unchanged"
+          }
+        }
+      }
+    },
+    "Diesen Stand wiederherstellen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore this state?"
+          }
+        }
+      }
+    },
+    "Dieses Backup ist nicht lesbar und wurde nicht wiederhergestellt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This backup cannot be read and was not restored."
+          }
+        }
+      }
+    },
+    "Dunkel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        }
+      }
+    },
+    "Durch dieses Journal ersetzen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace with This Journal"
+          }
+        }
+      }
+    },
+    "Durchführung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Procedure"
+          }
+        }
+      }
+    },
+    "Endgültig entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Permanently"
+          }
+        }
+      }
+    },
+    "Endgültig entfernen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Permanently…"
+          }
+        }
+      }
+    },
+    "Entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
+          }
+        }
+      }
+    },
+    "Erscheinungsbild": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
+    "Erste Sicherung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First save"
+          }
+        }
+      }
+    },
+    "Extrahieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extract"
+          }
+        }
+      }
+    },
+    "Faktor:": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Factor:"
+          }
+        }
+      }
+    },
+    "Frühere Versionen dieses Ansatzes ansehen und wiederherstellen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View and restore earlier versions of this experiment"
+          }
+        }
+      }
+    },
+    "Füge hier die Versuchsvorschrift aus einem Paper oder einer SI ein. Die Auswertung läuft komplett auf deinem Mac.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste the experimental procedure from a paper or SI here. Everything is processed on your Mac."
+          }
+        }
+      }
+    },
+    "Gelöschte Ansätze": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleted Experiments"
+          }
+        }
+      }
+    },
+    "Gelöschte Ansätze bleiben hier mit ihrem letzten Stand, bis du sie endgültig entfernst.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleted experiments stay here with their last state until you remove them permanently."
+          }
+        }
+      }
+    },
+    "Hell": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        }
+      }
+    },
+    "Hinweis zu deinen Daten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About Your Data"
+          }
+        }
+      }
+    },
+    "Im Finder zeigen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in Finder"
+          }
+        }
+      }
+    },
+    "Im Text wurden keine Mengenangaben oder Chemikaliennamen erkannt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No quantities or chemical names were found in the text."
+          }
+        }
+      }
+    },
+    "Import fehlgeschlagen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Failed"
+          }
+        }
+      }
+    },
+    "In ChemDraw zeichnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draw in ChemDraw"
+          }
+        }
+      }
+    },
+    "In ChemDraw zeichnen & ⌘S drücken": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draw in ChemDraw & press ⌘S"
+          }
+        }
+      }
+    },
+    "In ChemDraw ⌘S drücken oder hier ⌘D zum Importieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press ⌘S in ChemDraw or ⌘D here to import"
+          }
+        }
+      }
+    },
+    "In PubChem nicht gefunden.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not found in PubChem."
+          }
+        }
+      }
+    },
+    "In iCloud Drive liegt bereits ein Journal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There Is Already a Journal in iCloud Drive"
+          }
+        }
+      }
+    },
+    "Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every CAS number you entered, with molar mass and density – from PubChem or from you. The next time you type the CAS number, the values are filled in instantly, even offline. Your own values take precedence over PubChem."
+          }
+        }
+      }
+    },
+    "Jetzt neu starten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restart Now"
+          }
+        }
+      }
+    },
+    "Jetzt sichern": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back Up Now"
+          }
+        }
+      }
+    },
+    "Journal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journal"
+          }
+        }
+      }
+    },
+    "Journal auf diesen Stand zurücksetzen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset the journal to this state?"
+          }
+        }
+      }
+    },
+    "Journal, Versionen, Backups und CAS-Datenbank liegen in iCloud Drive › ChemJournal und sind auf allen deinen Macs mit derselben Apple-ID verfügbar. Änderungen anderer Macs werden automatisch übernommen, solange du hier nichts Ungespeichertes hast.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journal, versions, backups and CAS database are stored in iCloud Drive › ChemJournal and are available on all your Macs with the same Apple ID. Changes from other Macs are applied automatically as long as you have no unsaved changes here."
+          }
+        }
+      }
+    },
+    "Keine Beschreibung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No description"
+          }
+        }
+      }
+    },
+    "Keine Chemikalien gefunden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Chemicals Found"
+          }
+        }
+      }
+    },
+    "Keine gelöschten Ansätze": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Deleted Experiments"
+          }
+        }
+      }
+    },
+    "Konnte kein Bild aus ChemDraw importieren.\nBitte stelle sicher, dass eine Zeichnung in ChemDraw vorhanden ist.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not import an image from ChemDraw.\nPlease make sure there is a drawing in ChemDraw."
+          }
+        }
+      }
+    },
+    "Kurze Zusammenfassung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Short summary"
+          }
+        }
+      }
+    },
+    "Laborjournal speichern": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Lab Journal"
+          }
+        }
+      }
+    },
+    "Laborjournal_Export": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lab_Journal_Export"
+          }
+        }
+      }
+    },
+    "Literatur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reference"
+          }
+        }
+      }
+    },
+    "Löschen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "M": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "M"
+          }
+        }
+      }
+    },
+    "M (g/mol)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "M (g/mol)"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Neue Stufe hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add New Stage"
+          }
+        }
+      }
+    },
+    "Neuen Ansatz erstellen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create New Experiment"
+          }
+        }
+      }
+    },
+    "Neuer Ansatz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Experiment"
+          }
+        }
+      }
+    },
+    "Neues Projekt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Project"
+          }
+        }
+      }
+    },
+    "Noch keine Backups – das erste entsteht bei der ersten Änderung heute.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No backups yet – the first one is created with today's first change."
+          }
+        }
+      }
+    },
+    "Noch keine Versionen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Versions Yet"
+          }
+        }
+      }
+    },
+    "Nur auf diesem Mac": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only on This Mac"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "Ohne Titel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untitled"
+          }
+        }
+      }
+    },
+    "PDF wird generiert...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generating PDF…"
+          }
+        }
+      }
+    },
+    "PDF-Export fehlgeschlagen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF Export Failed"
+          }
+        }
+      }
+    },
+    "Produkt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product"
+          }
+        }
+      }
+    },
+    "Produkt hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Product"
+          }
+        }
+      }
+    },
+    "Produkt: ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product: "
+          }
+        }
+      }
+    },
+    "Produktname": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product name"
+          }
+        }
+      }
+    },
+    "Projekt löschen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Project"
+          }
+        }
+      }
+    },
+    "Projekt „%@“ löschen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete project “%@”?"
+          }
+        }
+      }
+    },
+    "Projektname": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Project name"
+          }
+        }
+      }
+    },
+    "PubChem nicht erreichbar: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PubChem not reachable: %@"
+          }
+        }
+      }
+    },
+    "PubChem-Suche läuft": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Searching PubChem"
+          }
+        }
+      }
+    },
+    "Quelle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source"
+          }
+        }
+      }
+    },
+    "Quelle:": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source:"
+          }
+        }
+      }
+    },
+    "Reagenzien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reagents"
+          }
+        }
+      }
+    },
+    "Reaktionsgleichung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reaction Scheme"
+          }
+        }
+      }
+    },
+    "Schließen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "Seite %lld von %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Skalieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scale"
+          }
+        }
+      }
+    },
+    "Smart Extract": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Extract"
+          }
+        }
+      }
+    },
+    "Smart Extract (KI) öffnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Smart Extract"
+          }
+        }
+      }
+    },
+    "Smarte Formatierung anwenden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply Smart Formatting"
+          }
+        }
+      }
+    },
+    "Speicherort": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage Location"
+          }
+        }
+      }
+    },
+    "Speicherort & Backups": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage & Backups"
+          }
+        }
+      }
+    },
+    "Speicherort: %@. Die bisherigen Dateien am alten Ort bleiben unverändert liegen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage location: %@. The files at the old location are left unchanged."
+          }
+        }
+      }
+    },
+    "Sprache": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        }
+      }
+    },
+    "Standard ist Deutsch, unabhängig von der Sprache des Macs. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "German is the default, regardless of your Mac's language. Smart Extract always understands German and English text."
+          }
+        }
+      }
+    },
+    "Stufe %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stage %lld"
+          }
+        }
+      }
+    },
+    "Stufe löschen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Stage"
+          }
+        }
+      }
+    },
+    "Stufe löschen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Stage?"
+          }
+        }
+      }
+    },
+    "Stufenname": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stage name"
+          }
+        }
+      }
+    },
+    "Suche Molmasse und Dichte in PubChem …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looking up molar mass and density in PubChem…"
+          }
+        }
+      }
+    },
+    "Suchen: Ansatz, Chemikalie, CAS …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search: experiment, chemical, CAS…"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        }
+      }
+    },
+    "Titel des Ansatzes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experiment title"
+          }
+        }
+      }
+    },
+    "Unbenannter Ansatz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untitled Experiment"
+          }
+        }
+      }
+    },
+    "Ungültige CAS-Nummer (Prüfziffer stimmt nicht).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid CAS number (check digit does not match)."
+          }
+        }
+      }
+    },
+    "V": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "V"
+          }
+        }
+      }
+    },
+    "V (ml)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "V (ml)"
+          }
+        }
+      }
+    },
+    "Verbindung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compound"
+          }
+        }
+      }
+    },
+    "Verlauf": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        }
+      }
+    },
+    "Verlauf dieses Ansatzes endgültig entfernen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently remove this experiment's history?"
+          }
+        }
+      }
+    },
+    "Versionen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versions"
+          }
+        }
+      }
+    },
+    "Vor dem Löschen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before deleting"
+          }
+        }
+      }
+    },
+    "Vor dem Wiederherstellen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before restoring"
+          }
+        }
+      }
+    },
+    "Vorgehen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Procedure"
+          }
+        }
+      }
+    },
+    "Vorhandenes Journal verwenden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Existing Journal"
+          }
+        }
+      }
+    },
+    "Widerrufen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        }
+      }
+    },
+    "Wie möchtest du die Ansätze exportieren?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How would you like to export the experiments?"
+          }
+        }
+      }
+    },
+    "Wiederhergestellt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restored"
+          }
+        }
+      }
+    },
+    "Wiederherstellen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore"
+          }
+        }
+      }
+    },
+    "Wiederherstellen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore…"
+          }
+        }
+      }
+    },
+    "Wiederholen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redo"
+          }
+        }
+      }
+    },
+    "Wird nie automatisch entfernt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never removed automatically"
+          }
+        }
+      }
+    },
+    "Wähle den Ordner für den Export der einzelnen PDFs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the folder for the individual PDFs"
+          }
+        }
+      }
+    },
+    "Wähle ein Projekt oder einen Ansatz aus, oder erstelle ein neues.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a project or an experiment, or create a new one."
+          }
+        }
+      }
+    },
+    "Wähle eine .chemjournal-Datei zum Importieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a .chemjournal file to import"
+          }
+        }
+      }
+    },
+    "Wählen...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose…"
+          }
+        }
+      }
+    },
+    "Zeichnung aus ChemDraw importieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Drawing from ChemDraw"
+          }
+        }
+      }
+    },
+    "Zeichnung importieren (⌘D)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import Drawing (⌘D)"
+          }
+        }
+      }
+    },
+    "Zuletzt Änderungen von einem anderen Mac übernommen: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last applied changes from another Mac: %@"
+          }
+        }
+      }
+    },
+    "Zusammenfassung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summary"
+          }
+        }
+      }
+    },
+    "d": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "d"
+          }
+        }
+      }
+    },
+    "d (g/cm3)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "d (g/cm3)"
+          }
+        }
+      }
+    },
+    "d (g/cm³)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "d (g/cm³)"
+          }
+        }
+      }
+    },
+    "eigene Eingabe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "own entry"
+          }
+        }
+      }
+    },
+    "eq": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "eq"
+          }
+        }
+      }
+    },
+    "iCloud Drive ist auf diesem Mac nicht eingeschaltet (Systemeinstellungen › Apple-ID › iCloud).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud Drive is not turned on on this Mac (System Settings › Apple ID › iCloud)."
+          }
+        }
+      }
+    },
+    "iCloud Drive ist nicht verfügbar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud Drive is not available."
+          }
+        }
+      }
+    },
+    "m": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m"
+          }
+        }
+      }
+    },
+    "m (g)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m (g)"
+          }
+        }
+      }
+    },
+    "m theor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m theor."
+          }
+        }
+      }
+    },
+    "n": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n"
+          }
+        }
+      }
+    },
+    "n (mol)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n (mol)"
+          }
+        }
+      }
+    },
+    "z.B. 0.5": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. 0.5"
+          }
+        }
+      }
+    },
+    "Ältere Versionen werden ausgedünnt: 24 h alle, 30 Tage eine pro Tag, danach eine pro Woche.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older versions are thinned out: all for 24 h, one per day for 30 days, then one per week."
+          }
+        }
+      }
+    },
+    "Öffnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        }
+      }
+    },
+    "–": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "–"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

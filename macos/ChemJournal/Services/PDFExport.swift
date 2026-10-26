@@ -137,7 +137,7 @@ final class PDFManager: NSObject, WKNavigationDelegate {
             let y = margins.bottom / 2 - 4
             let left = NSAttributedString(string: text, attributes: attrs)
             left.draw(at: NSPoint(x: margins.left, y: y))
-            let right = NSAttributedString(string: "Seite \(i + 1) von \(count)", attributes: attrs)
+            let right = NSAttributedString(string: String(localized: "Seite \(i + 1) von \(count)"), attributes: attrs)
             right.draw(at: NSPoint(x: box.width - margins.right - right.size().width, y: y))
             NSGraphicsContext.restoreGraphicsState()
             ctx.endPage()
@@ -162,18 +162,18 @@ final class PDFManager: NSObject, WKNavigationDelegate {
 
 struct HTMLGenerator {
     static func generate(for experiments: [Experiment], projectName: String = "") -> String {
-        let dateFmt = DateFormatter(); dateFmt.dateStyle = .long; dateFmt.timeStyle = .none; dateFmt.locale = Locale(identifier: "de_DE")
+        let dateFmt = DateFormatter(); dateFmt.dateStyle = .long; dateFmt.timeStyle = .none; dateFmt.locale = AppLanguage.current.locale
         let e = htmlEscaped
         var body = ""
         for (index, exp) in experiments.enumerated() {
             body += "<article class='experiment\(index > 0 ? " new-page" : "")'>"
             var meta = [dateFmt.string(from: exp.createdAt)]
             if !projectName.isEmpty { meta.insert(e(projectName), at: 0) }
-            meta.append(exp.stages.count == 1 ? "1 Stufe" : "\(exp.stages.count) Stufen")
+            meta.append(exp.stages.count == 1 ? String(localized: "1 Stufe") : String(localized: "\(exp.stages.count) Stufen"))
             body += """
             <header class="doc-header">
               <div class="eyebrow">ChemJournal</div>
-              <h1>\(rich(exp.title.isEmpty ? "Ohne Titel" : exp.title))</h1>
+              <h1>\(rich(exp.title.isEmpty ? String(localized: "Ohne Titel") : exp.title))</h1>
               <div class="meta">\(meta.joined(separator: "<span class='dot'>·</span>"))</div>
               \(exp.summary.isEmpty ? "" : "<p class='lead'>\(rich(exp.summary))</p>")
             </header>
@@ -182,7 +182,7 @@ struct HTMLGenerator {
             body += "</article>"
         }
         return """
-        <!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+        <!DOCTYPE html><html lang="\(AppLanguage.current.rawValue)"><head><meta charset="utf-8">
         <style>\(css)</style></head><body>\(body)</body></html>
         """
     }
@@ -192,27 +192,27 @@ struct HTMLGenerator {
         var h = "<section class='stage'>"
         h += "<h2>\(rich(stage.title))</h2>"
         if !stage.sourceURL.isEmpty {
-            h += "<div class='source'><span class='label-inline'>Literatur</span> \(e(stage.sourceURL))</div>"
+            h += "<div class='source'><span class='label-inline'>\(String(localized: "Literatur"))</span> \(e(stage.sourceURL))</div>"
         }
-        if !stage.summary.isEmpty { h += block("Zusammenfassung", rich(stage.summary)) }
+        if !stage.summary.isEmpty { h += block(String(localized: "Zusammenfassung"), rich(stage.summary)) }
         if let data = stage.reactionImageData {
             h += "<figure class='scheme'><img src='data:image/png;base64,\(data.base64EncodedString())'></figure>"
         }
         if !stage.chemicals.isEmpty {
-            h += "<div class='block\(stage.chemicals.count <= keepTogetherRows ? " keep" : "")'><div class='label'>Reagenzien</div><table class='chem'>"
+            h += "<div class='block\(stage.chemicals.count <= keepTogetherRows ? " keep" : "")'><div class='label'>\(String(localized: "Reagenzien"))</div><table class='chem'>"
             h += "<colgroup><col style='width:27%'><col style='width:13%'><col style='width:7%'><col style='width:10%'><col style='width:9%'><col style='width:11%'><col style='width:11%'><col style='width:12%'></colgroup>"
-            h += "<thead><tr>\(th("Verbindung", left: true))\(th("CAS", left: true))\(th("eq"))\(th("M", "g/mol"))\(th("d", "g/cm³"))\(th("n", "mol"))\(th("V", "mL"))\(th("m", "g"))</tr></thead><tbody>"
+            h += "<thead><tr>\(th(String(localized: "Verbindung"), left: true))\(th("CAS", left: true))\(th("eq"))\(th("M", "g/mol"))\(th("d", "g/cm³"))\(th("n", "mol"))\(th("V", "mL"))\(th("m", "g"))</tr></thead><tbody>"
             for c in stage.chemicals {
                 h += "<tr><td class='name'>\(nameHTML(c.name))</td><td class='cas'>\(e(c.cas))</td>\(num(c.equivalents))\(num(c.molarMass))\(num(c.density))\(num(c.amount))\(num(c.volume))\(num(c.mass))</tr>"
             }
             h += "</tbody></table></div>"
         }
-        if !stage.procedure.isEmpty { h += block("Durchführung", rich(stage.procedure)) }
-        if !stage.observation.isEmpty { h += block("Beobachtung", rich(stage.observation)) }
+        if !stage.procedure.isEmpty { h += block(String(localized: "Durchführung"), rich(stage.procedure)) }
+        if !stage.observation.isEmpty { h += block(String(localized: "Beobachtung"), rich(stage.observation)) }
         if !stage.yieldProducts.isEmpty {
-            h += "<div class='block\(stage.yieldProducts.count <= keepTogetherRows ? " keep" : "")'><div class='label'>Ausbeute</div><table class='yield'>"
+            h += "<div class='block\(stage.yieldProducts.count <= keepTogetherRows ? " keep" : "")'><div class='label'>\(String(localized: "Ausbeute"))</div><table class='yield'>"
             h += "<colgroup><col style='width:30%'><col style='width:14%'><col style='width:12%'><col style='width:12%'><col style='width:14%'><col style='width:18%'></colgroup>"
-            h += "<thead><tr>\(th("Produkt", left: true))\(th("CAS", left: true))\(th("M", "g/mol"))\(th("m", "g"))\(th("m theor.", "g"))\(th("Ausbeute"))</tr></thead><tbody>"
+            h += "<thead><tr>\(th(String(localized: "Produkt"), left: true))\(th("CAS", left: true))\(th("M", "g/mol"))\(th("m", "g"))\(th(String(localized: "m theor."), "g"))\(th(String(localized: "Ausbeute")))</tr></thead><tbody>"
             for y in stage.yieldProducts {
                 let ref = y.referenceChemicalID.flatMap { id in stage.chemicals.first { $0.id == id } }
                 let refN = ref.flatMap { parseDecimal($0.amount) }

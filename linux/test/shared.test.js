@@ -116,3 +116,37 @@ test('Beschädigte Datei: Backup wird geladen, Original gesichert', () => {
   assert.strictEqual(r.projects[0].title, 'Backup');
   assert.ok(fs.readdirSync(dir).some(f => f.startsWith('ChemJournalData.defekt-')));
 });
+
+test('Sprache: Deutsch als Standard, Englisch umschaltbar, Platzhalter', () => {
+  const i18n = require('../src/shared/i18n');
+  assert.strictEqual(i18n.getLanguage(), 'de');
+  assert.strictEqual(i18n.t('Neuer Ansatz'), 'Neuer Ansatz');
+  i18n.setLanguage('en');
+  assert.strictEqual(i18n.t('Neuer Ansatz'), 'New Experiment');
+  assert.strictEqual(i18n.t('Seite {0} von {1}', 2, 5), 'Page 2 of 5');
+  assert.strictEqual(i18n.t('Nicht im Wörterbuch'), 'Nicht im Wörterbuch');
+  // Jeder Platzhalter des deutschen Texts kommt auch in der Übersetzung vor
+  for (const [de, en] of Object.entries(i18n.EN)) {
+    for (const ph of de.match(/\{\d+\}/g) || []) assert.ok(en.includes(ph), `${de} → ${en}`);
+  }
+  i18n.setLanguage('de');
+});
+
+test('Backup zurückspielen: Sicherung des aktuellen Stands vorher', () => {
+  const { JournalPersistence } = require('../src/main/storage');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cj-'));
+  const paths = {
+    dataDirectory: dir, supportDirectory: dir, journalFile: path.join(dir, 'ChemJournalData.json'),
+    versionsDirectory: path.join(dir, 'Versionen'), backupsDirectory: path.join(dir, 'Backups'), casDatabaseFile: path.join(dir, 'CAS-Datenbank.json'),
+  };
+  const p = new JournalPersistence(paths);
+  p.load();
+  const project = title => [{ id: 'A1B2C3D4-0000-0000-0000-00000000000A', title, isExpanded: true, experiments: [] }];
+  p.save(project('Alt'));
+  const backup = p.history.manualBackup(paths.journalFile);
+  p.save(project('Neu'));
+  const safety = p.history.safetyBackup(paths.journalFile);
+  assert.ok(path.basename(safety).startsWith('ChemJournal-vor-Wiederherstellen-'));
+  assert.strictEqual(JSON.parse(fs.readFileSync(safety, 'utf8'))[0].title, 'Neu');
+  assert.strictEqual(JSON.parse(fs.readFileSync(backup, 'utf8'))[0].title, 'Alt');
+});

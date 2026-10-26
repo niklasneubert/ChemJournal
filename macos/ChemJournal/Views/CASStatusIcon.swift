@@ -40,8 +40,8 @@ struct CASStatusIcon: View {
     private var accessibilityText: String {
         switch status {
         case .idle: ""
-        case .loading: "PubChem-Suche läuft"
-        case .found(let title): "Aus PubChem übernommen: \(title)"
+        case .loading: String(localized: "PubChem-Suche läuft")
+        case .found(let title): String(localized: "Aus PubChem übernommen: \(title)")
         case .saved(let info): info
         case .failed(let reason): reason
         }
@@ -99,22 +99,22 @@ enum CASAutofill {
                 if !before.molarMass.isEmpty || !before.density.isEmpty {
                     saveUserValues(cas: cas, values: current().values)
                 }
-                let kept = (!before.molarMass.isEmpty || (!before.density.isEmpty && d != nil)) ? " – eigene Werte beibehalten" : ""
-                status.wrappedValue = .found(result.title + (result.density == nil ? " (keine Dichte in PubChem)" : "") + kept)
+                let kept = (!before.molarMass.isEmpty || (!before.density.isEmpty && d != nil)) ? String(localized: " – eigene Werte beibehalten") : ""
+                status.wrappedValue = .found(result.title + (result.density == nil ? String(localized: " (keine Dichte in PubChem)") : "") + kept)
             } catch {
                 guard CASNumber.normalized(current().cas) == cas else { return }
                 if case CASLookupService.LookupError.notFound = error { CASDatabase.shared.markPubChemChecked(cas: cas) }
                 // Offline oder unbekannt: vorhandene eigene Werte trotzdem für diese CAS merken
                 let values = current().values
                 if !values.molarMass.isEmpty || !values.density.isEmpty { saveUserValues(cas: cas, values: values) }
-                status.wrappedValue = .failed(error.localizedDescription + " Eigene Werte werden für diese CAS-Nummer gespeichert.")
+                status.wrappedValue = .failed(error.localizedDescription + String(localized: " Eigene Werte werden für diese CAS-Nummer gespeichert."))
             }
         }
     }
 
     private static func savedInfo(_ e: CASEntry) -> String {
-        let date = e.updatedAt.formatted(date: .abbreviated, time: .omitted)
+        let date = e.updatedAt.appFormatted(date: .abbreviated, time: .omitted)
         let name = e.name.isEmpty ? "" : "\(e.name) – "
-        return "\(name)lokal gespeichert (\(e.source.rawValue), \(date))"
+        return String(localized: "\(name)lokal gespeichert (\(e.source.displayName), \(date))")
     }
 }

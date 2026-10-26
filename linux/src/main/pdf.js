@@ -9,6 +9,7 @@ const { BrowserWindow, app } = require('electron');
 const { htmlEscaped } = require('../shared/smartformat');
 const { uuid } = require('./model');
 
+const { t } = require('../shared/i18n');
 const MATHJAX = path.join(__dirname, '../renderer/vendor/mathjax-tex-svg-full.js');
 const PT = 1 / 72;   // Punkt → Zoll
 const MARGINS = { top: 42 * PT, bottom: 54 * PT, left: 48 * PT, right: 48 * PT };
@@ -39,7 +40,7 @@ async function render(html, footer) {
       await new Promise(r => setTimeout(r, 100));
     }
     const footerTemplate = `<div style="width:100%;font-size:7.5pt;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;color:#737373;padding:0 48pt;display:flex;justify-content:space-between;-webkit-print-color-adjust:exact;">
-      <span>${htmlEscaped(footer || '')}</span><span>Seite <span class="pageNumber"></span> von <span class="totalPages"></span></span></div>`;
+      <span>${htmlEscaped(footer || '')}</span><span>${t('Seite')} <span class="pageNumber"></span> ${t('von')} <span class="totalPages"></span></span></div>`;
     return await win.webContents.printToPDF({
       pageSize: 'A4', printBackground: true, margins: MARGINS,
       displayHeaderFooter: true, headerTemplate: '<span></span>', footerTemplate,

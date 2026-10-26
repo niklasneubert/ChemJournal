@@ -1,5 +1,5 @@
 // Ansatzgrößen- und Ausbeute-Tabelle – entspricht ChemicalTableView.swift, YieldTableView.swift, CASStatusIcon.swift.
-import { html, CJ, api, useState, useEffect, useRef, newChemical, newYield, formatAbbrev } from './lib.js';
+import { html, CJ, api, t, useState, useEffect, useRef, newChemical, newYield, formatAbbrev } from './lib.js';
 import { Icon } from './icons.js';
 import { Sheet, alertOK } from './ui.js';
 import { store } from './store.js';
@@ -123,7 +123,7 @@ export function calcYield(y, source) {
 
 function savedInfo(e) {
   const date = formatAbbrev(new Date(e.updatedAt));
-  return `${e.name ? e.name + ' – ' : ''}lokal gespeichert (${e.source}, ${date})`;
+  return t('{0}lokal gespeichert ({1}, {2})', e.name ? e.name + ' – ' : '', t(e.source), date);
 }
 
 /**
@@ -155,13 +155,13 @@ async function lookup(cas, getRow, setStatus, apply) {
     apply(row.molarMass ? null : m, row.density ? null : d);
     await api.casRecordPubChem(cas, result);
     if (row.molarMass || row.density) { const now = getRow(); await api.casRecordUser(cas, now.name, now.molarMass, now.density); }
-    const kept = (row.molarMass || (row.density && d !== null)) ? ' – eigene Werte beibehalten' : '';
-    setStatus({ kind: 'found', text: result.title + (result.density == null ? ' (keine Dichte in PubChem)' : '') + kept });
+    const kept = (row.molarMass || (row.density && d !== null)) ? t(' – eigene Werte beibehalten') : '';
+    setStatus({ kind: 'found', text: result.title + (result.density == null ? t(' (keine Dichte in PubChem)') : '') + kept });
   } else {
     if (r.kind === 'notFound') await api.casMarkChecked(cas);
     const now = getRow();
     if (now.molarMass || now.density) await api.casRecordUser(cas, now.name, now.molarMass, now.density);
-    setStatus({ kind: 'failed', text: `${r.message} Eigene Werte werden für diese CAS-Nummer gespeichert.` });
+    setStatus({ kind: 'failed', text: t(r.message) + t(' Eigene Werte werden für diese CAS-Nummer gespeichert.') });
   }
 }
 
@@ -170,13 +170,13 @@ async function saveCASValues(row, setStatus) {
   await api.casRecordUser(row.cas, row.name, row.molarMass, row.density);
   const e = store.casEntries.get(CJ.normalizeCAS(row.cas));
   const m = e ? e.molarMass : row.molarMass, d = e ? e.density : row.density;
-  setStatus({ kind: 'saved', text: `Als eigene Eingabe gespeichert: M ${m || '–'} g/mol, d ${d || '–'} g/cm³` });
+  setStatus({ kind: 'saved', text: t('Als eigene Eingabe gespeichert: M {0} g/mol, d {1} g/cm³', m || '–', d || '–') });
 }
 
 export function CASStatusIcon({ status }) {
   switch (status.kind) {
-    case 'loading': return html`<span class="cas-status" title="Suche Molmasse und Dichte in PubChem …"><span class="spinner"></span></span>`;
-    case 'found': return html`<span class="cas-status green" title=${'Aus PubChem übernommen: ' + status.text}><${Icon} name="checkmark.circle.fill" /></span>`;
+    case 'loading': return html`<span class="cas-status" title=${t('Suche Molmasse und Dichte in PubChem …')}><span class="spinner"></span></span>`;
+    case 'found': return html`<span class="cas-status green" title=${t('Aus PubChem übernommen: {0}', status.text)}><${Icon} name="checkmark.circle.fill" /></span>`;
     case 'saved': return html`<span class="cas-status gray" title=${status.text}><${Icon} name="checkmark.circle.fill" /></span>`;
     case 'failed': return html`<span class="cas-status orange" title=${status.text}><${Icon} name="exclamationmark.triangle.fill" /></span>`;
     default: return null;
@@ -226,18 +226,18 @@ export function ChemicalTable({ eid, stage, showSmartExtract, setShowSmartExtrac
 
   return html`<div class="table-box">
     <div class="table-head">
-      <span class="headline">Ansatzgrößen</span><span class="spacer"></span>
-      <button class="tint-button orange" onClick=${() => setShowScale(true)}><${Icon} name="arrow.up.left.and.arrow.down.right" /> Skalieren</button>
+      <span class="headline">${t('Ansatzgrößen')}</span><span class="spacer"></span>
+      <button class="tint-button orange" onClick=${() => setShowScale(true)}><${Icon} name="arrow.up.left.and.arrow.down.right" /> ${t('Skalieren')}</button>
       <button class="tint-button purple" onClick=${() => setShowSmartExtract(true)}><${Icon} name="wand" /> Smart Extract</button>
     </div>
     <div class="grid" style=${{ gridTemplateColumns: cols }}>
-      <div class="hdr name-col"><span style="flex:1">Name</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
+      <div class="hdr name-col"><span style="flex:1">${t('Name')}</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
       <div class="hdr">eq</div><div class="hdr">CAS</div><div class="hdr">M (g/mol)</div><div class="hdr">d (g/cm3)</div>
       <div class="hdr">n (mol)</div><div class="hdr">V (ml)</div><div class="hdr">m (g)</div><div class="hdr"></div>
       <div class="rule"></div>
       ${chemicals.map(c => html`<${ChemicalRow} key=${c.id} eid=${eid} sid=${stage.id} chem=${c} setChemicals=${setChemicals} />`)}
     </div>
-    <button class="plain-add green" onClick=${() => setChemicals(list => list.concat([newChemical()]))}><${Icon} name="plus" /> Chemikalie hinzufügen</button>
+    <button class="plain-add green" onClick=${() => setChemicals(list => list.concat([newChemical()]))}><${Icon} name="plus" /> ${t('Chemikalie hinzufügen')}</button>
     ${showScale && html`<${ScaleSheet} onClose=${() => setShowScale(false)} onScale=${factor => setChemicals(list => list.map(c => {
       const o = { ...c };
       const n = P(c.amount), m = P(c.mass), v = P(c.volume);
@@ -267,7 +267,7 @@ function ChemicalRow({ eid, sid, chem, setChemicals }) {
   };
   const blurSave = () => { const r = getRow(); if (r) saveCASValues(r, setStatus); };
   return html`
-    <div class="cell"><${NameField} placeholder="Name" value=${chem.name} onCommit=${v => setChemicals(list => list.map(c => (c.id === chem.id ? { ...c, name: v } : c)))} /></div>
+    <div class="cell"><${NameField} placeholder=${t('Name')} value=${chem.name} onCommit=${v => setChemicals(list => list.map(c => (c.id === chem.id ? { ...c, name: v } : c)))} /></div>
     <div class="cell">${numField('eq', chem.equivalents, v => change('equivalents', v))}</div>
     <div class="cell cas-wrap"><input class="field mono" placeholder="CAS" value=${chem.cas} onInput=${e => onCAS(e.target.value)} /><${CASStatusIcon} status=${status} /></div>
     <div class="cell">${numField('M', chem.molarMass, v => change('molarMass', v), { onBlur: blurSave })}</div>
@@ -275,7 +275,7 @@ function ChemicalRow({ eid, sid, chem, setChemicals }) {
     <div class="cell">${numField('n', chem.amount, v => change('amount', v))}</div>
     <div class="cell">${numField('V', chem.volume, v => change('volume', v))}</div>
     <div class="cell">${numField('m', chem.mass, v => change('mass', v))}</div>
-    <div class="cell"><button class="icon-button red" title="Zeile löschen" onClick=${() => setChemicals(list => list.filter(c => c.id !== chem.id))}><${Icon} name="trash" /></button></div>
+    <div class="cell"><button class="icon-button red" title=${t('Zeile löschen')} onClick=${() => setChemicals(list => list.filter(c => c.id !== chem.id))}><${Icon} name="trash" /></button></div>
     <div class="rule"></div>`;
 }
 
@@ -283,12 +283,12 @@ function ScaleSheet({ onClose, onScale }) {
   const [text, setText] = useState('1.0');
   const apply = () => { const f = P(text); if (f !== null && f > 0) onScale(f); onClose(); };
   return html`<${Sheet} onClose=${onClose} width=${380}>
-    <div class="title2" style="font-weight:700">Ansatz skalieren</div>
-    <div class="subheadline secondary">Alle Mengen (n, m, V) werden mit dem Faktor multipliziert.</div>
-    <div style="display:flex;align-items:center;gap:8px"><span class="headline">Faktor:</span>
-      <input class="field" style="width:100px" placeholder="z.B. 0.5" value=${text} onInput=${e => setText(e.target.value)}
+    <div class="title2" style="font-weight:700">${t('Ansatz skalieren')}</div>
+    <div class="subheadline secondary">${t('Alle Mengen (n, m, V) werden mit dem Faktor multipliziert.')}</div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="headline">${t('Faktor:')}</span>
+      <input class="field" style="width:100px" placeholder=${t('z.B. 0.5')} value=${text} onInput=${e => setText(e.target.value)}
         onKeyDown=${e => { if (e.key === 'Enter') apply(); }} ref=${el => el && !el.dataset.f && (el.dataset.f = 1, el.select())} /></div>
-    <div class="modal-actions"><button class="btn" onClick=${onClose}>Abbrechen</button><button class="btn prominent-orange" onClick=${apply}>Skalieren</button></div>
+    <div class="modal-actions"><button class="btn" onClick=${onClose}>${t('Abbrechen')}</button><button class="btn prominent-orange" onClick=${apply}>${t('Skalieren')}</button></div>
   <//>`;
 }
 
@@ -301,20 +301,20 @@ function SmartExtractSheet({ onClose, onExtracted }) {
     setTimeout(async () => {
       const rows = CJ.SmartExtractor.extract(text);
       setBusy(false);
-      if (!rows.length) { await alertOK('Keine Chemikalien gefunden', 'Im Text wurden keine Mengenangaben oder Chemikaliennamen erkannt.'); return; }
+      if (!rows.length) { await alertOK(t('Keine Chemikalien gefunden'), t('Im Text wurden keine Mengenangaben oder Chemikaliennamen erkannt.')); return; }
       onExtracted(rows);
       onClose();
     }, 30);
   };
   return html`<${Sheet} onClose=${onClose} width=${500} height=${350}>
     <div class="title2" style="font-weight:700">Smart Extract</div>
-    <div class="subheadline secondary">Füge hier den Text aus einem Paper ein.</div>
+    <div class="subheadline secondary">${t('Füge hier die Versuchsvorschrift aus einem Paper oder einer SI ein. Die Auswertung läuft komplett auf deinem Rechner.')}</div>
     <textarea class="textarea-field" style="flex:1" value=${text} onInput=${e => setText(e.target.value)} ref=${el => el && !el.dataset.f && (el.dataset.f = 1, el.focus())}></textarea>
     <div class="modal-actions">
-      ${busy && html`<span class="spinner"></span><span class="caption secondary">Analysiere…</span>`}
+      ${busy && html`<span class="spinner"></span><span class="caption secondary">${t('Analysiere…')}</span>`}
       <span style="flex:1"></span>
-      <button class="btn" onClick=${onClose}>Abbrechen</button>
-      <button class="btn prominent-purple" disabled=${busy || !text.trim()} onClick=${extract}>Extrahieren</button>
+      <button class="btn" onClick=${onClose}>${t('Abbrechen')}</button>
+      <button class="btn prominent-purple" disabled=${busy || !text.trim()} onClick=${extract}>${t('Extrahieren')}</button>
     </div>
   <//>`;
 }
@@ -326,16 +326,16 @@ export function YieldTable({ eid, stage }) {
   const setYields = fn => store.updateStage(eid, stage.id, s => ({ ...s, yieldProducts: fn(s.yieldProducts) }));
   const cols = `${nameWidth}px minmax(70px,1.3fr) minmax(90px,140px) repeat(5, minmax(60px,1fr)) minmax(60px,0.9fr) minmax(60px,0.9fr) 18px`;
   return html`<div class="table-box">
-    <div class="table-head"><span class="headline">Ausbeute (Produkt)</span></div>
+    <div class="table-head"><span class="headline">${t('Ausbeute (Produkt)')}</span></div>
     <div class="grid" style=${{ gridTemplateColumns: cols }}>
-      <div class="hdr name-col"><span style="flex:1">Produktname</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
-      <div class="hdr">CAS</div><div class="hdr">Bezug</div><div class="hdr">M (g/mol)</div><div class="hdr">d (g/cm3)</div>
+      <div class="hdr name-col"><span style="flex:1">${t('Produktname')}</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
+      <div class="hdr">CAS</div><div class="hdr">${t('Bezug')}</div><div class="hdr">M (g/mol)</div><div class="hdr">d (g/cm3)</div>
       <div class="hdr">n (mol)</div><div class="hdr">V (ml)</div><div class="hdr">m (g)</div>
-      <div class="hdr secondary">m theor.</div><div class="hdr green">Ausbeute</div><div class="hdr"></div>
+      <div class="hdr secondary">${t('m theor.')}</div><div class="hdr green">${t('Ausbeute')}</div><div class="hdr"></div>
       <div class="rule"></div>
       ${stage.yieldProducts.map(y => html`<${YieldRow} key=${y.id} eid=${eid} sid=${stage.id} y=${y} chemicals=${stage.chemicals} setYields=${setYields} />`)}
     </div>
-    <button class="plain-add green" onClick=${() => setYields(list => list.concat([newYield()]))}><${Icon} name="plus" /> Produkt hinzufügen</button>
+    <button class="plain-add green" onClick=${() => setYields(list => list.concat([newYield()]))}><${Icon} name="plus" /> ${t('Produkt hinzufügen')}</button>
   </div>`;
 }
 
@@ -365,10 +365,10 @@ function YieldRow({ eid, sid, y, chemicals, setYields }) {
     return o;
   }));
   return html`
-    <div class="cell"><${NameField} placeholder="Produktname" value=${y.name} onCommit=${v => setYields(list => list.map(r => (r.id === y.id ? { ...r, name: v } : r)))} /></div>
+    <div class="cell"><${NameField} placeholder=${t('Produktname')} value=${y.name} onCommit=${v => setYields(list => list.map(r => (r.id === y.id ? { ...r, name: v } : r)))} /></div>
     <div class="cell cas-wrap"><input class="field mono" placeholder="CAS" value=${y.cas} onInput=${e => onCAS(e.target.value)} /><${CASStatusIcon} status=${status} /></div>
     <div class="cell"><select class="field" value=${y.referenceChemicalID || ''} onChange=${e => setRef(e.target.value)}>
-      <option value="">Wählen...</option>
+      <option value="">${t('Wählen...')}</option>
       ${chemicals.filter(c => c.name).map(c => html`<option value=${c.id}>${c.name}</option>`)}
     </select></div>
     <div class="cell">${numField('M', y.molarMass, v => change('molarMass', v), { onBlur: blurSave })}</div>
@@ -378,6 +378,6 @@ function YieldRow({ eid, sid, y, chemicals, setYields }) {
     <div class="cell">${numField('m', y.mass, v => change('mass', v))}</div>
     <div class="cell theory">${theory}</div>
     <div class="cell yield-value">${yieldText}</div>
-    <div class="cell"><button class="icon-button red" title="Zeile löschen" onClick=${() => setYields(list => list.filter(r => r.id !== y.id))}><${Icon} name="trash" /></button></div>
+    <div class="cell"><button class="icon-button red" title=${t('Zeile löschen')} onClick=${() => setYields(list => list.filter(r => r.id !== y.id))}><${Icon} name="trash" /></button></div>
     <div class="rule"></div>`;
 }

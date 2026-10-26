@@ -1,5 +1,5 @@
 // Stufe eines Ansatzes – entspricht StageView.swift, ReactionImageView.swift, AnalysisFilesView.swift.
-import { html, CJ, api, useState, useRef, uuid, nowRef } from './lib.js';
+import { html, CJ, api, t, useState, useRef, uuid, nowRef } from './lib.js';
 import { Icon } from './icons.js';
 import { ask, openContextMenu, alertOK } from './ui.js';
 import { store } from './store.js';
@@ -23,15 +23,15 @@ export function StageView({ eid, stage, onDelete, onDuplicate }) {
   const url = extractURL(stage.sourceURL);
 
   const textMenu = field => e => openContextMenu(e, [
-    { label: 'Smarte Formatierung anwenden', icon: 'textformat.subscript', action: () => set(field, CJ.applySmartFormatting(store.stage(eid, stage.id)[field])) },
+    { label: t('Smarte Formatierung anwenden'), icon: 'textformat.subscript', action: () => set(field, CJ.applySmartFormatting(store.stage(eid, stage.id)[field])) },
     'separator',
-    { label: 'Smart Extract öffnen', icon: 'wand', action: () => setShowSmartExtract(true) },
+    { label: t('Smart Extract öffnen'), icon: 'wand', action: () => setShowSmartExtract(true) },
   ]);
 
   const confirmDelete = async () => {
     const i = await ask({
-      title: 'Stufe löschen?', message: 'Alle Daten dieser Stufe werden gelöscht. Mit Strg+Z lässt sich das rückgängig machen.',
-      buttons: [{ label: 'Stufe löschen', role: 'destructive' }, { label: 'Abbrechen', role: 'cancel' }],
+      title: t('Stufe löschen?'), message: t('Alle Daten dieser Stufe werden gelöscht. Mit Strg+Z lässt sich das rückgängig machen.'),
+      buttons: [{ label: t('Stufe löschen'), role: 'destructive' }, { label: t('Abbrechen'), role: 'cancel' }],
     });
     if (i === 0) onDelete();
   };
@@ -39,25 +39,25 @@ export function StageView({ eid, stage, onDelete, onDuplicate }) {
   return html`<div class="stage-card">
     <div class="stage-header">
       <button class=${'disclosure' + (stage.isExpanded ? ' open' : '')} onClick=${() => set('isExpanded', !stage.isExpanded)}><${Icon} name="chevron.right" /></button>
-      <input class="plain-field" placeholder="Stufenname" value=${stage.title} onInput=${e => set('title', e.target.value)} />
-      <button class="icon-button blue" title="Stufe duplizieren" onClick=${onDuplicate}><${Icon} name="doc.on.doc" /></button>
-      <button class="icon-button red" title="Stufe löschen" onClick=${confirmDelete}><${Icon} name="trash" /></button>
+      <input class="plain-field" placeholder=${t('Stufenname')} value=${stage.title} onInput=${e => set('title', e.target.value)} />
+      <button class="icon-button blue" title=${t('Stufe duplizieren')} onClick=${onDuplicate}><${Icon} name="doc.on.doc" /></button>
+      <button class="icon-button red" title=${t('Stufe löschen')} onClick=${confirmDelete}><${Icon} name="trash" /></button>
     </div>
     ${stage.isExpanded && html`<div class="stage-body">
       <div class="source-row">
-        <span class="headline">Quelle:</span>
+        <span class="headline">${t('Quelle:')}</span>
         ${!editingSource && url
           ? html`<a title=${url} onClick=${() => api.openExternal(url)}>${stage.sourceURL}</a><span style="flex:1"></span>
-              <button class="icon-button gray" title="Bearbeiten" onClick=${() => setEditingSource(true)}><${Icon} name="pencil" /></button>`
-          : html`<input class="field" placeholder="DOI, URL oder Buch..." value=${stage.sourceURL}
+              <button class="icon-button gray" title=${t('Bearbeiten')} onClick=${() => setEditingSource(true)}><${Icon} name="pencil" /></button>`
+          : html`<input class="field" placeholder=${t('DOI, URL oder Buch...')} value=${stage.sourceURL}
               onInput=${e => set('sourceURL', e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') setEditingSource(false); }} />
-              ${url && html`<button class="icon-button green" title="Fertig" onClick=${() => setEditingSource(false)}><${Icon} name="checkmark.circle.fill" /></button>`}`}
+              ${url && html`<button class="icon-button green" title=${t('Fertig')} onClick=${() => setEditingSource(false)}><${Icon} name="checkmark.circle.fill" /></button>`}`}
       </div>
-      <${LaTeXEditor} title="Zusammenfassung" value=${stage.summary} onChange=${v => set('summary', v)} onContextMenu=${textMenu('summary')} />
+      <${LaTeXEditor} title=${t('Zusammenfassung')} value=${stage.summary} onChange=${v => set('summary', v)} onContextMenu=${textMenu('summary')} />
       <${ReactionImage} data=${stage.reactionImageData} onChange=${v => update(s => { const o = { ...s }; if (v) o.reactionImageData = v; else delete o.reactionImageData; return o; })} />
       <${ChemicalTable} eid=${eid} stage=${stage} showSmartExtract=${showSmartExtract} setShowSmartExtract=${setShowSmartExtract} />
-      <${LaTeXEditor} title="Vorgehen" value=${stage.procedure} onChange=${v => set('procedure', v)} onContextMenu=${textMenu('procedure')} />
-      <${LaTeXEditor} title="Beobachtung" value=${stage.observation} onChange=${v => set('observation', v)} onContextMenu=${textMenu('observation')} />
+      <${LaTeXEditor} title=${t('Vorgehen')} value=${stage.procedure} onChange=${v => set('procedure', v)} onContextMenu=${textMenu('procedure')} />
+      <${LaTeXEditor} title=${t('Beobachtung')} value=${stage.observation} onChange=${v => set('observation', v)} onContextMenu=${textMenu('observation')} />
       <${YieldTable} eid=${eid} stage=${stage} />
       <${AnalysisFiles} files=${stage.analysisFiles} onChange=${fn => update(s => ({ ...s, analysisFiles: fn(s.analysisFiles) }))} />
     </div>`}
@@ -114,7 +114,7 @@ function ReactionImage({ data, onChange }) {
       const b64 = await fileToImageBase64(name, bytes);
       if (b64) onChange(b64);
     } catch (e) {
-      alertOK('Import fehlgeschlagen', 'Die Datei konnte nicht als Bild gelesen werden.');
+      alertOK(t('Import fehlgeschlagen'), t('Die Datei konnte nicht als Bild gelesen werden.'));
     }
   };
 
@@ -135,9 +135,9 @@ function ReactionImage({ data, onChange }) {
         const type = item.types.find(t => t.startsWith('image/'));
         if (type) { const blob = await item.getType(type); await importFile('bild', new Uint8Array(await blob.arrayBuffer())); return; }
       }
-      alertOK('Kein Bild in der Zwischenablage', 'Kopiere die Zeichnung in deinem Strukturprogramm (z. B. ChemSketch, MarvinSketch oder Ketcher) und versuche es erneut.');
+      alertOK(t('Kein Bild in der Zwischenablage'), t('Kopiere die Zeichnung in deinem Strukturprogramm (z. B. ChemSketch, MarvinSketch oder Ketcher) und versuche es erneut.'));
     } catch (e) {
-      alertOK('Kein Bild in der Zwischenablage', 'Die Zwischenablage enthält kein Bild.');
+      alertOK(t('Kein Bild in der Zwischenablage'), t('Die Zwischenablage enthält kein Bild.'));
     }
   };
 
@@ -150,9 +150,9 @@ function ReactionImage({ data, onChange }) {
 
   return html`<div>
     <div class="section-head">
-      <span class="headline">Reaktionsgleichung</span><span style="flex:1"></span>
-      <button class="tint-button green" onClick=${chooseFile}><${Icon} name="square.and.arrow.down" /> Datei wählen …</button>
-      <button class="tint-button orange" onClick=${pasteFromClipboard}><${Icon} name="clipboard" /> Aus Zwischenablage einfügen</button>
+      <span class="headline">${t('Reaktionsgleichung')}</span><span style="flex:1"></span>
+      <button class="tint-button green" onClick=${chooseFile}><${Icon} name="square.and.arrow.down" /> ${t('Datei wählen …')}</button>
+      <button class="tint-button orange" onClick=${pasteFromClipboard}><${Icon} name="clipboard" /> ${t('Aus Zwischenablage einfügen')}</button>
     </div>
     <div class=${'drop-zone' + (hovering ? ' hovering' : '')} tabIndex="0"
       onPaste=${e => { const f = [...e.clipboardData.files][0]; if (f) { e.preventDefault(); f.arrayBuffer().then(b => importFile(f.name, new Uint8Array(b))); } }}
@@ -161,10 +161,10 @@ function ReactionImage({ data, onChange }) {
       onDragLeave=${() => { depth.current = Math.max(0, depth.current - 1); if (!depth.current) setHovering(false); }}
       onDrop=${onDrop}>
       ${data
-        ? html`<img src=${`data:${sniffMime(data)};base64,${data}`} alt="Reaktionsgleichung"
-            onContextMenu=${e => openContextMenu(e, [{ label: 'Bild entfernen', icon: 'xmark', destructive: true, action: remove }])} />
-            <button class="remove-image" title="Bild entfernen" onClick=${remove}><${Icon} name="xmark" /></button>`
-        : html`<div class="placeholder"><span class="big"><${Icon} name="photo" /></span><span>Bild oder PDF hier ablegen (oder einfügen mit Strg+V)</span></div>`}
+        ? html`<img src=${`data:${sniffMime(data)};base64,${data}`} alt=${t('Reaktionsgleichung')}
+            onContextMenu=${e => openContextMenu(e, [{ label: t('Bild entfernen'), icon: 'xmark', destructive: true, action: remove }])} />
+            <button class="remove-image" title=${t('Bild entfernen')} onClick=${remove}><${Icon} name="xmark" /></button>`
+        : html`<div class="placeholder"><span class="big"><${Icon} name="photo" /></span><span>${t('Bild oder PDF hier ablegen (oder einfügen mit Strg+V)')}</span></div>`}
     </div>
   </div>`;
 }
@@ -182,21 +182,21 @@ function AnalysisFiles({ files, onChange }) {
   };
   const baseName = p => p.split(/[\\/]/).pop();
   return html`<div class="table-box files-box">
-    <span class="headline">Analyse & Daten</span>
+    <span class="headline">${t('Analyse & Daten')}</span>
     <div style="display:flex;flex-direction:column;gap:8px">
       ${files.map(f => html`<div class="file-row" key=${f.id}>
         <span class="gray"><${Icon} name="doc.text" /></span>
         <span class="file-name" title=${f.filePath}>${baseName(f.filePath)}</span>
-        <input class="field" placeholder="Beschreibung..." value=${f.description}
+        <input class="field" placeholder=${t('Beschreibung...')} value=${f.description}
           onInput=${e => { const v = CJ.applySmartFormatting(e.target.value); onChange(list => list.map(x => (x.id === f.id ? { ...x, description: v } : x))); }} />
-        <button class="btn" onClick=${async () => { const err = await api.openPath(f.filePath); if (err) alertOK('Datei nicht gefunden', `${f.filePath} konnte nicht geöffnet werden.`); }}>Öffnen</button>
+        <button class="btn" onClick=${async () => { const err = await api.openPath(f.filePath); if (err) alertOK(t('Datei nicht gefunden'), t('{0} konnte nicht geöffnet werden.', f.filePath)); }}>${t('Öffnen')}</button>
         <button class="icon-button red" onClick=${() => onChange(list => list.filter(x => x.id !== f.id))}><${Icon} name="trash" /></button>
       </div>`)}
     </div>
-    <button class="plain-add blue" style="padding:4px 0 0" onClick=${add}><${Icon} name="plus" /> Dateien verknüpfen</button>
+    <button class="plain-add blue" style="padding:4px 0 0" onClick=${add}><${Icon} name="plus" /> ${t('Dateien verknüpfen')}</button>
   </div>`;
 }
 
 export function duplicateStage(stage) {
-  return { ...stage, id: uuid(), title: stage.title + ' (Kopie)', createdAt: nowRef() };
+  return { ...stage, id: uuid(), title: stage.title + t(' (Kopie)'), createdAt: nowRef() };
 }

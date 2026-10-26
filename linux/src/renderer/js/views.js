@@ -1,6 +1,6 @@
 // Seitenleiste, Detailansichten, Verlauf und Einstellungen – entspricht ContentView.swift, ExperimentDetailView.swift,
 // ProjectDetailView.swift, VersionHistoryView.swift und SettingsView.swift.
-import { html, CJ, api, useState, useEffect, useRef, nowRef, refToDate, newStage, formatLong, formatAbbrevTime, formatNumeric, formatTime, formatBytes } from './lib.js';
+import { html, CJ, api, t, useState, useEffect, useRef, nowRef, refToDate, newStage, formatLong, formatAbbrevTime, formatNumeric, formatTime, formatBytes } from './lib.js';
 import { Icon } from './icons.js';
 import { Sheet, ask, openContextMenu, openMenuAt } from './ui.js';
 import { store } from './store.js';
@@ -54,16 +54,16 @@ export function Sidebar({ selection, setSelection, actions }) {
 
   return html`<div class="sidebar" style=${{ width: `${width}px` }}>
     <div class="sidebar-toolbar">
-      <button class="toolbar-button" title="Neu" onClick=${e => openMenuAt(e.currentTarget, [
-        { label: 'Neues Projekt', icon: 'folder.badge.plus', action: actions.addProject },
-        { label: 'Neuer Ansatz', icon: 'doc.badge.plus', action: actions.addExperiment },
+      <button class="toolbar-button" title=${t('Neu')} onClick=${e => openMenuAt(e.currentTarget, [
+        { label: t('Neues Projekt'), icon: 'folder.badge.plus', action: actions.addProject },
+        { label: t('Neuer Ansatz'), icon: 'doc.badge.plus', action: actions.addExperiment },
         'separator',
-        { label: 'Ansatz importieren (.chemjournal)', icon: 'square.and.arrow.down', action: actions.importExperiment },
+        { label: t('Ansatz importieren (.chemjournal)'), icon: 'square.and.arrow.down', action: actions.importExperiment },
       ])}><${Icon} name="plus" /></button>
     </div>
     <div class="search-field">
       <${Icon} name="magnifyingglass" />
-      <input placeholder="Suchen: Ansatz, Chemikalie, CAS …" value=${query} onInput=${e => setQuery(e.target.value)}
+      <input placeholder=${t('Suchen: Ansatz, Chemikalie, CAS …')} value=${query} onInput=${e => setQuery(e.target.value)}
         onKeyDown=${e => { if (e.key === 'Escape') setQuery(''); }} />
       ${query && html`<button class="search-clear" onClick=${() => setQuery('')}><${Icon} name="xmark.circle" /></button>`}
     </div>
@@ -74,7 +74,7 @@ export function Sidebar({ selection, setSelection, actions }) {
         return html`<div key=${p.id}>
           <div class=${'project-row' + (sel ? ' selected' : '') + (dropTarget === p.id ? ' drop-target' : '')}
             onClick=${() => setSelection({ kind: 'project', id: p.id })}
-            onContextMenu=${e => openContextMenu(e, [{ label: 'Projekt löschen', icon: 'trash', destructive: true, action: () => actions.deleteProject(p.id) }])}
+            onContextMenu=${e => openContextMenu(e, [{ label: t('Projekt löschen'), icon: 'trash', destructive: true, action: () => actions.deleteProject(p.id) }])}
             onDragOver=${e => { e.preventDefault(); setDropTarget(p.id); }} onDragLeave=${() => setDropTarget(null)} onDrop=${e => dropOnProject(e, p.id)}>
             <button class=${'disclosure' + (expanded ? ' open' : '')} onClick=${e => { e.stopPropagation(); store.updateProject(p.id, x => ({ ...x, isExpanded: !x.isExpanded }), { undo: false }); }}><${Icon} name="chevron.right" /></button>
             <span class="label"><span class="folder"><${Icon} name="folder" /></span><span class="headline row-title">${p.title}</span></span>
@@ -88,17 +88,17 @@ export function Sidebar({ selection, setSelection, actions }) {
               onDrop=${ev => dropOnExperiment(ev, p.id, e.id)}
               onClick=${() => setSelection({ kind: 'experiment', id: e.id })}
               onContextMenu=${ev => openContextMenu(ev, [
-                { label: 'Ansatz duplizieren', icon: 'doc.on.doc', action: () => actions.duplicateExperiment(e.id) },
-                { label: 'Als .chemjournal exportieren', icon: 'square.and.arrow.up', action: () => actions.exportExperimentAsFile(e.id) },
+                { label: t('Ansatz duplizieren'), icon: 'doc.on.doc', action: () => actions.duplicateExperiment(e.id) },
+                { label: t('Als .chemjournal exportieren'), icon: 'square.and.arrow.up', action: () => actions.exportExperimentAsFile(e.id) },
                 'separator',
-                { label: 'Ansatz löschen', icon: 'trash', destructive: true, action: () => actions.deleteExperiment(e.id) },
+                { label: t('Ansatz löschen'), icon: 'trash', destructive: true, action: () => actions.deleteExperiment(e.id) },
               ])}>
               <div class="content">
-                <span class="headline line">${e.title || 'Unbenannter Ansatz'}</span>
-                <span class="subheadline secondary line">${e.summary || 'Keine Beschreibung'}</span>
+                <span class="headline line">${e.title || t('Unbenannter Ansatz')}</span>
+                <span class="subheadline secondary line">${e.summary || t('Keine Beschreibung')}</span>
                 <span class="caption2 secondary">${formatLong(refToDate(e.createdAt))}</span>
                 ${h.slice(0, 3).map(label => html`<span class="caption2 hit line"><${Icon} name="magnifyingglass" />${label}</span>`)}
-                ${h.length > 3 && html`<span class="caption2 secondary">+ ${h.length - 3} weitere Treffer</span>`}
+                ${h.length > 3 && html`<span class="caption2 secondary">${t('+ {0} weitere Treffer', h.length - 3)}</span>`}
               </div>
             </div>`;
           })}
@@ -123,20 +123,20 @@ export function DetailView({ project, experiment }) {
 
   return html`<div class="scroll">
     <div class="detail-content" style=${{ minWidth: `${neededWidth}px` }}>
-      <input class="plain-field exp-title" placeholder="Titel des Ansatzes" value=${experiment.title} onInput=${e => setField('title', e.target.value)} />
-      <input class="plain-field exp-summary" placeholder="Kurze Zusammenfassung" value=${experiment.summary} onInput=${e => setField('summary', e.target.value)} />
+      <input class="plain-field exp-title" placeholder=${t('Titel des Ansatzes')} value=${experiment.title} onInput=${e => setField('title', e.target.value)} />
+      <input class="plain-field exp-summary" placeholder=${t('Kurze Zusammenfassung')} value=${experiment.summary} onInput=${e => setField('summary', e.target.value)} />
       <div class="meta-row">
         <span class="item"><${Icon} name="calendar" />${formatLong(refToDate(experiment.createdAt))}</span>
-        <button class="link-button" title="Frühere Versionen dieses Ansatzes ansehen und wiederherstellen" onClick=${() => setShowHistory(true)}>
-          <${Icon} name="clock.arrow.circlepath" />Verlauf</button>
+        <button class="link-button" title=${t('Frühere Versionen dieses Ansatzes ansehen und wiederherstellen')} onClick=${() => setShowHistory(true)}>
+          <${Icon} name="clock.arrow.circlepath" />${t('Verlauf')}</button>
       </div>
       <div class="divider"></div>
       <div>
         ${experiment.stages.map(stage => html`<${StageView} key=${stage.id} eid=${eid} stage=${stage}
           onDelete=${() => setStages(list => list.filter(s => s.id !== stage.id))}
           onDuplicate=${() => setStages(list => { const i = list.findIndex(s => s.id === stage.id); const out = list.slice(); out.splice(i + 1, 0, duplicateStage(stage)); return out; })} />`)}
-        <button class="add-stage" onClick=${() => setStages(list => list.concat([newStage(`Stufe ${list.length + 1}`)]))}>
-          <${Icon} name="plus.circle.fill" />Neue Stufe hinzufügen</button>
+        <button class="add-stage" onClick=${() => setStages(list => list.concat([newStage(t('Stufe {0}', list.length + 1))]))}>
+          <${Icon} name="plus.circle.fill" />${t('Neue Stufe hinzufügen')}</button>
       </div>
     </div>
     ${showHistory && html`<${VersionHistory} experimentID=${eid} currentTitle=${experiment.title} onClose=${() => setShowHistory(false)} />`}
@@ -147,9 +147,9 @@ export function ProjectDetail({ project, onAddExperiment }) {
   useEffect(() => { api.setSnapWidths([1024]); }, []);
   return html`<div class="project-detail">
     <span class="big-folder"><${Icon} name="folder.fill" /></span>
-    <input class="plain-field" placeholder="Projektname" value=${project.title} onInput=${e => store.updateProject(project.id, p => ({ ...p, title: e.target.value }))} />
-    <div class="title2 secondary">${project.experiments.length} Ansätze in diesem Projekt</div>
-    <button class="primary-big" onClick=${onAddExperiment}><${Icon} name="plus.circle.fill" />Neuen Ansatz erstellen</button>
+    <input class="plain-field" placeholder=${t('Projektname')} value=${project.title} onInput=${e => store.updateProject(project.id, p => ({ ...p, title: e.target.value }))} />
+    <div class="title2 secondary">${t('{0} Ansätze in diesem Projekt', project.experiments.length)}</div>
+    <button class="primary-big" onClick=${onAddExperiment}><${Icon} name="plus.circle.fill" />${t('Neuen Ansatz erstellen')}</button>
   </div>`;
 }
 
@@ -158,9 +158,9 @@ export function ProjectDetail({ project, onAddExperiment }) {
 function VersionRow({ info, selected, onClick }) {
   return html`<div class=${'list-item' + (selected ? ' selected' : '')} onClick=${onClick}>
     <span class="mono" style="display:flex;gap:4px;align-items:center">${formatAbbrevTime(new Date(info.date))}
-      ${info.pinned && html`<span class="orange caption" title="Wird nie automatisch entfernt"><${Icon} name="pin.fill" /></span>`}</span>
-    <span class="caption secondary">${info.reason}</span>
-    <span class="caption tertiary">${info.stageCount} ${info.stageCount === 1 ? 'Stufe' : 'Stufen'} · ${info.chemicalCount} Chemikalien</span>
+      ${info.pinned && html`<span class="orange caption" title=${t('Wird nie automatisch entfernt')}><${Icon} name="pin.fill" /></span>`}</span>
+    <span class="caption secondary">${t(info.reason)}</span>
+    <span class="caption tertiary">${info.stageCount === 1 ? t('1 Stufe · {0} Chemikalien', info.chemicalCount) : t('{0} Stufen · {1} Chemikalien', info.stageCount, info.chemicalCount)}</span>
   </div>`;
 }
 
@@ -174,15 +174,15 @@ export function VersionPreview({ snapshot }) {
     return s;
   };
   return html`<div class="preview-pane">
-    <div class="title2" style="font-weight:700">${e.title || 'Ohne Titel'}</div>
+    <div class="title2" style="font-weight:700">${e.title || t('Ohne Titel')}</div>
     ${e.summary && html`<div class="secondary">${e.summary}</div>`}
     ${snapshot.projectTitle && html`<div class="caption secondary" style="display:flex;gap:4px;align-items:center"><${Icon} name="folder" />${snapshot.projectTitle}</div>`}
     ${e.stages.map(s => html`<div class="preview-stage" key=${s.id}>
       <div class="headline">${s.title}</div>
       ${s.chemicals.map(c => html`<div>${line(c.name, c.cas, [c.equivalents ? `${c.equivalents} eq` : '', c.mass, c.volume, c.amount])}</div>`)}
-      ${s.yieldProducts.map(y => html`<div class="secondary">Produkt: ${line(y.name, y.cas, [y.mass, y.amount])}</div>`)}
+      ${s.yieldProducts.map(y => html`<div class="secondary">${t('Produkt: ')}${line(y.name, y.cas, [y.mass, y.amount])}</div>`)}
       ${s.procedure && html`<${RichText} class="secondary" text=${s.procedure} />`}
-      ${s.observation && html`<div class="secondary">Beobachtung: ${s.observation}</div>`}
+      ${s.observation && html`<div class="secondary">${t('Beobachtung: ')}${s.observation}</div>`}
     </div>`)}
   </div>`;
 }
@@ -197,8 +197,8 @@ function VersionHistory({ experimentID, currentTitle, onClose }) {
   const restore = async asCopy => {
     if (!snapshot) return;
     if (!asCopy) {
-      const i = await ask({ title: 'Diesen Stand wiederherstellen?', message: 'Der aktuelle Stand wird vorher selbst als Version gesichert und bleibt im Verlauf.',
-        buttons: [{ label: 'Wiederherstellen', role: 'default' }, { label: 'Abbrechen', role: 'cancel' }] });
+      const i = await ask({ title: t('Diesen Stand wiederherstellen?'), message: t('Der aktuelle Stand wird vorher selbst als Version gesichert und bleibt im Verlauf.'),
+        buttons: [{ label: t('Wiederherstellen'), role: 'default' }, { label: t('Abbrechen'), role: 'cancel' }] });
       if (i !== 0) return;
     }
     const id = await restoreSnapshot(snapshot, asCopy);
@@ -207,20 +207,20 @@ function VersionHistory({ experimentID, currentTitle, onClose }) {
   };
 
   return html`<${Sheet} onClose=${onClose} width=${820} height=${560} padded=${false}>
-    <div style="padding:14px 20px"><div class="headline">Verlauf</div><div class="subheadline secondary">${currentTitle}</div></div>
+    <div style="padding:14px 20px"><div class="headline">${t('Verlauf')}</div><div class="subheadline secondary">${currentTitle}</div></div>
     ${versions === null ? html`<div class="unavailable"><span class="spinner"></span></div>`
       : versions.length === 0 ? html`<div class="unavailable" style="border-top:1px solid var(--separator);border-bottom:1px solid var(--separator)">
-          <span class="big"><${Icon} name="clock.arrow.circlepath" /></span><span class="title">Noch keine Versionen</span>
-          <span>ChemJournal sichert automatisch: beim ersten Speichern, danach höchstens alle 10 Minuten, wenn sich etwas geändert hat, und beim Beenden.</span></div>`
+          <span class="big"><${Icon} name="clock.arrow.circlepath" /></span><span class="title">${t('Noch keine Versionen')}</span>
+          <span>${t('ChemJournal sichert automatisch: beim ersten Speichern, danach höchstens alle 10 Minuten, wenn sich etwas geändert hat, und beim Beenden.')}</span></div>`
       : html`<div class="split-pane">
           <div class="list-pane">${versions.map(v => html`<${VersionRow} key=${v.file} info=${v} selected=${selected && selected.file === v.file} onClick=${() => setSelected(v)} />`)}</div>
           ${snapshot ? html`<${VersionPreview} snapshot=${snapshot} />` : html`<div class="unavailable"><span class="spinner"></span></div>`}
         </div>`}
     <div class="modal-actions" style="padding:12px 20px">
-      <span class="caption secondary" style="flex:1">Ältere Versionen werden ausgedünnt: 24 h alle, 30 Tage eine pro Tag, danach eine pro Woche.</span>
-      <button class="btn" onClick=${onClose}>Schließen</button>
-      <button class="btn" disabled=${!snapshot} title="Diese Version als zusätzlichen Ansatz einfügen – der aktuelle Stand bleibt unverändert" onClick=${() => restore(true)}>Als Kopie hinzufügen</button>
-      <button class="btn primary" disabled=${!snapshot} onClick=${() => restore(false)}>Wiederherstellen …</button>
+      <span class="caption secondary" style="flex:1">${t('Ältere Versionen werden ausgedünnt: 24 h alle, 30 Tage eine pro Tag, danach eine pro Woche.')}</span>
+      <button class="btn" onClick=${onClose}>${t('Schließen')}</button>
+      <button class="btn" disabled=${!snapshot} title=${t('Diese Version als zusätzlichen Ansatz einfügen – der aktuelle Stand bleibt unverändert')} onClick=${() => restore(true)}>${t('Als Kopie hinzufügen')}</button>
+      <button class="btn primary" disabled=${!snapshot} onClick=${() => restore(false)}>${t('Wiederherstellen …')}</button>
     </div>
   <//>`;
 }
@@ -230,7 +230,7 @@ export async function restoreSnapshot(snap, asCopy) {
   let experiment = snap.experiment;
   if (asCopy) {
     const stamp = formatAbbrevTime(new Date(snap.date));
-    experiment = { ...experiment, id: crypto.randomUUID().toUpperCase(), title: `${experiment.title} (Version vom ${stamp})`,
+    experiment = { ...experiment, id: crypto.randomUUID().toUpperCase(), title: experiment.title + t(' (Version vom {0})', stamp),
       stages: experiment.stages.map(s => ({ ...s, id: crypto.randomUUID().toUpperCase() })), updatedAt: nowRef() };
     insertExperiment(experiment, snap.projectID, snap.projectTitle);
     return experiment.id;
@@ -251,7 +251,7 @@ function insertExperiment(experiment, projectID, projectTitle) {
   if (target) {
     store.updateProject(target.id, p => ({ ...p, isExpanded: true, experiments: p.experiments.concat([experiment]) }));
   } else {
-    store.setProjects(projects.concat([{ id: crypto.randomUUID().toUpperCase(), title: projectTitle || 'Wiederhergestellt', isExpanded: true, experiments: [experiment] }]));
+    store.setProjects(projects.concat([{ id: crypto.randomUUID().toUpperCase(), title: projectTitle || t('Wiederhergestellt'), isExpanded: true, experiments: [experiment] }]));
   }
 }
 
@@ -259,22 +259,41 @@ function insertExperiment(experiment, projectID, projectTitle) {
 
 export function Settings({ onClose }) {
   const [tab, setTab] = useState('storage');
-  const tabs = [['storage', 'externaldrive', 'Speicherort & Backups'], ['deleted', 'trash', 'Gelöschte Ansätze'], ['cas', 'flask', 'CAS-Datenbank']];
+  const tabs = [['general', 'gearshape', t('Allgemein')], ['storage', 'externaldrive', t('Speicherort & Backups')], ['deleted', 'trash', t('Gelöschte Ansätze')], ['cas', 'flask', t('CAS-Datenbank')]];
   return html`<${Sheet} onClose=${onClose} width=${640} height=${540} padded=${false}>
     <div class="tabs">${tabs.map(([id, icon, label]) => html`<button class=${'tab' + (tab === id ? ' active' : '')} onClick=${() => setTab(id)}>
       <span class="ic"><${Icon} name=${icon} /></span>${label}</button>`)}</div>
     <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+      ${tab === 'general' && html`<${GeneralSettings} />`}
       ${tab === 'storage' && html`<${StorageSettings} />`}
       ${tab === 'deleted' && html`<${DeletedExperiments} />`}
       ${tab === 'cas' && html`<${CASDatabaseView} />`}
     </div>
-    <div class="modal-actions" style="padding:10px 16px;border-top:1px solid var(--separator)"><button class="btn primary" onClick=${onClose}>Fertig</button></div>
+    <div class="modal-actions" style="padding:10px 16px;border-top:1px solid var(--separator)"><button class="btn primary" onClick=${onClose}>${t('Fertig')}</button></div>
   <//>`;
+}
+
+function GeneralSettings() {
+  const [language, setLanguage] = useState(api.language);
+  const [stored, setStored] = useState(api.language);
+  useEffect(() => { api.getLanguage().then(l => { setLanguage(l); setStored(l); }); }, []);
+  const choose = async l => { setLanguage(l); await api.setLanguage(l); setStored(l); };
+  return html`<div class="modal-body" style="flex:1">
+    <div class="form-section">
+      <div class="form-row"><span class="label">${t('Sprache')}</span>
+        <select class="field" style="width:200px" value=${language} onChange=${e => choose(e.target.value)}>
+          <option value="de">Deutsch</option><option value="en">English</option>
+        </select></div>
+      <div class="caption secondary">${t('Standard ist Deutsch, unabhängig von der Sprache des Rechners. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.')}</div>
+      ${stored !== api.language && html`<div class="form-row"><span>${t('Die neue Sprache gilt nach einem Neustart von ChemJournal.')}</span>
+        <button class="btn primary" onClick=${() => api.relaunch()}>${t('Jetzt neu starten')}</button></div>`}
+    </div>
+  </div>`;
 }
 
 function PathButton({ path }) {
   const home = path.replace(/^\/home\/[^/]+|^\/Users\/[^/]+/, '~');
-  return html`<button class="path-link" title="Im Dateimanager zeigen" onClick=${() => api.showItem(path)}>${home}</button>`;
+  return html`<button class="path-link" title=${t('Im Dateimanager zeigen')} onClick=${() => api.showItem(path)}>${home}</button>`;
 }
 
 function StorageSettings() {
@@ -293,7 +312,7 @@ function StorageSettings() {
     if (r.projects) { store.projects = r.projects; store.clearUndo(); }
     store.setCASEntries(await api.casList());
     setBusy(false);
-    setMessage(`Speicherort: ${r.storage.modes[mode]}. Die bisherigen Dateien am alten Ort bleiben unverändert liegen.`);
+    setMessage(t('Speicherort: {0}. Die bisherigen Dateien am alten Ort bleiben unverändert liegen.', t(r.storage.modes[mode])));
     tick(t => t + 1);
     store.notify();
     reload();
@@ -305,12 +324,12 @@ function StorageSettings() {
     if (mode === info.mode && folder === info.syncFolder) return;
     await store.saveNow();
     const check = await api.checkSwitch(mode, folder);
-    if (check.kind === 'unavailable') { setMessage('Der Sync-Ordner ist nicht erreichbar.'); return; }
+    if (check.kind === 'unavailable') { setMessage(t('Der Sync-Ordner ist nicht erreichbar.')); return; }
     if (check.kind === 'targetHasJournal') {
-      const date = check.modified ? ` (zuletzt geändert ${formatAbbrevTime(new Date(check.modified))})` : '';
-      const i = await ask({ title: 'Im Sync-Ordner liegt bereits ein Journal',
-        message: `Am Ziel gibt es schon ein Journal mit ${check.experiments} Ansätzen${date}, z. B. von einem anderen Rechner. Die jeweils andere Fassung wird in jedem Fall als Backup aufbewahrt.`,
-        buttons: [{ label: 'Vorhandenes Journal verwenden', role: 'default' }, { label: 'Durch dieses Journal ersetzen' }, { label: 'Abbrechen', role: 'cancel' }] });
+      const date = check.modified ? t(' (zuletzt geändert {0})', formatAbbrevTime(new Date(check.modified))) : '';
+      const i = await ask({ title: t('Im Sync-Ordner liegt bereits ein Journal'),
+        message: t('Am Ziel gibt es schon ein Journal mit {0} Ansätzen{1}, z. B. von einem anderen Rechner. Die jeweils andere Fassung wird in jedem Fall als Backup aufbewahrt.', check.experiments, date),
+        buttons: [{ label: t('Vorhandenes Journal verwenden'), role: 'default' }, { label: t('Durch dieses Journal ersetzen') }, { label: t('Abbrechen'), role: 'cancel' }] });
       if (i === 0) await performSwitch(mode, folder, true);
       else if (i === 1) await performSwitch(mode, folder, false);
       return;
@@ -318,37 +337,49 @@ function StorageSettings() {
     await performSwitch(mode, folder, false);
   };
 
+  const restoreBackup = async b => {
+    const i = await ask({ title: t('Journal auf diesen Stand zurücksetzen?'),
+      message: t('Das ganze Journal wird durch das Backup vom {0} ersetzt. Der aktuelle Stand wird vorher als Backup gesichert.', formatAbbrevTime(new Date(b.date))),
+      buttons: [{ label: t('Wiederherstellen'), role: 'default' }, { label: t('Abbrechen'), role: 'cancel' }] });
+    if (i !== 0) return;
+    const r = await store.restoreBackup(b.url);
+    setMessage(!r ? t('Dieses Backup ist nicht lesbar und wurde nicht wiederhergestellt.')
+      : r.safety ? t('Backup wiederhergestellt. Der vorherige Stand liegt unter {0}.', r.safety.split(/[\\/]/).pop()) : t('Backup wiederhergestellt.'));
+    reload();
+  };
+
   if (!info) return null;
   return html`<div class="modal-body" style="flex:1">
     <div class="form-section">
-      <div class="form-row"><span class="label">Speicherort</span>
+      <div class="form-row"><span class="label">${t('Speicherort')}</span>
         <select class="field" style="width:280px" value=${info.mode} disabled=${busy} onChange=${e => requestSwitch(e.target.value)}>
-          ${Object.entries(info.modes).map(([k, v]) => html`<option value=${k}>${v}</option>`)}
+          ${Object.entries(info.modes).map(([k, v]) => html`<option value=${k}>${t(v)}</option>`)}
         </select></div>
-      ${busy && html`<div style="display:flex;gap:6px;align-items:center"><span class="spinner"></span><span class="caption">Daten werden umgezogen …</span></div>`}
+      ${busy && html`<div style="display:flex;gap:6px;align-items:center"><span class="spinner"></span><span class="caption">${t('Daten werden umgezogen …')}</span></div>`}
       <div class="caption secondary">${info.mode === 'folder'
-        ? 'Journal, Versionen, Backups und CAS-Datenbank liegen im Sync-Ordner und sind auf allen deinen Rechnern verfügbar (auch auf dem Mac, wenn der Ordner dort synchronisiert wird). Änderungen anderer Rechner werden automatisch übernommen, solange du hier nichts Ungespeichertes hast.'
-        : 'Alles bleibt auf diesem Rechner. Mit „Sync-Ordner“ liegen die Daten zusätzlich in einem synchronisierten Ordner (Nextcloud, Dropbox, Netzlaufwerk …) und sind auf deinen anderen Rechnern verfügbar.'}</div>
-      ${info.mode === 'folder' && html`<div class="form-row"><span class="label">Sync-Ordner</span><span style="display:flex;gap:8px;align-items:center"><${PathButton} path=${info.syncFolder} />
-        <button class="btn" onClick=${async () => { const f = await api.chooseSyncFolder(); if (f) requestSwitch('folder', f); }}>Ändern …</button></span></div>`}
-      ${store.lastExternalReload && html`<div class="caption secondary">Zuletzt Änderungen von einem anderen Rechner übernommen: ${formatTime(store.lastExternalReload)}</div>`}
-      <div class="form-row"><span class="label">Journal</span><${PathButton} path=${info.paths.journalFile} /></div>
-      <div class="form-row"><span class="label">Versionen</span><${PathButton} path=${info.paths.versionsDirectory} /></div>
-      <div class="form-row"><span class="label">Backups</span><${PathButton} path=${info.paths.backupsDirectory} /></div>
+        ? t('Journal, Versionen, Backups und CAS-Datenbank liegen im Sync-Ordner und sind auf allen deinen Rechnern verfügbar (auch auf dem Mac, wenn der Ordner dort synchronisiert wird). Änderungen anderer Rechner werden automatisch übernommen, solange du hier nichts Ungespeichertes hast.')
+        : t('Alles bleibt auf diesem Rechner. Mit „Sync-Ordner“ liegen die Daten zusätzlich in einem synchronisierten Ordner (Nextcloud, Dropbox, Netzlaufwerk …) und sind auf deinen anderen Rechnern verfügbar.')}</div>
+      ${info.mode === 'folder' && html`<div class="form-row"><span class="label">${t('Sync-Ordner')}</span><span style="display:flex;gap:8px;align-items:center"><${PathButton} path=${info.syncFolder} />
+        <button class="btn" onClick=${async () => { const f = await api.chooseSyncFolder(); if (f) requestSwitch('folder', f); }}>${t('Ändern …')}</button></span></div>`}
+      ${store.lastExternalReload && html`<div class="caption secondary">${t('Zuletzt Änderungen von einem anderen Rechner übernommen: {0}', formatTime(store.lastExternalReload))}</div>`}
+      <div class="form-row"><span class="label">${t('Journal')}</span><${PathButton} path=${info.paths.journalFile} /></div>
+      <div class="form-row"><span class="label">${t('Versionen')}</span><${PathButton} path=${info.paths.versionsDirectory} /></div>
+      <div class="form-row"><span class="label">${t('Backups')}</span><${PathButton} path=${info.paths.backupsDirectory} /></div>
     </div>
-    <div class="headline">Backups</div>
+    <div class="headline">${t('Backups')}</div>
     <div class="form-section">
-      <div class="form-row"><span class="caption secondary">Automatisch: ein Backup pro Tag (30 Tage, danach eines pro Monat für ein Jahr) und Versionen je Ansatz.</span>
-        <button class="btn" onClick=${async () => { const p = await api.backupNow(store.projects); store.dirty = false; setMessage(p ? `Backup angelegt: ${p.split(/[\\/]/).pop()}` : 'Backup konnte nicht angelegt werden (noch keine Daten gespeichert?).'); reload(); }}>Jetzt sichern</button></div>
+      <div class="form-row"><span class="caption secondary">${t('Automatisch: ein Backup pro Tag (30 Tage, danach eines pro Monat für ein Jahr) und Versionen je Ansatz.')}</span>
+        <button class="btn" onClick=${async () => { const p = await api.backupNow(store.projects); store.dirty = false; setMessage(p ? t('Backup angelegt: {0}', p.split(/[\\/]/).pop()) : t('Backup konnte nicht angelegt werden (noch keine Daten gespeichert?).')); reload(); }}>${t('Jetzt sichern')}</button></div>
       ${message && html`<div class="caption secondary">${message}</div>`}
-      ${backups.length === 0 ? html`<div class="secondary">Noch keine Backups – das erste entsteht bei der ersten Änderung heute.</div>`
+      ${backups.length === 0 ? html`<div class="secondary">${t('Noch keine Backups – das erste entsteht bei der ersten Änderung heute.')}</div>`
         : backups.slice(0, 12).map(b => html`<div class="form-row" key=${b.url}>
             <span style="display:flex;gap:8px;align-items:center"><span class="gray"><${Icon} name=${b.url.includes('manuell') ? 'hand.raised' : 'calendar'} /></span>
               <span class="mono">${formatAbbrevTime(new Date(b.date))}</span><span class="secondary">${formatBytes(b.size)}</span></span>
-            <button class="link-button" onClick=${() => api.showItem(b.url)}>Im Dateimanager zeigen</button></div>`)}
-      ${backups.length > 12 && html`<div class="caption secondary">+ ${backups.length - 12} ältere</div>`}
+            <span style="display:flex;gap:12px"><button class="link-button" onClick=${() => api.showItem(b.url)}>${t('Im Dateimanager zeigen')}</button>
+              <button class="link-button" onClick=${() => restoreBackup(b)}>${t('Wiederherstellen …')}</button></span></div>`)}
+      ${backups.length > 12 && html`<div class="caption secondary">${t('+ {0} ältere', backups.length - 12)}</div>`}
     </div>
-    <div class="caption secondary">Zum Zurückspielen eines Backups: ChemJournal beenden, die Backup-Datei als „ChemJournalData.json“ an den Ort des Journals kopieren und neu starten.</div>
+    <div class="caption secondary">${t('Beim Wiederherstellen wird der aktuelle Stand vorher selbst als Backup gesichert. Mit ⌘Z lässt es sich außerdem rückgängig machen.').replace('⌘Z', 'Strg+Z')}</div>
   </div>`;
 }
 
@@ -375,8 +406,8 @@ function DeletedExperiments() {
   };
   const purge = async () => {
     if (!selected) return;
-    const i = await ask({ title: 'Verlauf dieses Ansatzes endgültig entfernen?', message: 'Alle gespeicherten Versionen dieses Ansatzes werden gelöscht. Tägliche Backups des ganzen Journals bleiben davon unberührt.',
-      buttons: [{ label: 'Endgültig entfernen', role: 'destructive' }, { label: 'Abbrechen', role: 'cancel' }] });
+    const i = await ask({ title: t('Verlauf dieses Ansatzes endgültig entfernen?'), message: t('Alle gespeicherten Versionen dieses Ansatzes werden gelöscht. Tägliche Backups des ganzen Journals bleiben davon unberührt.'),
+      buttons: [{ label: t('Endgültig entfernen'), role: 'destructive' }, { label: t('Abbrechen'), role: 'cancel' }] });
     if (i !== 0) return;
     await api.purgeHistory(selected.experimentID);
     setSelected(null);
@@ -385,18 +416,18 @@ function DeletedExperiments() {
 
   return html`<div style="flex:1;display:flex;flex-direction:column;min-height:0">
     ${deleted.length === 0
-      ? html`<div class="unavailable"><span class="big"><${Icon} name="trash.slash" /></span><span class="title">Keine gelöschten Ansätze</span>
-          <span>Gelöschte Ansätze bleiben hier mit ihrem letzten Stand, bis du sie endgültig entfernst.</span></div>`
+      ? html`<div class="unavailable"><span class="big"><${Icon} name="trash.slash" /></span><span class="title">${t('Keine gelöschten Ansätze')}</span>
+          <span>${t('Gelöschte Ansätze bleiben hier mit ihrem letzten Stand, bis du sie endgültig entfernst.')}</span></div>`
       : html`<div class="split-pane" style="border-top:none">
           <div class="list-pane" style="width:220px">${deleted.map(d => html`<div key=${d.file} class=${'list-item' + (selected && selected.file === d.file ? ' selected' : '')} onClick=${() => setSelected(d)}>
-            <span class="row-title">${d.title || 'Ohne Titel'}</span>
+            <span class="row-title">${d.title || t('Ohne Titel')}</span>
             <span class="caption secondary">${[d.projectTitle, formatAbbrevTime(new Date(d.date))].filter(Boolean).join(' · ')}</span></div>`)}</div>
-          ${snapshot ? html`<${VersionPreview} snapshot=${snapshot} />` : html`<div class="unavailable secondary">Ansatz auswählen</div>`}
+          ${snapshot ? html`<${VersionPreview} snapshot=${snapshot} />` : html`<div class="unavailable secondary">${t('Ansatz auswählen')}</div>`}
         </div>`}
     <div class="modal-actions" style="padding:12px">
-      <button class="btn destructive" disabled=${!selected} onClick=${purge}>Endgültig entfernen …</button>
+      <button class="btn destructive" disabled=${!selected} onClick=${purge}>${t('Endgültig entfernen …')}</button>
       <span style="flex:1"></span>
-      <button class="btn primary" disabled=${!snapshot} onClick=${restore}>Wiederherstellen</button>
+      <button class="btn primary" disabled=${!snapshot} onClick=${restore}>${t('Wiederherstellen')}</button>
     </div>
   </div>`;
 }
@@ -412,18 +443,18 @@ function CASDatabaseView() {
   const toggle = (cas, multi) => setSelection(s => { const n = new Set(multi ? s : []); if (n.has(cas) && multi) n.delete(cas); else n.add(cas); return n; });
   const removeSelected = async () => { for (const cas of selection) await api.casRemove(cas); setSelection(new Set()); };
   return html`<div class="modal-body" style="flex:1;gap:8px">
-    <div class="caption secondary">Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem.</div>
-    <div class="search-field" style="margin:0"><${Icon} name="magnifyingglass" /><input placeholder="CAS oder Name" value=${query} onInput=${e => setQuery(e.target.value)} /></div>
+    <div class="caption secondary">${t('Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem.')}</div>
+    <div class="search-field" style="margin:0"><${Icon} name="magnifyingglass" /><input placeholder=${t('CAS oder Name')} value=${query} onInput=${e => setQuery(e.target.value)} /></div>
     <div style="flex:1;overflow:auto;border:1px solid var(--separator);border-radius:6px">
       <table class="cas-table">
-        <thead><tr><th>CAS</th><th>Name</th><th>M (g/mol)</th><th>d (g/cm³)</th><th>Quelle</th><th>Datum</th></tr></thead>
+        <thead><tr><th>${t('CAS')}</th><th>${t('Name')}</th><th>M (g/mol)</th><th>d (g/cm³)</th><th>${t('Quelle')}</th><th>${t('Datum')}</th></tr></thead>
         <tbody>${entries.map(e => html`<tr key=${e.cas} class=${selection.has(e.cas) ? 'selected' : ''} onClick=${ev => toggle(e.cas, ev.ctrlKey || ev.metaKey || ev.shiftKey)}
-            onContextMenu=${ev => openContextMenu(ev, [{ label: 'Entfernen', icon: 'trash', destructive: true, action: () => api.casRemove(e.cas) }])}>
+            onContextMenu=${ev => openContextMenu(ev, [{ label: t('Entfernen'), icon: 'trash', destructive: true, action: () => api.casRemove(e.cas) }])}>
           <td class="mono">${e.cas}</td><td title=${e.name}>${e.name || '–'}</td><td class="mono">${e.molarMass || '–'}</td><td class="mono">${e.density || '–'}</td>
-          <td class=${e.source === 'eigene Eingabe' ? '' : 'secondary'}>${e.source}</td><td class="mono">${formatNumeric(new Date(e.updatedAt))}</td></tr>`)}</tbody>
+          <td class=${e.source === 'eigene Eingabe' ? '' : 'secondary'}>${t(e.source)}</td><td class="mono">${formatNumeric(new Date(e.updatedAt))}</td></tr>`)}</tbody>
       </table>
     </div>
-    <div class="modal-actions"><span class="caption secondary" style="flex:1">${all.length} Einträge</span>
-      <button class="btn" disabled=${!selection.size} onClick=${removeSelected}>Ausgewählte entfernen</button></div>
+    <div class="modal-actions"><span class="caption secondary" style="flex:1">${t('{0} Einträge', all.length)}</span>
+      <button class="btn" disabled=${!selection.size} onClick=${removeSelected}>${t('Ausgewählte entfernen')}</button></div>
   </div>`;
 }

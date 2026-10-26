@@ -7,6 +7,7 @@
 (function (g) {
   'use strict';
   const { normalizeCAS } = typeof module === 'object' && module.exports ? require('./casnumber.js') : g.CJ;
+  const { t } = typeof module === 'object' && module.exports ? require('./i18n.js') : g.CJ;
 
   const digitFold = {};
   '₀₁₂₃₄₅₆₇₈₉'.split('').forEach((c, i) => { digitFold[c] = String(i); });
@@ -161,7 +162,7 @@
             matched = true;
             const display = name ? name : (c || rawCAS);
             const casPart = c && name ? ` (${c})` : '';
-            const label = `${display}${casPart}${isProduct ? ' – Produkt' : ''} · ${stage.title}`;
+            const label = `${display}${casPart}${isProduct ? t(' – Produkt') : ''} · ${stage.title}`;
             if (!result.includes(label)) result.push(label);
           }
         }
