@@ -1,6 +1,7 @@
 // Suche über das ganze Journal – entspricht Services/JournalSearch.swift.
 //
-// Jedes Wort der Suche muss im Ansatz vorkommen (UND). Ein Wort trifft Titel, Beschreibung und Texte der Stufen,
+// Jedes Wort der Suche muss im Ansatz vorkommen (UND). Ein Wort trifft Titel, Beschreibung, Texte der Stufen, Tags,
+// Aufreinigung & Analytik,
 // Chemikalien- und Produktnamen ("n-BuLi" ≈ "nBuLi", "CH₂Cl₂" ≈ "CH2Cl2"), Synonyme ("n-BuLi" findet
 // "n-Butyllithium") und CAS-Nummern – direkt, über die Synonymliste, die lokale CAS-Datenbank und das Journal
 // selbst (heißt eine Zeile "n-BuLi" und hat CAS 109-72-8, findet "n-BuLi" alle Zeilen mit dieser CAS).
@@ -8,6 +9,7 @@
   'use strict';
   const { normalizeCAS } = typeof module === 'object' && module.exports ? require('./casnumber.js') : g.CJ;
   const { t } = typeof module === 'object' && module.exports ? require('./i18n.js') : g.CJ;
+  const { Analysis } = typeof module === 'object' && module.exports ? require('./analysis.js') : g.CJ;
 
   const digitFold = {};
   '₀₁₂₃₄₅₆₇₈₉'.split('').forEach((c, i) => { digitFold[c] = String(i); });
@@ -143,7 +145,11 @@
     function textMatches(term, e) {
       const q = term.raw;
       if (e.title.toLowerCase().includes(q) || e.summary.toLowerCase().includes(q)) return true;
-      return e.stages.some(s => [s.title, s.summary, s.procedure, s.observation, s.sourceURL].some(t => (t || '').toLowerCase().includes(q)));
+      // Tags, auch mit "#": "#scale" findet den Tag "Scale-up"
+      const tagQuery = q.startsWith('#') ? q.slice(1) : q;
+      if (tagQuery && (e.tags || []).some(tag => tag.toLowerCase().includes(tagQuery))) return true;
+      return e.stages.some(s => [s.title, s.summary, s.procedure, s.observation, s.sourceURL].some(t => (t || '').toLowerCase().includes(q))
+        || (s.analyses || []).some(a => Analysis.searchText(a).toLowerCase().includes(q)));
     }
 
     /** null, wenn der Ansatz nicht passt; sonst die Treffer in Tabellenzeilen (kann leer sein). */

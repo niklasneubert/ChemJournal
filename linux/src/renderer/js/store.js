@@ -168,7 +168,8 @@ function structure(projects) {
     s.push(p.experiments.length);
     for (const e of p.experiments) {
       s.push(e.stages.length);
-      for (const st of e.stages) s.push(st.chemicals.length, st.yieldProducts.length, st.analysisFiles.length, st.reactionImageData ? 1 : 0);
+      for (const st of e.stages) s.push(st.chemicals.length, st.yieldProducts.length, (st.analyses || []).length,
+        (st.analyses || []).reduce((n, a) => n + a.files.length, 0), st.reactionImageData ? 1 : 0);
     }
   }
   return s.join(',');

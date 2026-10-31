@@ -2,7 +2,8 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { app, BrowserWindow, Menu, ipcMain, dialog, shell, nativeTheme, screen } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, shell, nativeTheme, screen, clipboard, nativeImage } = require('electron');
+const { DrawingStore, ReShikiBridge, findReShiki } = require('./drawing');
 const { MODES, pathsFor, samePaths, createDirectories, JournalPersistence, mergeDirectory } = require('./storage');
 const { CASDatabase } = require('./casdb');
 const { generatePDF } = require('./pdf');
@@ -28,7 +29,7 @@ if (process.platform === 'linux') app.setAppUserModelId?.('de.chemjournal.app');
 // MARK: Einstellungen ---------------------------------------------------------------------------------
 
 const settingsFile = () => path.join(app.getPath('userData'), 'einstellungen.json');
-let settings = { storageMode: 'local', syncFolder: null, theme: 'system', windowBounds: null, language: 'de' };
+let settings = { storageMode: 'local', syncFolder: null, theme: 'system', windowBounds: null, language: 'de', reshikiPath: null };
 
 function loadSettings() {
   try { settings = { ...settings, ...JSON.parse(fs.readFileSync(settingsFile(), 'utf8')) }; } catch (e) { /* Standard */ }
@@ -171,6 +172,7 @@ function registerIPC() {
   ipcMain.handle('cas:recordPubChem', (_e, cas, result) => casdb.recordPubChem(cas, result));
   ipcMain.handle('cas:markChecked', (_e, cas) => casdb.markPubChemChecked(cas));
   ipcMain.handle('cas:remove', (_e, cas) => casdb.remove(cas));
+  ipcMain.handle('cas:edit', (_e, cas, m, d) => casdb.edit(cas, m, d));
   ipcMain.handle('cas:lookup', async (_e, cas) => {
     try { return { ok: true, result: await PubChem.lookup(cas) }; } catch (err) { return { ok: false, kind: err.kind || 'network', message: err.message }; }
   });
@@ -205,6 +207,62 @@ function registerIPC() {
     return readFileForRenderer(r.filePaths[0]);
   });
   ipcMain.handle('file:read', (_e, p) => readFileForRenderer(p));
+  ipcMain.handle('file:exists', (_e, paths) => Object.fromEntries((paths || []).map(p => [p, fs.existsSync(p)])));
+
+  // Reaktionsgleichung: Zeichnungen (7 Tage), ReShiki, Zwischenablage
+  const drawings = () => new DrawingStore(path.join(app.getPath('userData'), 'Zeichnungen'));
+  const bytes = b64 => Buffer.from(String(b64 || ''), 'base64');
+  ipcMain.handle('drawing:find', (_e, imageB64) => {
+    const store = drawings();
+    store.purgeExpired();
+    const f = store.find(bytes(imageB64));
+    return f ? { expires: f.expires, app: f.app } : null;
+  });
+  ipcMain.handle('drawing:load', (_e, imageB64) => {
+    const f = drawings().find(bytes(imageB64));
+    if (!f) return null;
+    try { return { app: f.app, base64: fs.readFileSync(f.file).toString('base64') }; } catch (e) { return null; }
+  });
+  ipcMain.handle('drawing:save', (_e, drawingB64, imageB64, appName) => drawings().save(bytes(drawingB64), bytes(imageB64), appName || 'reShiki'));
+  const reshikiExecutable = () => findReShiki(settings.reshikiPath);
+  const reshiki = new ReShikiBridge(reshikiExecutable, ev => send(ev));
+  ipcMain.handle('reshiki:status', () => ({ path: reshikiExecutable(), configured: settings.reshikiPath }));
+  ipcMain.handle('reshiki:choosePath', async () => {
+    const r = await dialog.showOpenDialog(mainWindow, { title: t('ReShiki-Programm wählen'), properties: ['openFile'] });
+    if (r.canceled || !r.filePaths[0]) return null;
+    settings.reshikiPath = r.filePaths[0];
+    saveSettings();
+    return reshikiExecutable();
+  });
+  ipcMain.handle('reshiki:resetPath', () => { settings.reshikiPath = null; saveSettings(); return reshikiExecutable(); });
+  ipcMain.handle('reshiki:open', (_e, drawingB64) => reshiki.open(drawingB64 ? bytes(drawingB64) : null));
+  ipcMain.handle('reshiki:import', async () => {
+    const r = await reshiki.render();
+    if (r.error) return r;
+    if (mainWindow) mainWindow.focus();
+    return { png: r.png.toString('base64'), drawing: r.drawing.toString('base64') };
+  });
+  ipcMain.handle('reshiki:stop', (_e, quitApp) => reshiki.stop(!!quitApp));
+  app.on('before-quit', () => reshiki.stop(false));
+  // Eigene Bytes zusätzlich als image/png: beim Einfügen in einem anderen Ansatz sind es genau dieselben Bytes,
+  // damit die gespeicherte Zeichnung zugeordnet bleibt
+  ipcMain.handle('clipboard:writeImage', (_e, b64) => {
+    const buf = bytes(b64);
+    const img = nativeImage.createFromBuffer(buf);
+    const isPNG = buf.length > 4 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47;
+    clipboard.clear();
+    if (!img.isEmpty()) clipboard.writeImage(img);
+    try { clipboard.writeBuffer('image/png', isPNG || img.isEmpty() ? buf : img.toPNG()); } catch (e) { /* nicht überall unterstützt */ }
+    try { clipboard.writeBuffer('application/x-chemjournal-reaction-image', buf); } catch (e) { /* nicht überall unterstützt */ }
+    return true;
+  });
+  ipcMain.handle('clipboard:readImage', () => {
+    for (const format of ['application/x-chemjournal-reaction-image', 'image/png']) {
+      try { const b = clipboard.readBuffer(format); if (b && b.length > 8 && !nativeImage.createFromBuffer(b).isEmpty()) return b.toString('base64'); } catch (e) { /* weiter */ }
+    }
+    const img = clipboard.readImage();
+    return img.isEmpty() ? null : img.toPNG().toString('base64');
+  });
   ipcMain.handle('shell:openPath', (_e, p) => shell.openPath(p));
   ipcMain.handle('shell:showItem', (_e, p) => { if (fs.existsSync(p)) shell.showItemInFolder(p); else shell.openPath(path.dirname(p)); });
   ipcMain.handle('shell:openExternal', (_e, url) => {
@@ -328,6 +386,7 @@ function buildMenu() {
         { label: t('Neues Projekt'), accelerator: 'CmdOrCtrl+Shift+N', click: cmd('newProject') },
         { type: 'separator' },
         { label: t('Laborjournal speichern'), accelerator: 'CmdOrCtrl+S', click: cmd('save') },
+        { label: t('Zeichnung aus ReShiki importieren'), accelerator: 'CmdOrCtrl+D', click: cmd('importDrawing') },
         { type: 'separator' },
         { label: t('Als PDF exportieren …'), accelerator: 'CmdOrCtrl+P', click: cmd('exportPDF') },
         { label: t('Ansatz importieren (.chemjournal) …'), accelerator: 'CmdOrCtrl+Shift+I', click: cmd('importExperiment') },

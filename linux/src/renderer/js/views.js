@@ -2,7 +2,7 @@
 // ProjectDetailView.swift, VersionHistoryView.swift und SettingsView.swift.
 import { html, CJ, api, t, useState, useEffect, useRef, nowRef, refToDate, newStage, formatLong, formatAbbrevTime, formatNumeric, formatTime, formatBytes } from './lib.js';
 import { Icon } from './icons.js';
-import { Sheet, ask, openContextMenu, openMenuAt } from './ui.js';
+import { Sheet, ask, askText, openContextMenu, openMenuAt } from './ui.js';
 import { store } from './store.js';
 import { StageView, duplicateStage } from './stage.js';
 import { RichText } from './latex.js';
@@ -13,7 +13,20 @@ export function Sidebar({ selection, setSelection, actions }) {
   const [query, setQuery] = useState('');
   const [width, setWidth] = useState(250);
   const [dropTarget, setDropTarget] = useState(null);
+  // Filter: nur markierte Ansätze und/oder nur Ansätze mit diesem Tag
+  const [filterMarked, setFilterMarked] = useState(false);
+  const [filterTag, setFilterTag] = useState(null);
   const projects = store.projects;
+  const tags = CJ.Tags.all(projects);
+  const isFiltering = filterMarked || filterTag !== null;
+  const clearFilter = () => { setFilterMarked(false); setFilterTag(null); };
+  // Tag umbenannt oder gelöscht: Filter darauf aufheben
+  useEffect(() => { if (filterTag !== null && !tags.some(x => CJ.Tags.same(x, filterTag))) setFilterTag(null); });
+  useEffect(() => {
+    const onFilter = e => setFilterTag(e.detail);
+    window.addEventListener('filter-by-tag', onFilter);
+    return () => window.removeEventListener('filter-by-tag', onFilter);
+  }, []);
 
   // Suche (gleiche Logik wie JournalSearch auf dem Mac)
   const q = query.trim();
@@ -29,6 +42,18 @@ export function Sidebar({ selection, setSelection, actions }) {
       return projectMatches ? p : { ...p, experiments: matching };
     }).filter(Boolean);
   }
+  if (isFiltering) {
+    const passes = e => (!filterMarked || e.isMarked) && (filterTag === null || CJ.Tags.hasTag(e, filterTag));
+    filtered = filtered.map(p => ({ ...p, experiments: p.experiments.filter(passes) })).filter(p => p.experiments.length);
+  }
+
+  const filterMenu = e => openMenuAt(e.currentTarget, [
+    { label: t('Nur markierte'), icon: filterMarked ? 'checkmark' : 'star', action: () => setFilterMarked(m => !m) },
+    ...(tags.length ? ['separator', { header: t('Tag') },
+      { label: t('Alle Tags'), icon: filterTag === null ? 'checkmark' : null, action: () => setFilterTag(null) },
+      ...tags.map(tag => ({ label: tag, icon: filterTag !== null && CJ.Tags.same(tag, filterTag) ? 'checkmark' : null, action: () => setFilterTag(tag) }))] : []),
+    ...(isFiltering ? ['separator', { label: t('Filter aufheben'), action: clearFilter }] : []),
+  ]);
 
   const onResize = e => {
     e.preventDefault();
@@ -48,7 +73,7 @@ export function Sidebar({ selection, setSelection, actions }) {
     e.preventDefault(); e.stopPropagation(); setDropTarget(null);
     const eid = e.dataTransfer.getData('text/chemjournal-experiment');
     if (!eid || eid === targetEid) return;
-    if (q) return;   // während der Suche zeigen die Positionen auf die gefilterte Liste
+    if (q || isFiltering) return;   // während Suche oder Filter zeigen die Positionen auf die gefilterte Liste
     actions.reorderExperiment(eid, pid, targetEid);
   };
 
@@ -60,6 +85,8 @@ export function Sidebar({ selection, setSelection, actions }) {
         'separator',
         { label: t('Ansatz importieren (.chemjournal)'), icon: 'square.and.arrow.down', action: actions.importExperiment },
       ])}><${Icon} name="plus" /></button>
+      <button class=${'toolbar-button' + (isFiltering ? ' active' : '')} title=${t('Ansätze nach Markierung oder Tag filtern')} onClick=${filterMenu}>
+        <${Icon} name=${isFiltering ? 'line.3.horizontal.decrease.circle.fill' : 'line.3.horizontal.decrease.circle'} /></button>
     </div>
     <div class="search-field">
       <${Icon} name="magnifyingglass" />
@@ -67,7 +94,15 @@ export function Sidebar({ selection, setSelection, actions }) {
         onKeyDown=${e => { if (e.key === 'Escape') setQuery(''); }} />
       ${query && html`<button class="search-clear" onClick=${() => setQuery('')}><${Icon} name="xmark.circle" /></button>`}
     </div>
+    ${isFiltering && html`<div class="filter-banner">
+      <span class="accent"><${Icon} name="line.3.horizontal.decrease.circle.fill" /></span>
+      ${filterMarked && html`<span class="secondary"><${Icon} name="star.fill" /> ${t('Markiert')}</span>`}
+      ${filterTag !== null && html`<${TagChip} name=${filterTag} compact=${true} />`}
+      <span style="flex:1"></span>
+      <button class="search-clear" title=${t('Filter aufheben')} onClick=${clearFilter}><${Icon} name="xmark.circle" /></button>
+    </div>`}
     <div class="sidebar-list">
+      ${isFiltering && !filtered.length && html`<div class="callout secondary" style="padding:8px 12px">${t('Keine Ansätze für diesen Filter')}</div>`}
       ${filtered.map(p => {
         const expanded = (projects.find(x => x.id === p.id) || p).isExpanded;
         const sel = selection && selection.kind === 'project' && selection.id === p.id;
@@ -88,15 +123,23 @@ export function Sidebar({ selection, setSelection, actions }) {
               onDrop=${ev => dropOnExperiment(ev, p.id, e.id)}
               onClick=${() => setSelection({ kind: 'experiment', id: e.id })}
               onContextMenu=${ev => openContextMenu(ev, [
+                { label: e.isMarked ? t('Markierung entfernen') : t('Markieren'), icon: 'star', action: () => store.updateExperiment(e.id, x => ({ ...x, isMarked: !x.isMarked, updatedAt: nowRef() })) },
+                { header: t('Tags') },
+                ...tags.map(tag => ({ label: tag, icon: CJ.Tags.hasTag(e, tag) ? 'checkmark' : null,
+                  action: () => store.updateExperiment(e.id, x => ({ ...(CJ.Tags.hasTag(x, tag) ? CJ.Tags.removeTag(x, tag) : (CJ.Tags.addTag(x, tag) || x)), updatedAt: nowRef() })) })),
+                { label: t('Neuer Tag …'), icon: 'tag', action: () => addNewTag(e.id, tags) },
+                'separator',
                 { label: t('Ansatz duplizieren'), icon: 'doc.on.doc', action: () => actions.duplicateExperiment(e.id) },
                 { label: t('Als .chemjournal exportieren'), icon: 'square.and.arrow.up', action: () => actions.exportExperimentAsFile(e.id) },
                 'separator',
                 { label: t('Ansatz löschen'), icon: 'trash', destructive: true, action: () => actions.deleteExperiment(e.id) },
               ])}>
               <div class="content">
-                <span class="headline line">${e.title || t('Unbenannter Ansatz')}</span>
+                <span class="headline title-line"><span class="line">${e.title || t('Unbenannter Ansatz')}</span>${e.isMarked && html`<span class="star" title=${t('Markiert')}><${Icon} name="star.fill" /></span>`}</span>
                 <span class="subheadline secondary line">${e.summary || t('Keine Beschreibung')}</span>
                 <span class="caption2 secondary">${formatLong(refToDate(e.createdAt))}</span>
+                ${(e.tags || []).length > 0 && html`<span class="tag-line">${e.tags.slice(0, 3).map(tag => html`<${TagChip} key=${tag} name=${tag} compact=${true} />`)}
+                  ${e.tags.length > 3 && html`<span class="caption2 secondary">+${e.tags.length - 3}</span>`}</span>`}
                 ${h.slice(0, 3).map(label => html`<span class="caption2 hit line"><${Icon} name="magnifyingglass" />${label}</span>`)}
                 ${h.length > 3 && html`<span class="caption2 secondary">${t('+ {0} weitere Treffer', h.length - 3)}</span>`}
               </div>
@@ -106,6 +149,78 @@ export function Sidebar({ selection, setSelection, actions }) {
       })}
     </div>
     <div class="sidebar-resize" onMouseDown=${onResize}></div>
+  </div>`;
+}
+
+// MARK: Tags (wie TagViews.swift) ---------------------------------------------------------------------------
+
+/** Farbige Kapsel mit dem Tag-Namen (feste Farbe je Name), optional mit Entfernen-Knopf. */
+export function TagChip({ name, compact = false, onRemove, onContextMenu }) {
+  return html`<span class=${'tag-chip tag-' + CJ.Tags.color(name) + (compact ? ' compact' : '')} onContextMenu=${onContextMenu}>
+    ${name}${onRemove && html`<button title=${t('Tag von diesem Ansatz entfernen')} onClick=${onRemove}><${Icon} name="xmark" /></button>`}</span>`;
+}
+
+/** Gleicher Name in anderer Schreibweise: die vorhandene übernehmen. */
+const canonicalTag = (raw, tags) => { const c = CJ.Tags.clean(raw); return c ? tags.find(x => CJ.Tags.same(x, c)) || c : null; };
+
+async function addNewTag(eid, tags) {
+  const name = await askText({ title: t('Neuer Tag'), message: t('Name des Tags, z. B. „Photokatalyse“ oder „Scale-up“.'), placeholder: t('Name des Tags'), confirm: t('Hinzufügen') });
+  const tag = name && canonicalTag(name, tags);
+  if (tag) store.updateExperiment(eid, e => ({ ...(CJ.Tags.addTag(e, tag) || e), updatedAt: nowRef() }));
+}
+
+async function renameTag(tag) {
+  const name = await askText({ title: t('Tag „{0}“ umbenennen', tag), message: t('Der neue Name gilt in allen Ansätzen mit diesem Tag.'), defaultValue: tag, confirm: t('Umbenennen') });
+  if (name && CJ.Tags.clean(name)) store.setProjects(CJ.Tags.rename(store.projects, tag, name));
+}
+
+async function deleteTagEverywhere(tag) {
+  const count = store.projects.flatMap(p => p.experiments).filter(e => CJ.Tags.hasTag(e, tag)).length;
+  const i = await ask({ title: t('Tag „{0}“ überall löschen?', tag), message: t('Der Tag wird von {0} Ansätzen entfernt. Die Ansätze selbst bleiben erhalten.', count),
+    buttons: [{ label: t('Löschen'), role: 'destructive' }, { label: t('Abbrechen'), role: 'cancel' }] });
+  if (i === 0) store.setProjects(CJ.Tags.remove(store.projects, tag));
+}
+
+/** Tags im Kopf eines Ansatzes: anzeigen, hinzufügen, entfernen, überall umbenennen oder löschen. */
+function TagBar({ experiment }) {
+  const [adding, setAdding] = useState(false);
+  const [text, setText] = useState('');
+  const ref = useRef(null);
+  const eid = experiment.id;
+  const allTags = CJ.Tags.all(store.projects);
+  const typed = text.trim();
+  const suggestions = allTags.filter(tag => !CJ.Tags.hasTag(experiment, tag) && (!typed || tag.toLowerCase().includes(typed.toLowerCase())));
+  const add = raw => {
+    const tag = canonicalTag(raw, allTags);
+    if (tag) store.updateExperiment(eid, e => ({ ...(CJ.Tags.addTag(e, tag) || e), updatedAt: nowRef() }));
+    setText(''); setAdding(false);
+  };
+  const remove = tag => store.updateExperiment(eid, e => ({ ...CJ.Tags.removeTag(e, tag), updatedAt: nowRef() }));
+  useEffect(() => {
+    if (!adding) return undefined;
+    const close = e => { if (ref.current && !ref.current.contains(e.target)) setAdding(false); };
+    setTimeout(() => window.addEventListener('mousedown', close), 0);
+    return () => window.removeEventListener('mousedown', close);
+  }, [adding]);
+  return html`<div class="tag-bar">
+    ${(experiment.tags || []).map(tag => html`<${TagChip} key=${tag} name=${tag} onRemove=${() => remove(tag)} onContextMenu=${e => openContextMenu(e, [
+      { label: t('Nur Ansätze mit diesem Tag zeigen'), icon: 'line.3.horizontal.decrease.circle', action: () => window.dispatchEvent(new CustomEvent('filter-by-tag', { detail: tag })) },
+      'separator',
+      { label: t('Umbenennen …'), icon: 'pencil', action: () => renameTag(tag) },
+      { label: t('Von diesem Ansatz entfernen'), icon: 'xmark', action: () => remove(tag) },
+      { label: t('Überall löschen …'), icon: 'trash', destructive: true, action: () => deleteTagEverywhere(tag) },
+    ])} />`)}
+    <span class="tag-add" ref=${ref}>
+      <button class="link-button" title=${t('Eigenen Tag vergeben, um Ansätze einzuordnen')} onClick=${() => { setText(''); setAdding(a => !a); }}>
+        <${Icon} name="plus" />${(experiment.tags || []).length ? t('Tag') : t('Tag hinzufügen')}</button>
+      ${adding && html`<div class="tag-popover">
+        <input class="field" placeholder=${t('Neuer oder vorhandener Tag')} value=${text} onInput=${e => setText(e.target.value)}
+          onKeyDown=${e => { if (e.key === 'Enter') add(text); if (e.key === 'Escape') setAdding(false); }} ref=${el => el && !el.dataset.f && (el.dataset.f = 1, el.focus())} />
+        ${suggestions.length > 0 && html`<div class="caption secondary">${t('Vorhandene Tags')}</div>
+          <div class="tag-line">${suggestions.map(tag => html`<button class="plain" key=${tag} onClick=${() => add(tag)}><${TagChip} name=${tag} /></button>`)}</div>`}
+        <div class="caption2 secondary">${t('Return übernimmt den Namen. Tags gelten für das ganze Journal.')}</div>
+      </div>`}
+    </span>
   </div>`;
 }
 
@@ -129,7 +244,11 @@ export function DetailView({ project, experiment }) {
         <span class="item"><${Icon} name="calendar" />${formatLong(refToDate(experiment.createdAt))}</span>
         <button class="link-button" title=${t('Frühere Versionen dieses Ansatzes ansehen und wiederherstellen')} onClick=${() => setShowHistory(true)}>
           <${Icon} name="clock.arrow.circlepath" />${t('Verlauf')}</button>
+        <button class=${'link-button mark-button' + (experiment.isMarked ? ' marked' : '')} title=${experiment.isMarked ? t('Markierung entfernen') : t('Ansatz markieren')}
+          onClick=${() => store.updateExperiment(eid, e => ({ ...e, isMarked: !e.isMarked, updatedAt: nowRef() }))}>
+          <${Icon} name=${experiment.isMarked ? 'star.fill' : 'star'} />${experiment.isMarked ? t('Markiert') : t('Markieren')}</button>
       </div>
+      <${TagBar} experiment=${experiment} />
       <div class="divider"></div>
       <div>
         ${experiment.stages.map(stage => html`<${StageView} key=${stage.id} eid=${eid} stage=${stage}
@@ -276,7 +395,8 @@ export function Settings({ onClose }) {
 function GeneralSettings() {
   const [language, setLanguage] = useState(api.language);
   const [stored, setStored] = useState(api.language);
-  useEffect(() => { api.getLanguage().then(l => { setLanguage(l); setStored(l); }); }, []);
+  const [reshiki, setReshiki] = useState(null);
+  useEffect(() => { api.getLanguage().then(l => { setLanguage(l); setStored(l); }); api.reshikiStatus().then(setReshiki); }, []);
   const choose = async l => { setLanguage(l); await api.setLanguage(l); setStored(l); };
   return html`<div class="modal-body" style="flex:1">
     <div class="form-section">
@@ -288,12 +408,24 @@ function GeneralSettings() {
       ${stored !== api.language && html`<div class="form-row"><span>${t('Die neue Sprache gilt nach einem Neustart von ChemJournal.')}</span>
         <button class="btn primary" onClick=${() => api.relaunch()}>${t('Jetzt neu starten')}</button></div>`}
     </div>
+    <div class="headline">${t('Reaktionsgleichung')}</div>
+    <div class="form-section">
+      <div class="form-row"><span class="label">${t('Zeichenprogramm')}</span><span>ReShiki</span></div>
+      <div class="form-row"><span class="label">${t('Programm')}</span>
+        <span style="display:flex;gap:8px;align-items:center">
+          ${reshiki && reshiki.path ? html`<${PathButton} path=${reshiki.path} />` : html`<span class="orange">${t('nicht gefunden')}</span>`}
+          <button class="btn" onClick=${async () => { await api.reshikiChoosePath(); setReshiki(await api.reshikiStatus()); }}>${t('Wählen …')}</button>
+          ${reshiki && reshiki.configured && html`<button class="btn" title=${t('Wieder automatisch im Suchpfad und in ~/Applications suchen')}
+            onClick=${async () => { await api.reshikiResetPath(); setReshiki(await api.reshikiStatus()); }}>${t('Automatisch')}</button>`}
+        </span></div>
+      <div class="caption secondary">${t('Reaktionsgleichungen zeichnest du mit ReShiki (kostenlos und quelloffen, reshiki.com): „In ReShiki zeichnen“, dann in ReShiki Strg+S – das Bild wird übernommen. Gespeicherte Zeichnungen lassen sich 7 Tage lang mit „In ReShiki bearbeiten“ wieder öffnen.')}</div>
+    </div>
   </div>`;
 }
 
 function PathButton({ path }) {
   const home = path.replace(/^\/home\/[^/]+|^\/Users\/[^/]+/, '~');
-  return html`<button class="path-link" title=${t('Im Dateimanager zeigen')} onClick=${() => api.showItem(path)}>${home}</button>`;
+  return html`<button class="path-link" title=${t('Im Dateimanager zeigen')} onClick=${() => api.showItem(path)}><bdi dir="ltr">${home}</bdi></button>`;
 }
 
 function StorageSettings() {
@@ -368,7 +500,7 @@ function StorageSettings() {
     </div>
     <div class="headline">${t('Backups')}</div>
     <div class="form-section">
-      <div class="form-row"><span class="caption secondary">${t('Automatisch: ein Backup pro Tag (30 Tage, danach eines pro Monat für ein Jahr) und Versionen je Ansatz.')}</span>
+      <div class="form-row"><span class="caption secondary">${t('Automatisch: ein Backup pro Tag (bleibt 30 Tage) und Versionen je Ansatz.')}</span>
         <button class="btn" onClick=${async () => { const p = await api.backupNow(store.projects); store.dirty = false; setMessage(p ? t('Backup angelegt: {0}', p.split(/[\\/]/).pop()) : t('Backup konnte nicht angelegt werden (noch keine Daten gespeichert?).')); reload(); }}>${t('Jetzt sichern')}</button></div>
       ${message && html`<div class="caption secondary">${message}</div>`}
       ${backups.length === 0 ? html`<div class="secondary">${t('Noch keine Backups – das erste entsteht bei der ersten Änderung heute.')}</div>`
@@ -443,18 +575,32 @@ function CASDatabaseView() {
   const toggle = (cas, multi) => setSelection(s => { const n = new Set(multi ? s : []); if (n.has(cas) && multi) n.delete(cas); else n.add(cas); return n; });
   const removeSelected = async () => { for (const cas of selection) await api.casRemove(cas); setSelection(new Set()); };
   return html`<div class="modal-body" style="flex:1;gap:8px">
-    <div class="caption secondary">${t('Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem.')}</div>
+    <div class="caption secondary">${t('Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem. Molmasse und Dichte lassen sich hier direkt ändern (Doppelklick oder Klick ins Feld, Return übernimmt).')}</div>
     <div class="search-field" style="margin:0"><${Icon} name="magnifyingglass" /><input placeholder=${t('CAS oder Name')} value=${query} onInput=${e => setQuery(e.target.value)} /></div>
     <div style="flex:1;overflow:auto;border:1px solid var(--separator);border-radius:6px">
       <table class="cas-table">
         <thead><tr><th>${t('CAS')}</th><th>${t('Name')}</th><th>M (g/mol)</th><th>d (g/cm³)</th><th>${t('Quelle')}</th><th>${t('Datum')}</th></tr></thead>
         <tbody>${entries.map(e => html`<tr key=${e.cas} class=${selection.has(e.cas) ? 'selected' : ''} onClick=${ev => toggle(e.cas, ev.ctrlKey || ev.metaKey || ev.shiftKey)}
             onContextMenu=${ev => openContextMenu(ev, [{ label: t('Entfernen'), icon: 'trash', destructive: true, action: () => api.casRemove(e.cas) }])}>
-          <td class="mono">${e.cas}</td><td title=${e.name}>${e.name || '–'}</td><td class="mono">${e.molarMass || '–'}</td><td class="mono">${e.density || '–'}</td>
+          <td class="mono">${e.cas}</td><td title=${e.name}>${e.name || '–'}</td>
+          <td class="mono"><${CASValueCell} value=${e.molarMass} onCommit=${v => api.casEdit(e.cas, v, e.density)} /></td>
+          <td class="mono"><${CASValueCell} value=${e.density} onCommit=${v => api.casEdit(e.cas, e.molarMass, v)} /></td>
           <td class=${e.source === 'eigene Eingabe' ? '' : 'secondary'}>${t(e.source)}</td><td class="mono">${formatNumeric(new Date(e.updatedAt))}</td></tr>`)}</tbody>
       </table>
     </div>
     <div class="modal-actions"><span class="caption secondary" style="flex:1">${t('{0} Einträge', all.length)}</span>
       <button class="btn" disabled=${!selection.size} onClick=${removeSelected}>${t('Ausgewählte entfernen')}</button></div>
   </div>`;
+}
+
+/** Bearbeitbare Zahl in der CAS-Tabelle. Übernimmt bei Return oder beim Verlassen des Feldes; gilt danach als eigene Eingabe. */
+function CASValueCell({ value, onCommit }) {
+  const [text, setText] = useState(value);
+  const focused = useRef(false);
+  useEffect(() => { if (!focused.current) setText(value); }, [value]);
+  const commit = () => { if (text !== value) onCommit(text); };
+  return html`<input class="cas-value" placeholder="–" value=${text} title=${t('Wert ändern – gilt danach als eigene Eingabe')}
+    onClick=${e => e.stopPropagation()} onInput=${e => setText(e.target.value)}
+    onFocus=${() => { focused.current = true; }} onBlur=${() => { focused.current = false; commit(); }}
+    onKeyDown=${e => { if (e.key === 'Enter') e.target.blur(); }} />`;
 }

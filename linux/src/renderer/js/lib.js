@@ -35,8 +35,16 @@ export function formatBytes(n) {
 }
 
 // Neue Objekte im Format der Mac-App
-export const newChemical = () => ({ id: uuid(), name: '', equivalents: '', cas: '', molarMass: '', density: '', amount: '', volume: '', mass: '' });
+export const newChemical = () => ({ id: uuid(), name: '', equivalents: '', cas: '', molarMass: '', density: '', amount: '', volume: '', mass: '', purity: '' });
 export const newYield = () => ({ id: uuid(), name: '', cas: '', molarMass: '', density: '', amount: '', volume: '', mass: '' });
-export const newStage = title => ({ id: uuid(), title, sourceURL: '', summary: '', procedure: '', observation: '', chemicals: [], yieldProducts: [], analysisFiles: [], isExpanded: true, createdAt: nowRef() });
-export const newExperiment = (title = t('Neuer Ansatz')) => ({ id: uuid(), title, summary: '', stages: [], createdAt: nowRef(), updatedAt: nowRef() });
+export const newStage = title => ({ id: uuid(), title, sourceURL: '', summary: '', procedure: '', observation: '', chemicals: [], yieldProducts: [], analyses: [], analysisFiles: [], isExpanded: true, createdAt: nowRef() });
+export const newExperiment = (title = t('Neuer Ansatz')) => ({ id: uuid(), title, summary: '', stages: [], createdAt: nowRef(), updatedAt: nowRef(), isMarked: false, tags: [] });
+
+/** Gespeicherte Einstellung im Browser-Speicher des Fensters (wie @AppStorage auf dem Mac). */
+export function stored(key, fallback) {
+  try { const v = localStorage.getItem(key); return v === null ? fallback : v; } catch (e) { return fallback; }
+}
+export function remember(key, value) {
+  try { localStorage.setItem(key, value); } catch (e) { /* egal */ }
+}
 export const newProject = (title = t('Neues Projekt')) => ({ id: uuid(), title, isExpanded: true, experiments: [] });

@@ -169,6 +169,7 @@ function App() {
         else if (name === 'settings') setShowSettings(true);
         else if (name === 'undo') performUndo(false);
         else if (name === 'redo') performUndo(true);
+        else if (name === 'importDrawing') window.dispatchEvent(new CustomEvent('import-drawing'));
       }),
       api.on('journal:external', result => store.applyExternal(result)),
       api.on('casdb:changed', list => store.setCASEntries(list)),

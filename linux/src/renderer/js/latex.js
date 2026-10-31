@@ -18,12 +18,12 @@ function whenMathJaxReady() {
 
 let queue = Promise.resolve();
 /** Setzt Formeln abseits des Sichtbereichs und liefert das fertige HTML. */
-export function typeset(text) {
+export function typeset(text, boldCompoundNumbers = false) {
   const job = queue.then(async () => {
     await whenMathJaxReady();
     const stage = document.createElement('div');
     stage.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
-    stage.innerHTML = CJ.previewHTML(text);
+    stage.innerHTML = CJ.previewHTML(text, boldCompoundNumbers);
     document.body.appendChild(stage);
     try {
       MathJax.typesetClear();
@@ -37,19 +37,20 @@ export function typeset(text) {
   return job;
 }
 
-export function LaTeXEditor({ title, value, onChange, onContextMenu }) {
+/** boldCompoundNumbers: Verbindungsnummern wie (1) oder (2a) erscheinen in der Vorschau fett und ohne Klammern. */
+export function LaTeXEditor({ title, value, onChange, onContextMenu, boldCompoundNumbers = false }) {
   const [focused, setFocused] = useState(false);
   const [editing, setEditing] = useState(false);
   const [rendered, setRendered] = useState(null);   // { text, html }
   const ref = useRef(null);
-  const hasFormulas = CJ.containsFormulas(value);
+  const hasFormulas = CJ.containsFormulas(value) || (boldCompoundNumbers && CJ.containsCompoundNumbers(value));
   const showPreview = !focused && !editing && hasFormulas && rendered && rendered.text === value;
 
   // Beim Verlassen (und beim ersten Anzeigen) im Hintergrund setzen
   useEffect(() => {
     if (focused || !hasFormulas || (rendered && rendered.text === value)) return undefined;
     let cancelled = false;
-    typeset(value).then(out => { if (!cancelled) setRendered({ text: value, html: out }); });
+    typeset(value, boldCompoundNumbers).then(out => { if (!cancelled) setRendered({ text: value, html: out }); });
     return () => { cancelled = true; };
   }, [focused, value, hasFormulas]);
 

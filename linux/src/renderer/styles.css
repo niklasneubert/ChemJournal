@@ -309,3 +309,96 @@ select.field { padding: 0 4px; }
 @media (prefers-color-scheme: dark) {
   .drop-zone img { background: rgba(255, 255, 255, 0.92); border-radius: 6px; padding: 8px; margin: 8px; max-width: calc(100% - 32px); }
 }
+
+/* MARK: Version 1.1 – Einheiten, Reinheit, Markierungen, Tags, Aufreinigung & Analytik, Reaktionsbild ------------ */
+
+.unit-menu { border: none; background: none; padding: 0 0 0 3px; font: inherit; font-weight: 700; color: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 2px; }
+.unit-menu .icon { font-size: 9px; color: var(--secondary); }
+.unit-menu:hover { color: var(--accent); }
+
+.context-menu .menu-header { padding: 4px 10px 2px; font-size: 11px; font-weight: 600; color: var(--secondary); }
+.toolbar-button.active { color: var(--accent); }
+.accent { color: var(--accent); }
+.orange { color: var(--orange); }
+
+/* Tags – Farben wie die Systemfarben auf dem Mac */
+.tag-chip { --c: #007aff; display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 500;
+  color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); border: 0.5px solid color-mix(in srgb, var(--c) 35%, transparent); white-space: nowrap; }
+.tag-chip.compact { font-size: 10px; padding: 0 5px; }
+.tag-chip button { border: none; background: none; padding: 0; color: inherit; opacity: 0.55; cursor: pointer; display: inline-flex; font-size: 8px; }
+.tag-chip button:hover { opacity: 1; }
+.tag-blue { --c: #007aff; } .tag-green { --c: #28a745; } .tag-orange { --c: #ff9500; } .tag-purple { --c: #af52de; } .tag-pink { --c: #ff2d55; }
+.tag-teal { --c: #30b0c7; } .tag-indigo { --c: #5856d6; } .tag-brown { --c: #a2845e; } .tag-mint { --c: #00c7be; } .tag-red { --c: #ff3b30; } .tag-cyan { --c: #32ade6; }
+.tag-line { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 1px; }
+.tag-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; font-size: 11px; }
+.tag-add { position: relative; }
+.tag-popover { position: absolute; top: 22px; left: 0; z-index: 50; width: 260px; display: flex; flex-direction: column; gap: 8px; padding: 12px;
+  background: var(--menu-bg); border-radius: 10px; box-shadow: var(--shadow); }
+.tag-popover button.plain { border: none; background: none; padding: 0; cursor: pointer; }
+.experiment-row .star, .mark-button.marked { color: #ffcc00; }
+.mark-button:not(.marked) { color: var(--secondary); }
+.filter-banner { display: flex; align-items: center; gap: 6px; margin: 0 10px 6px; padding: 4px 8px; border-radius: 6px; background: var(--hover); font-size: 11px; }
+
+/* Reaktionsbild */
+.drop-zone { position: relative; }
+.drop-zone.drawing-active { border: 2px solid var(--orange); }
+.drop-zone img.editable { cursor: pointer; }
+.drop-zone .placeholder.orange { color: var(--orange); }
+.image-copy-area { position: absolute; top: 10px; right: 10px; display: flex; gap: 6px; align-items: center; }
+.copy-image { border: none; border-radius: 999px; padding: 4px 10px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); }
+.copy-image:hover { filter: brightness(1.08); }
+.copied-badge { padding: 3px 8px; border-radius: 999px; background: var(--menu-bg); font-size: 11px; font-weight: 500; display: inline-flex; gap: 4px; align-items: center; }
+.drawing-banner { position: absolute; left: 8px; bottom: 8px; display: flex; gap: 6px; align-items: center; padding: 6px 8px; border-radius: 6px;
+  color: var(--orange); background: rgba(255, 149, 0, 0.15); font-size: 11px; }
+.tint-button[disabled] { opacity: 0.45; }
+
+/* Reinheit: Spaltenkopf mit Erklärung */
+.cas-value { width: 100%; border: none; background: transparent; color: var(--text); font: inherit; padding: 0; outline: none; }
+.cas-value:focus { box-shadow: 0 0 0 2px var(--field-focus); border-radius: 3px; }
+
+/* Aufreinigung & Analytik */
+.analysis-box { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+.analysis-empty { display: flex; flex-direction: column; gap: 10px; }
+.analysis-group { display: flex; gap: 8px; align-items: baseline; }
+.analysis-group .group-title { width: 190px; flex: none; }
+.analysis-group .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.method-badge { --c: var(--blue); border: none; border-radius: 999px; padding: 4px 8px; font-size: 11px; font-weight: 500; display: inline-flex; gap: 4px; align-items: center;
+  color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); cursor: pointer; }
+.method-badge.purification, .result-chip.purification, .method-icon.purification { --c: var(--green); }
+.method-badge.other, .result-chip.other, .method-icon.other { --c: #8e8e93; }
+.method-icon { --c: var(--blue); color: var(--c); display: inline-flex; }
+.analysis-card { --c: var(--blue); position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 12px 12px 15px; border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-bg) 70%, transparent); border: 1px solid var(--gray-border); }
+.analysis-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 8px 0 0 8px; background: color-mix(in srgb, var(--c) 70%, transparent); }
+.analysis-card.purification { --c: var(--green); }
+.analysis-card.other { --c: #8e8e93; }
+.analysis-card.drop-target { border: 2px dashed var(--accent); }
+.analysis-head { display: flex; gap: 8px; align-items: center; }
+.analysis-head .heading { font-weight: 600; white-space: nowrap; }
+.analysis-head .sample { width: 220px; color: var(--secondary); }
+.analysis-fields { display: flex; flex-wrap: wrap; gap: 10px 12px; }
+.field-cell { width: 230px; display: flex; flex-direction: column; gap: 3px; position: relative; }
+.field-line { display: flex; gap: 4px; align-items: center; }
+.field-line .field { flex: 1; min-width: 0; }
+.field-line .accessory { width: 44px; flex: none; display: flex; align-items: center; }
+.field-line .accessory.wide { width: 72px; }
+.field-line .unit { white-space: nowrap; }
+.multi-choice { position: absolute; top: 46px; left: 0; z-index: 50; display: flex; flex-direction: column; gap: 5px; padding: 12px;
+  background: var(--menu-bg); border-radius: 10px; box-shadow: var(--shadow); }
+.multi-choice label { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.analysis-multiline { display: flex; flex-direction: column; gap: 3px; }
+.analysis-textarea { min-height: 44px; resize: none; overflow: hidden; }
+.analysis-results { display: flex; gap: 8px; flex-wrap: wrap; }
+.result-chip { --c: var(--blue); display: inline-flex; gap: 4px; align-items: center; padding: 3px 8px; border-radius: 999px; font-size: 11px;
+  color: var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); }
+.analysis-files { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.analysis-files .file-row { align-self: stretch; }
+.analysis-summary { white-space: normal; user-select: text; }
+.callout { font-size: 12px; }
+
+/* Seitenleiste: Stern bleibt neben dem gekürzten Titel sichtbar; Tags auf der blauen Auswahl lesbar */
+.experiment-row .title-line { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.experiment-row .title-line .star { flex: none; font-size: 10px; }
+.experiment-row.selected .tag-chip { color: #fff; background: rgba(255, 255, 255, 0.22); border-color: rgba(255, 255, 255, 0.45); }

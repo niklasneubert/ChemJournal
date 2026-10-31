@@ -1,7 +1,7 @@
 // Ansatzgrößen- und Ausbeute-Tabelle – entspricht ChemicalTableView.swift, YieldTableView.swift, CASStatusIcon.swift.
-import { html, CJ, api, t, useState, useEffect, useRef, newChemical, newYield, formatAbbrev } from './lib.js';
+import { html, CJ, api, t, useState, useEffect, useRef, newChemical, newYield, formatAbbrev, stored, remember } from './lib.js';
 import { Icon } from './icons.js';
-import { Sheet, alertOK } from './ui.js';
+import { Sheet, alertOK, openMenuAt } from './ui.js';
 import { store } from './store.js';
 
 const P = s => CJ.parseDecimal(s);
@@ -10,57 +10,59 @@ const f4 = v => CJ.format4(v);
 
 // MARK: Berechnungen (1:1 wie in der Mac-App) ---------------------------------------------------------------
 
-/** Rechnet eine Zeile neu, nachdem das Feld `source` geändert wurde. trig = alle Zeilen über die Äquivalente neu rechnen. */
+/** Rechnet eine Zeile neu, nachdem das Feld `source` geändert wurde. trig = alle Zeilen über die Äquivalente neu rechnen.
+ *  Reinheit: n ist die Stoffmenge des reinen Stoffes; m und V sind die abzumessende Menge (m = n · M / Reinheit). */
 export function calcChemical(chem, source, chemicals) {
   const c = { ...chem };
-  const M = P(c.molarMass) ?? 0, d = P(c.density) ?? 0;
+  const d = P(c.density) ?? 0;
   const first = chemicals[0];
   const isRef = !!first && first.id === c.id;
   const refEq = P(first ? first.equivalents : '') ?? 1;
   const baseAmount = (P(first ? first.amount : '') ?? 0) / (refEq > 0 ? refEq : 1);
   const n = P(c.amount), m = P(c.mass), V = P(c.volume), eq = P(c.equivalents);
+  const M = P(c.molarMass) ?? 0;
   let trig = false;
+  /** Aus der Stoffmenge: Masse und Volumen des Reagenzes */
+  const setMassAndVolume = amount => {
+    const mass = CJ.massToWeigh(c, amount);
+    if (mass === null) return;
+    c.mass = f3(mass);
+    if (d > 0) c.volume = f3(mass / d);
+  };
+  /** Aus der abgewogenen Masse: Stoffmenge (und Äquivalente) des reinen Stoffes */
+  const setAmount = mass => {
+    const calcN = CJ.pureAmount(c, mass);
+    if (calcN === null) return;
+    c.amount = f4(calcN);
+    if (!isRef && baseAmount > 0) c.equivalents = f4(calcN / baseAmount); else if (isRef) trig = true;
+  };
   switch (source) {
     case 'equivalents':
-      if (!isRef && eq !== null && baseAmount > 0) {
-        const calcN = eq * baseAmount; c.amount = f4(calcN);
-        if (M > 0) c.mass = f3(calcN * M);
-        if (M > 0 && d > 0) c.volume = f3((calcN * M) / d);
-      } else if (isRef) trig = true;
+      if (!isRef && eq !== null && baseAmount > 0) { const calcN = eq * baseAmount; c.amount = f4(calcN); setMassAndVolume(calcN); }
+      else if (isRef) trig = true;
       break;
     case 'amount':
       if (n !== null) {
         if (!isRef && baseAmount > 0) c.equivalents = f4(n / baseAmount); else if (isRef) trig = true;
-        if (M > 0) { c.mass = f3(n * M); if (d > 0) c.volume = f3((n * M) / d); }
+        setMassAndVolume(n);
       }
       break;
     case 'mass':
-      if (m !== null && M > 0) {
-        const calcN = m / M; c.amount = f4(calcN);
-        if (!isRef && baseAmount > 0) c.equivalents = f4(calcN / baseAmount); else if (isRef) trig = true;
-        if (d > 0) c.volume = f3(m / d);
-      }
+      if (m !== null) { setAmount(m); if (d > 0) c.volume = f3(m / d); }
       break;
     case 'volume':
-      if (V !== null && d > 0) {
-        const calcM = V * d; c.mass = f3(calcM);
-        if (M > 0) {
-          const calcN = calcM / M; c.amount = f4(calcN);
-          if (!isRef && baseAmount > 0) c.equivalents = f4(calcN / baseAmount); else if (isRef) trig = true;
-        }
-      }
+      if (V !== null && d > 0) { const calcM = V * d; c.mass = f3(calcM); setAmount(calcM); }
       break;
     case 'molarMass':
-      if (m !== null && M > 0) {
-        const calcN = m / M; c.amount = f4(calcN);
-        if (!isRef && baseAmount > 0) c.equivalents = f4(calcN / baseAmount); else if (isRef) trig = true;
-        if (d > 0) c.volume = f3(m / d);
-      } else if (n !== null && M > 0) {
-        c.mass = f3(n * M); if (d > 0) c.volume = f3((n * M) / d);
-      }
+      if (m !== null && M > 0) { setAmount(m); if (d > 0) c.volume = f3(m / d); }
+      else if (n !== null) setMassAndVolume(n);
       break;
     case 'density':
       if (m !== null && d > 0) c.volume = f3(m / d);
+      break;
+    // Reinheit geändert: die benötigte Stoffmenge bleibt, abzuwiegende Menge passt sich an
+    case 'purity':
+      if (n !== null) setMassAndVolume(n); else if (m !== null) setAmount(m);
       break;
     default: break;
   }
@@ -80,8 +82,9 @@ export function triggerGlobalUpdate(chemicals) {
     if (!(eq > 0)) return c;
     const out = { ...c };
     const newN = eq * baseAmount; out.amount = f4(newN);
-    const M = P(c.molarMass) ?? 0;
-    if (M > 0) { out.mass = f3(newN * M); const d = P(c.density) ?? 0; if (d > 0) out.volume = f3((newN * M) / d); }
+    // Reinheit: für n mol reinen Stoff muss mehr abgewogen werden (m = n · M / Reinheit)
+    const mass = CJ.massToWeigh(c, newN);
+    if (mass !== null) { out.mass = f3(mass); const d = P(c.density) ?? 0; if (d > 0) out.volume = f3(mass / d); }
     return out;
   });
 }
@@ -215,14 +218,46 @@ function ResizeHandle({ width, setWidth }) {
 const numField = (placeholder, value, onInput, extra = {}) => html`<input class="field mono" placeholder=${placeholder} value=${value}
   onInput=${e => onInput(e.target.value)} ...${extra} />`;
 
+// MARK: Einheiten (wie UnitColumns.swift) ------------------------------------------------------------------
+
+/** Gewählte Anzeigeeinheiten einer Tabelle, gemerkt wie @AppStorage ("unit.reagents.amount" …). */
+function useUnits(table) {
+  const read = kind => CJ.Units.unit(kind, stored(`unit.${table}.${kind}`, CJ.Units.baseUnit(kind).symbol));
+  const [units, setUnits] = useState(() => ({ amount: read('amount'), volume: read('volume'), mass: read('mass') }));
+  const choose = (kind, symbol) => { remember(`unit.${table}.${kind}`, symbol); setUnits(u => ({ ...u, [kind]: CJ.Units.unit(kind, symbol) })); };
+  return [units, choose];
+}
+
+/** Spaltenkopf wie "n (mol)": Ein Klick auf die Einheit zeigt die anderen Einheiten; die gewählte gilt für die ganze Spalte. */
+function UnitHeader({ symbol, kind, unit, onChoose }) {
+  const open = e => openMenuAt(e.currentTarget, CJ.Units.units(kind).map(u => ({
+    label: u.symbol, icon: u.symbol === unit.symbol ? 'checkmark' : null, action: () => onChoose(kind, u.symbol),
+  })));
+  return html`<div class="hdr">${symbol}<button class="unit-menu" title=${t('Klicken, um die Einheit der Spalte zu wechseln')} onClick=${open}>
+    (${unit.symbol})<${Icon} name="chevron.down" /></button></div>`;
+}
+
+/** Mengenfeld: zeigt den gespeicherten Wert (mol/ml/g) in der gewählten Einheit und rechnet Eingaben zurück.
+ *  Während des Tippens bleibt der Text, wie er ist ("12." wird nicht zu "12"). */
+function UnitField({ placeholder, value, unit, kind, onChange, extra = {} }) {
+  const [editing, setEditing] = useState(null);
+  if (CJ.Units.isBase(unit)) return numField(placeholder, value, onChange, extra);
+  const shown = editing !== null ? editing : CJ.Units.display(value, unit, kind);
+  return html`<input class="field mono" placeholder=${placeholder} value=${shown}
+    onFocus=${e => setEditing(e.target.value)}
+    onInput=${e => { setEditing(e.target.value); onChange(CJ.Units.toBase(e.target.value, unit)); }}
+    onBlur=${e => { setEditing(null); if (extra.onBlur) extra.onBlur(e); }} />`;
+}
+
 // MARK: Ansatzgrößen ---------------------------------------------------------------------------------------
 
 export function ChemicalTable({ eid, stage, showSmartExtract, setShowSmartExtract }) {
   const [nameWidth, setNameWidth] = useState(160);
   const [showScale, setShowScale] = useState(false);
+  const [units, chooseUnit] = useUnits('reagents');
   const chemicals = stage.chemicals;
   const setChemicals = fn => store.updateStage(eid, stage.id, s => ({ ...s, chemicals: fn(s.chemicals) }));
-  const cols = `${nameWidth}px minmax(40px,0.7fr) minmax(70px,1.3fr) repeat(5, minmax(60px,1fr)) 18px`;
+  const cols = `${nameWidth}px minmax(40px,0.7fr) minmax(70px,1.3fr) repeat(3, minmax(60px,1fr)) repeat(3, minmax(72px,1fr)) 18px`;
 
   return html`<div class="table-box">
     <div class="table-head">
@@ -233,9 +268,12 @@ export function ChemicalTable({ eid, stage, showSmartExtract, setShowSmartExtrac
     <div class="grid" style=${{ gridTemplateColumns: cols }}>
       <div class="hdr name-col"><span style="flex:1">${t('Name')}</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
       <div class="hdr">eq</div><div class="hdr">CAS</div><div class="hdr">M (g/mol)</div><div class="hdr">d (g/cm3)</div>
-      <div class="hdr">n (mol)</div><div class="hdr">V (ml)</div><div class="hdr">m (g)</div><div class="hdr"></div>
+      <div class="hdr" title=${t('Gehalt des Reagenzes, z. B. 95 oder 60 (NaH in Mineralöl). Leer = 100 %. n bleibt die Stoffmenge des reinen Stoffes, m und V sind die abzumessende Menge.')}>${t('Reinheit (%)')}</div>
+      <${UnitHeader} symbol="n" kind="amount" unit=${units.amount} onChoose=${chooseUnit} />
+      <${UnitHeader} symbol="V" kind="volume" unit=${units.volume} onChoose=${chooseUnit} />
+      <${UnitHeader} symbol="m" kind="mass" unit=${units.mass} onChoose=${chooseUnit} /><div class="hdr"></div>
       <div class="rule"></div>
-      ${chemicals.map(c => html`<${ChemicalRow} key=${c.id} eid=${eid} sid=${stage.id} chem=${c} setChemicals=${setChemicals} />`)}
+      ${chemicals.map(c => html`<${ChemicalRow} key=${c.id} eid=${eid} sid=${stage.id} chem=${c} units=${units} setChemicals=${setChemicals} />`)}
     </div>
     <button class="plain-add green" onClick=${() => setChemicals(list => list.concat([newChemical()]))}><${Icon} name="plus" /> ${t('Chemikalie hinzufügen')}</button>
     ${showScale && html`<${ScaleSheet} onClose=${() => setShowScale(false)} onScale=${factor => setChemicals(list => list.map(c => {
@@ -251,7 +289,7 @@ export function ChemicalTable({ eid, stage, showSmartExtract, setShowSmartExtrac
   </div>`;
 }
 
-function ChemicalRow({ eid, sid, chem, setChemicals }) {
+function ChemicalRow({ eid, sid, chem, units, setChemicals }) {
   const [status, setStatus] = useState({ kind: 'idle' });
   const getRow = () => { const s = store.stage(eid, sid); return s && s.chemicals.find(c => c.id === chem.id); };
   const change = (field, value) => setChemicals(list => changeChemical(list, chem.id, field, value));
@@ -272,9 +310,10 @@ function ChemicalRow({ eid, sid, chem, setChemicals }) {
     <div class="cell cas-wrap"><input class="field mono" placeholder="CAS" value=${chem.cas} onInput=${e => onCAS(e.target.value)} /><${CASStatusIcon} status=${status} /></div>
     <div class="cell">${numField('M', chem.molarMass, v => change('molarMass', v), { onBlur: blurSave })}</div>
     <div class="cell">${numField('d', chem.density, v => change('density', v), { onBlur: blurSave })}</div>
-    <div class="cell">${numField('n', chem.amount, v => change('amount', v))}</div>
-    <div class="cell">${numField('V', chem.volume, v => change('volume', v))}</div>
-    <div class="cell">${numField('m', chem.mass, v => change('mass', v))}</div>
+    <div class="cell">${numField('100', chem.purity || '', v => change('purity', v))}</div>
+    <div class="cell"><${UnitField} placeholder="n" value=${chem.amount} unit=${units.amount} kind="amount" onChange=${v => change('amount', v)} /></div>
+    <div class="cell"><${UnitField} placeholder="V" value=${chem.volume} unit=${units.volume} kind="volume" onChange=${v => change('volume', v)} /></div>
+    <div class="cell"><${UnitField} placeholder="m" value=${chem.mass} unit=${units.mass} kind="mass" onChange=${v => change('mass', v)} /></div>
     <div class="cell"><button class="icon-button red" title=${t('Zeile löschen')} onClick=${() => setChemicals(list => list.filter(c => c.id !== chem.id))}><${Icon} name="trash" /></button></div>
     <div class="rule"></div>`;
 }
@@ -323,6 +362,7 @@ function SmartExtractSheet({ onClose, onExtracted }) {
 
 export function YieldTable({ eid, stage }) {
   const [nameWidth, setNameWidth] = useState(160);
+  const [units, chooseUnit] = useUnits('yield');
   const setYields = fn => store.updateStage(eid, stage.id, s => ({ ...s, yieldProducts: fn(s.yieldProducts) }));
   const cols = `${nameWidth}px minmax(70px,1.3fr) minmax(90px,140px) repeat(5, minmax(60px,1fr)) minmax(60px,0.9fr) minmax(60px,0.9fr) 18px`;
   return html`<div class="table-box">
@@ -330,16 +370,18 @@ export function YieldTable({ eid, stage }) {
     <div class="grid" style=${{ gridTemplateColumns: cols }}>
       <div class="hdr name-col"><span style="flex:1">${t('Produktname')}</span><${ResizeHandle} width=${nameWidth} setWidth=${setNameWidth} /></div>
       <div class="hdr">CAS</div><div class="hdr">${t('Bezug')}</div><div class="hdr">M (g/mol)</div><div class="hdr">d (g/cm3)</div>
-      <div class="hdr">n (mol)</div><div class="hdr">V (ml)</div><div class="hdr">m (g)</div>
+      <${UnitHeader} symbol="n" kind="amount" unit=${units.amount} onChoose=${chooseUnit} />
+      <${UnitHeader} symbol="V" kind="volume" unit=${units.volume} onChoose=${chooseUnit} />
+      <${UnitHeader} symbol="m" kind="mass" unit=${units.mass} onChoose=${chooseUnit} />
       <div class="hdr secondary">${t('m theor.')}</div><div class="hdr green">${t('Ausbeute')}</div><div class="hdr"></div>
       <div class="rule"></div>
-      ${stage.yieldProducts.map(y => html`<${YieldRow} key=${y.id} eid=${eid} sid=${stage.id} y=${y} chemicals=${stage.chemicals} setYields=${setYields} />`)}
+      ${stage.yieldProducts.map(y => html`<${YieldRow} key=${y.id} eid=${eid} sid=${stage.id} y=${y} units=${units} chemicals=${stage.chemicals} setYields=${setYields} />`)}
     </div>
     <button class="plain-add green" onClick=${() => setYields(list => list.concat([newYield()]))}><${Icon} name="plus" /> ${t('Produkt hinzufügen')}</button>
   </div>`;
 }
 
-function YieldRow({ eid, sid, y, chemicals, setYields }) {
+function YieldRow({ eid, sid, y, units, chemicals, setYields }) {
   const [status, setStatus] = useState({ kind: 'idle' });
   const getRow = () => { const s = store.stage(eid, sid); return s && s.yieldProducts.find(r => r.id === y.id); };
   const change = (field, value) => setYields(list => list.map(r => (r.id === y.id ? calcYield({ ...r, [field]: value }, field) : r)));
@@ -347,7 +389,7 @@ function YieldRow({ eid, sid, y, chemicals, setYields }) {
   const refN = ref ? P(ref.amount) : null;
   const myN = P(y.amount), M = P(y.molarMass);
   const yieldText = refN !== null && refN > 0 && myN !== null && myN > 0 ? `${((myN / refN) * 100).toFixed(1)} %` : '–';
-  const theory = refN !== null && M !== null ? `${f3(refN * M)} g` : '–';
+  const theory = refN !== null && M !== null ? `${CJ.Units.format((refN * M) / units.mass.factor, 'mass')} ${units.mass.symbol}` : '–';
   const onCAS = value => {
     setYields(list => list.map(r => (r.id === y.id ? { ...r, cas: value } : r)));
     casChanged(value, getRow, setStatus, (m, d) => {
@@ -373,9 +415,9 @@ function YieldRow({ eid, sid, y, chemicals, setYields }) {
     </select></div>
     <div class="cell">${numField('M', y.molarMass, v => change('molarMass', v), { onBlur: blurSave })}</div>
     <div class="cell">${numField('d', y.density, v => change('density', v), { onBlur: blurSave })}</div>
-    <div class="cell">${numField('n', y.amount, v => change('amount', v))}</div>
-    <div class="cell">${numField('V', y.volume, v => change('volume', v))}</div>
-    <div class="cell">${numField('m', y.mass, v => change('mass', v))}</div>
+    <div class="cell"><${UnitField} placeholder="n" value=${y.amount} unit=${units.amount} kind="amount" onChange=${v => change('amount', v)} /></div>
+    <div class="cell"><${UnitField} placeholder="V" value=${y.volume} unit=${units.volume} kind="volume" onChange=${v => change('volume', v)} /></div>
+    <div class="cell"><${UnitField} placeholder="m" value=${y.mass} unit=${units.mass} kind="mass" onChange=${v => change('mass', v)} /></div>
     <div class="cell theory">${theory}</div>
     <div class="cell yield-value">${yieldText}</div>
     <div class="cell"><button class="icon-button red" title=${t('Zeile löschen')} onClick=${() => setYields(list => list.filter(r => r.id !== y.id))}><${Icon} name="trash" /></button></div>

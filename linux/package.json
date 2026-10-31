@@ -1,7 +1,7 @@
 {
   "name": "chemjournal",
   "productName": "ChemJournal",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Elektronisches Laborjournal für die Synthesechemie – Linux-Version von ChemJournal",
   "author": {
     "name": "Niklas Neubert"
@@ -26,7 +26,7 @@
   "build": {
     "appId": "de.chemjournal.app",
     "productName": "ChemJournal",
-    "artifactName": "ChemJournal-${version}-${arch}.${ext}",
+    "artifactName": "ChemJournal-1.1-${arch}.${ext}",
     "directories": {
       "output": "dist"
     },

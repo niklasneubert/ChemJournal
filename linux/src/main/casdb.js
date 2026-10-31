@@ -86,6 +86,17 @@ class CASDatabase {
     this.persist();
   }
 
+  /** In den Einstellungen geänderte Werte: gelten als eigene Eingabe (Vorrang vor PubChem).
+   *  Ein geleertes Feld löscht den Wert; Komma wird zum Dezimalpunkt wie in den Tabellen. */
+  edit(cas, molarMass, density) {
+    const e = this.entries.get(cas);
+    if (!e) return;
+    const clean = s => String(s || '').trim().replace(/,/g, '.');
+    const m = clean(molarMass), d = clean(density);
+    if (m === e.molarMass && d === e.density) return;
+    this.store({ ...e, molarMass: m, density: d, source: SOURCE_USER, updatedAt: isoNoMs(new Date()) });
+  }
+
   /** CAS-Nummern, deren gespeicherter Name zur Suche passt ("butyllithium" → 109-72-8). */
   casNumbersMatchingName(normalizedTerm) {
     if (Array.from(normalizedTerm).length < 3) return [];

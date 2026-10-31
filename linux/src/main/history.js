@@ -178,17 +178,16 @@ class JournalHistory {
     }).sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-  /** Tägliche Backups: letzte 30 Tage + je eines pro Monat für 12 Monate. Manuelle bleiben. */
+  /** Tägliche Backups bleiben 30 Tage; das neueste bleibt immer. Manuelle und die vor dem Wiederherstellen bleiben.
+   *  Das Alter kommt aus dem Dateinamen (die Kopie behält das Änderungsdatum des Journals). */
   pruneBackups(now) {
-    const daily = this.backups().filter(b => /^ChemJournal-\d{4}-\d{2}-\d{2}\.json$/.test(path.basename(b.url)));
-    const keptMonths = new Set();
-    daily.forEach((b, i) => {
-      if (i < 30) return;
-      const age = now - new Date(b.date);
-      const month = path.basename(b.url).slice('ChemJournal-'.length, 'ChemJournal-'.length + 7);
-      if (age < 366 * DAY && !keptMonths.has(month)) { keptMonths.add(month); return; }
-      try { fs.unlinkSync(b.url); } catch (e) { /* egal */ }
-    });
+    const cutoff = dayString(new Date(now - 30 * DAY));
+    const days = this.backups().map(b => ({ url: b.url, name: path.basename(b.url) }))
+      .filter(b => /^ChemJournal-\d{4}-\d{2}-\d{2}\.json$/.test(b.name))
+      .map(b => ({ url: b.url, day: b.name.slice('ChemJournal-'.length, 'ChemJournal-'.length + 10) }));
+    const newest = days.reduce((m, b) => (b.day > m ? b.day : m), '');
+    // "yyyy-MM-dd" lässt sich als Text vergleichen
+    for (const b of days) if (b.day < cutoff && b.day !== newest) { try { fs.unlinkSync(b.url); } catch (e) { /* egal */ } }
   }
 
   // intern -------------------------------------------------------------------

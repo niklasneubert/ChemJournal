@@ -93,10 +93,14 @@ test('Speichern im Mac-Format, Versionen und Backup', () => {
     versionsDirectory: path.join(dir, 'Versionen'), backupsDirectory: path.join(dir, 'Backups'), casDatabaseFile: path.join(dir, 'CAS-Datenbank.json'),
   };
   const p = new JournalPersistence(paths);
-  // Datei, wie sie die Mac-App schreibt (Datum = Sekunden seit 2001, Bild = Base64, ohne referenceChemicalID)
+  // Datei, wie sie die Mac-App 1.1 schreibt (Datum = Sekunden seit 2001, Bild = Base64, ohne referenceChemicalID)
   const mac = [{ id: 'A1B2C3D4-0000-0000-0000-000000000001', title: 'P', isExpanded: true, experiments: [{ id: 'A1B2C3D4-0000-0000-0000-000000000002', title: 'E', summary: '', createdAt: 782934000.5, updatedAt: 782934000.5,
-    stages: [{ id: 'A1B2C3D4-0000-0000-0000-000000000003', title: 'Stufe 1', sourceURL: '', summary: '', procedure: '', observation: '', isExpanded: true, createdAt: 782934000.5, analysisFiles: [],
-      chemicals: [{ id: 'A1B2C3D4-0000-0000-0000-000000000004', name: 'THF', equivalents: '', cas: '109-99-9', molarMass: '72.11', density: '0.8833', amount: '', volume: '10', mass: '' }],
+    isMarked: true, tags: ['Scale-up'],
+    stages: [{ id: 'A1B2C3D4-0000-0000-0000-000000000003', title: 'Stufe 1', sourceURL: '', summary: '', procedure: '', observation: '', isExpanded: true, createdAt: 782934000.5,
+      analyses: [{ id: 'A1B2C3D4-0000-0000-0000-000000000006', method: 'nmr', sample: 'Produkt 3', values: { nucleus: '¹H', solvent: 'CDCl₃' },
+        files: [{ id: 'A1B2C3D4-0000-0000-0000-000000000007', filePath: '/x/1H.fid', description: 'Rohdaten' }], isExpanded: false, createdAt: 782934000.5 }],
+      analysisFiles: [{ id: 'A1B2C3D4-0000-0000-0000-000000000007', filePath: '/x/1H.fid', description: 'Rohdaten' }],
+      chemicals: [{ id: 'A1B2C3D4-0000-0000-0000-000000000004', name: 'THF', equivalents: '', cas: '109-99-9', molarMass: '72.11', density: '0.8833', amount: '', volume: '10', mass: '', purity: '' }],
       yieldProducts: [{ id: 'A1B2C3D4-0000-0000-0000-000000000005', name: 'X', cas: '', molarMass: '', density: '', amount: '', volume: '', mass: '' }] }] }] }];
   fs.writeFileSync(paths.journalFile, JSON.stringify(mac));
   const loaded = p.load();

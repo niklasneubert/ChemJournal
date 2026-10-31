@@ -2,15 +2,14 @@
 
 🇩🇪 [Deutsche Version](CHANGELOG.de.md)
 
-## 1.1 – 31 October 2026 (macOS)
+## 1.1 – 31 October 2026 (macOS and Linux)
 
 The biggest update since 1.0: switch units with one click, purity, marks and tags, a completely new
 “Purification & analysis” section with 14 methods, ReShiki as a free drawing program, and much more.
 
-> **Linux:** version 1.1 is macOS-only for now. Linux version 1.0.3 stays available under
-> [release 1.0.3](https://github.com/niklasneubert/ChemJournal/releases/tag/v1.0.3); Linux 1.1 will follow.
-> Until then, please do **not** open a journal edited with 1.1 in Linux 1.0.3 – it doesn't know the new fields
-> (purity, marks, tags, purification & analysis) and would drop them when it saves.
+> **Linux:** version 1.1 is now available for Linux too, with the same features and file format
+> (see [Linux](#linux) below for the differences). Please update all your computers to 1.1 – older versions
+> don't know the new fields (purity, marks, tags, purification & analysis) and would drop them when they save.
 
 ### Reagent and yield tables
 
@@ -86,11 +85,25 @@ The biggest update since 1.0: switch units with one click, purity, marks and tag
 - **Faster search:** about 2.5× faster with large journals; the sidebar no longer recomputes the search when
   nothing has changed (e.g. when you select an experiment).
 
+### Linux
+
+Linux 1.1 has all of the above, with these differences:
+
+- **ReShiki is the drawing program** (ChemDraw doesn't exist for Linux): “Draw in ReShiki”, then **Ctrl+S** in
+  ReShiki – the image is imported and the mode ends; Ctrl+D and “Stop” work as on macOS, and saved drawings can be
+  reopened for 7 days. ChemJournal finds ReShiki on the `PATH`, in `~/.local/bin`, `/opt` or as an AppImage in
+  `~/Applications` or `~/Downloads`; otherwise choose it in *Settings › General*.
+- Keyboard shortcuts use **Ctrl** instead of ⌘; “Show in Finder” is “Show in file manager”.
+- Not on Linux: the ChemDraw-specific items (landscape window, pasting ChemDraw drawings) and the toolbar
+  label setting (the Linux toolbar has no “Icon and Text” mode).
+- Version 1.1 for Linux was checked on macOS with the same program code (automated tests and an interface test),
+  not yet on a Linux computer.
+
 ### Compatibility
 
-- macOS 15 (Sequoia) or newer, Apple Silicon and Intel.
-- Existing journals load unchanged. Older ChemJournal versions and Linux 1.0.3 can open a journal edited with 1.1
-  but drop the new fields when they save.
+- macOS 15 (Sequoia) or newer, Apple Silicon and Intel; Linux x86_64 and ARM64 (AppImage or tar.gz).
+- Existing journals load unchanged. Older ChemJournal versions (macOS or Linux before 1.1) can open a journal
+  edited with 1.1 but drop the new fields when they save.
 
 ## 1.0.3 – 26 October 2026
 

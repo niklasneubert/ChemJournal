@@ -10,23 +10,24 @@ Fertige Dateien gibt es auf GitHub unter **Releases**:
 
 | Datei | Für |
 |---|---|
-| `ChemJournal-1.0.0-x86_64.AppImage` | die meisten Linux-Rechner (Intel/AMD, 64 Bit) |
-| `ChemJournal-1.0.0-arm64.AppImage` | ARM-Rechner (z. B. Raspberry Pi 5, ARM-Laptops) |
-| `ChemJournal-1.0.0-x64.tar.gz`, `…-arm64.tar.gz` | Archiv zum Entpacken, falls AppImages nicht erlaubt sind |
+| `ChemJournal-1.1-x86_64.AppImage` | die meisten Linux-Rechner (Intel/AMD, 64 Bit) |
+| `ChemJournal-1.1-arm64.AppImage` | ARM-Rechner (z. B. Raspberry Pi 5, ARM-Laptops) |
+| `ChemJournal-1.1-x64.tar.gz`, `…-arm64.tar.gz` | Archiv zum Entpacken, falls AppImages nicht erlaubt sind |
 | `SHA256SUMS.txt` | Prüfsummen |
 
 **AppImage:** herunterladen, ausführbar machen und starten – keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.0.0-x86_64.AppImage
-./ChemJournal-1.0.0-x86_64.AppImage
+chmod +x ChemJournal-1.1-x86_64.AppImage
+./ChemJournal-1.1-x86_64.AppImage
 ```
 
 (Alternativ im Dateimanager: Rechtsklick › Eigenschaften › „Als Programm ausführen“ erlauben, dann doppelklicken.)
 
 **tar.gz:** entpacken und im Ordner `./chemjournal` starten.
 
-Getestet unter Ubuntu 26.04 LTS: ARM64-AppImage direkt, x86_64-Programm über Rosetta in einer VM.
+Version 1.0 wurde unter Ubuntu 26.04 LTS getestet (ARM64-AppImage direkt, x86_64-Programm über Rosetta in einer VM).
+Version 1.1 wurde mit denselben Programmteilen auf macOS geprüft (Tests und Oberflächentest), noch nicht auf einem Linux-Rechner.
 
 ## Wo die Daten liegen
 
@@ -43,8 +44,11 @@ automatisch übernommen. Das ist das Gegenstück zu iCloud Drive auf dem Mac.
 ## Unterschiede zur Mac-Version
 
 - **iCloud Drive** gibt es unter Linux nicht → frei wählbarer Sync-Ordner (siehe oben).
-- **ChemDraw** gibt es nicht für Linux → Reaktionsgleichung per Drag & Drop, Strg+V, „Aus Zwischenablage einfügen“
-  oder „Datei wählen …“ (Bilder und PDFs, z. B. aus ChemSketch, MarvinSketch oder Ketcher).
+- **ChemDraw** gibt es nicht für Linux → Zeichenprogramm ist [ReShiki](https://reshiki.com) (kostenlos, quelloffen):
+  „In ReShiki zeichnen“, in ReShiki Strg+S – das Bild wird übernommen; gespeicherte Zeichnungen lassen sich 7 Tage
+  lang wieder öffnen. ChemJournal findet ReShiki im `PATH`, in `~/.local/bin`, `/opt` oder als AppImage in
+  `~/Applications` bzw. `~/Downloads`; sonst in den Einstellungen wählen. Daneben wie bisher Drag & Drop, Strg+V und
+  „Datei wählen …“ (Bilder und PDFs, z. B. aus ChemSketch, MarvinSketch oder Ketcher).
 - **Smart Extract** nutzt statt Core ML einen Namensklassifikator, der auf denselben Trainingsdaten trainiert ist
   (siehe unten). Ergebnis auf dem annotierten Korpus: 100 % (33/33 öffentliche Fälle), wie das Modell auf dem Mac; auf den
   95 Absätzen aus Open-Access-Artikeln (Europe PMC, CC BY 4.0) 99.6 % im Entwicklungsteil und 87.5 % im ungesehenen
@@ -73,7 +77,8 @@ ab. Wichtig auf einem Mac, auf dem auch die Mac-App läuft – beide würden son
 ```
 src/main/        Hintergrundprozess: Fenster, Menüs, Speichern, Versionen, Backups, CAS-Datenbank, PubChem, PDF
 src/renderer/    Oberfläche (Preact + htm, ohne Build-Schritt), Gestaltung nach der SwiftUI-App
-src/shared/      Gemeinsame Logik (auch in den Tests): Zahlenformat, CAS, Suche, PDF-Vorlage, Smart Extract
+src/shared/      Gemeinsame Logik (auch in den Tests): Zahlenformat, Einheiten, Tags, Analytik, CAS, Suche,
+                 PDF-Vorlage, Smart Extract
 tools/           Smart-Extract-Bewertung, Training des Namensklassifikators, Vendor-Kopie
 test/            Tests und das annotierte Korpus (gleich wie macos/Tools/SmartExtractEval)
 ```

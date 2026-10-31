@@ -2,15 +2,14 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
-## 1.1 – 31. Oktober 2026 (macOS)
+## 1.1 – 31. Oktober 2026 (macOS und Linux)
 
 Die größte Aktualisierung seit 1.0: Einheiten per Klick, Reinheit, Markierungen und Tags, ein komplett neuer
 Bereich „Aufreinigung & Analytik“ mit 14 Methoden, ReShiki als freies Zeichenprogramm und vieles mehr.
 
-> **Linux:** Version 1.1 gibt es vorerst nur für macOS. Die Linux-Version 1.0.3 bleibt unter
-> [Release 1.0.3](https://github.com/niklasneubert/ChemJournal/releases/tag/v1.0.3) verfügbar; die Linux-Version 1.1 folgt.
-> Bitte öffne ein mit 1.1 bearbeitetes Journal bis dahin **nicht** mit Linux 1.0.3 – sie kennt die neuen Felder
-> (Reinheit, Markierungen, Tags, Aufreinigung & Analytik) nicht und würde sie beim Speichern verwerfen.
+> **Linux:** Version 1.1 gibt es jetzt auch für Linux, mit denselben Funktionen und demselben Dateiformat
+> (Unterschiede siehe [Linux](#linux) unten). Bitte alle Rechner auf 1.1 aktualisieren – ältere Versionen kennen
+> die neuen Felder (Reinheit, Markierungen, Tags, Aufreinigung & Analytik) nicht und würden sie beim Speichern verwerfen.
 
 ### Ansatzgrößen und Ausbeute
 
@@ -89,10 +88,25 @@ Bereich „Aufreinigung & Analytik“ mit 14 Methoden, ReShiki als freies Zeiche
 - **Suche schneller:** bei großen Journalen etwa 2,5-mal schneller; die Seitenleiste rechnet die Suche nicht mehr neu,
   wenn sich nichts geändert hat (z. B. beim Auswählen eines Ansatzes).
 
+### Linux
+
+Linux 1.1 hat alles oben Genannte, mit diesen Unterschieden:
+
+- **Zeichenprogramm ist ReShiki** (ChemDraw gibt es nicht für Linux): „In ReShiki zeichnen“, dann in ReShiki
+  **Strg+S** – das Bild wird übernommen und der Modus endet; Strg+D und „Beenden“ funktionieren wie auf dem Mac,
+  gespeicherte Zeichnungen lassen sich 7 Tage lang wieder öffnen. ChemJournal findet ReShiki im `PATH`, in
+  `~/.local/bin`, `/opt` oder als AppImage in `~/Applications` bzw. `~/Downloads`; sonst unter
+  *Einstellungen › Allgemein* wählen.
+- Tastenkürzel mit **Strg** statt ⌘; „Im Finder zeigen“ heißt „Im Dateimanager zeigen“.
+- Nicht unter Linux: die ChemDraw-eigenen Punkte (Querformat-Fenster, Einfügen von ChemDraw-Zeichnungen) und die
+  Beschriftung der Symbolleiste (die Linux-Symbolleiste hat keinen Modus „Symbol und Text“).
+- Die Linux-Version 1.1 wurde mit demselben Programmcode auf macOS geprüft (automatische Tests und Oberflächentest),
+  noch nicht auf einem Linux-Rechner.
+
 ### Kompatibilität
 
-- macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel.
-- Bestehende Journale laden unverändert. Ältere ChemJournal-Versionen und die Linux-Version 1.0.3 können ein mit 1.1
+- macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel; Linux x86_64 und ARM64 (AppImage oder tar.gz).
+- Bestehende Journale laden unverändert. Ältere ChemJournal-Versionen (macOS oder Linux vor 1.1) können ein mit 1.1
   bearbeitetes Journal öffnen, verwerfen beim Speichern aber die neuen Felder.
 
 ## 1.0.3 – 26. Oktober 2026

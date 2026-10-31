@@ -28,14 +28,9 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)** – was
 | System | Version | Datei |
 |---|---|---|
 | macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | 1.1 | `ChemJournal-1.1-macOS.dmg` |
-| Linux x86_64 (die meisten PCs) | 1.0.3 | `ChemJournal-1.0.3-x86_64.AppImage` |
-| Linux ARM64 | 1.0.3 | `ChemJournal-1.0.3-arm64.AppImage` |
-| Linux als Archiv | 1.0.3 | `ChemJournal-1.0.3-x64.tar.gz` / `…-arm64.tar.gz` |
-
-> **Linux:** Version 1.1 gibt es vorerst nur für macOS; die Linux-Dateien liegen unter
-> [Release 1.0.3](../../releases/tag/v1.0.3). Linux 1.1 folgt. Bis dahin ein mit macOS 1.1 bearbeitetes Journal
-> nicht mit Linux 1.0.3 öffnen – sie würde beim Speichern die neuen Felder (Reinheit, Markierungen, Tags,
-> Aufreinigung & Analytik) verwerfen.
+| Linux x86_64 (die meisten PCs) | 1.1 | `ChemJournal-1.1-x86_64.AppImage` |
+| Linux ARM64 | 1.1 | `ChemJournal-1.1-arm64.AppImage` |
+| Linux als Archiv | 1.1 | `ChemJournal-1.1-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -44,8 +39,8 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)** – was
 **Linux:** AppImage ausführbar machen und starten, keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.0.3-x86_64.AppImage
-./ChemJournal-1.0.3-x86_64.AppImage
+chmod +x ChemJournal-1.1-x86_64.AppImage
+./ChemJournal-1.1-x86_64.AppImage
 ```
 
 Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
@@ -84,8 +79,8 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 | ![Smart Extract](docs/screenshots/smart-extract.png) | ![Suche: „toluene“ findet „Toluol“](docs/screenshots/search.png) |
 | ![Dunkelmodus](docs/screenshots/dark-mode.png) | ![PDF-Export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots und Video: die Mac-App (Version 1.0) mit Beispieldaten. Linux 1.0.3 hat die Funktionen von macOS
-1.0.3 und dasselbe Dateiformat.</sub>
+<sub>Screenshots und Video: die Mac-App (Version 1.0) mit Beispieldaten. Linux 1.1 hat die Funktionen von macOS
+1.1 und dasselbe Dateiformat.</sub>
 
 ## Smart Extract
 
@@ -120,7 +115,7 @@ PubChem-Suche, und die enthält nur die eingetippte CAS-Nummer.
 ChemJournal ist ein KI-gestütztes Projekt: Der Code der Mac-App, der Linux-Version, von Smart Extract und des
 Trainingsdaten-Generators wurde mit **Google Gemini Flash 3.8** und **Claude Opus 5.5** (Anthropic) geschrieben.
 Idee, Anforderungen aus dem Laboralltag und alle Entscheidungen kommen von mir.
-Jede Funktion ist durch automatische Tests abgedeckt (118 unter macOS, 10 unter Linux) und durch das
+Jede Funktion ist durch automatische Tests abgedeckt (118 unter macOS, 23 unter Linux) und durch das
 Smart-Extract-Testkorpus.
 
 ## Lizenz

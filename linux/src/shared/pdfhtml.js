@@ -6,17 +6,36 @@
   const { htmlEscaped } = node ? require('./smartformat.js') : g.CJ;
   const { parseDecimal, format3 } = node ? require('./numberformat.js') : g.CJ;
   const { t, locale, getLanguage } = node ? require('./i18n.js') : g.CJ;
+  const { purityFraction } = node ? require('./units.js') : g.CJ;
+  const { Analysis } = node ? require('./analysis.js') : g.CJ;
 
   /** Nur Text mit $…$ oder \ce{…} braucht MathJax. */
   function containsFormulas(text) {
     return text.includes('$') || text.includes('\\ce{');
   }
 
-  /** HTML maskieren, Zeilenumbrüche, nacktes \ce{…} in $…$ setzen. */
-  function previewHTML(text) {
+  /** HTML maskieren, Zeilenumbrüche, nacktes \ce{…} in $…$ setzen.
+   *  Mit boldCompoundNumbers werden Verbindungsnummern außerhalb von Formeln fett, ohne Klammern: "(1)" → "<b>1</b>". */
+  function previewHTML(text, boldCompoundNumbers = false) {
     let fmt = htmlEscaped(text).replace(/\n/g, '<br>');
     fmt = fmt.replace(/(?<!\$)\\ce\{([^}]+)\}/g, (m, inner) => `$\\ce{${inner}}$`);
-    return fmt;
+    return boldCompoundNumbers ? boldingCompoundNumbers(fmt) : fmt;
+  }
+
+  /** Verbindungsnummer in Klammern: Zahl mit höchstens drei Stellen, optional ein Kleinbuchstabe – (1), (12), (2a).
+   *  "(5 mL)", "(2 h)" oder "(95%)" passen nicht. */
+  const COMPOUND = /\((\d{1,3}[a-z]?)\)/g;
+  function containsCompoundNumbers(text) { return /\(\d{1,3}[a-z]?\)/.test(text); }
+
+  /** Formeln ($…$, $$…$$) bleiben unangetastet, sonst würde MathJax das <b> mitten in der Formel sehen. */
+  function boldingCompoundNumbers(html) {
+    const bold = part => part.replace(COMPOUND, '<b>$1</b>');
+    let out = '', last = 0;
+    for (const m of html.matchAll(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g)) {
+      out += bold(html.slice(last, m.index)) + m[0];
+      last = m.index + m[0].length;
+    }
+    return out + bold(html.slice(last));
   }
 
   const rich = text => previewHTML(text);
@@ -67,12 +86,15 @@
       h += "<colgroup><col style='width:27%'><col style='width:13%'><col style='width:7%'><col style='width:10%'><col style='width:9%'><col style='width:11%'><col style='width:11%'><col style='width:12%'></colgroup>";
       h += `<thead><tr>${th(t('Verbindung'), null, true)}${th('CAS', null, true)}${th('eq')}${th('M', 'g/mol')}${th('d', 'g/cm³')}${th('n', 'mol')}${th('V', 'mL')}${th('m', 'g')}</tr></thead><tbody>`;
       for (const c of stage.chemicals) {
-        h += `<tr><td class='name'>${nameHTML(c.name)}</td><td class='cas'>${e(c.cas)}</td>${num(c.equivalents)}${num(c.molarMass)}${num(c.density)}${num(c.amount)}${num(c.volume)}${num(c.mass)}</tr>`;
+        // Reinheit hinter dem Namen, wie im Laborblatt ("Carbazol (95 %)")
+        const purityValue = String(c.purity || '').replace(/%/g, '').trim();
+        const purity = purityFraction(c) < 1 ? ` (${e(purityValue)} %)` : '';
+        h += `<tr><td class='name'>${nameHTML(c.name)}${purity}</td><td class='cas'>${e(c.cas)}</td>${num(c.equivalents)}${num(c.molarMass)}${num(c.density)}${num(c.amount)}${num(c.volume)}${num(c.mass)}</tr>`;
       }
       h += '</tbody></table></div>';
     }
-    if (stage.procedure) h += block(t('Durchführung'), rich(stage.procedure));
-    if (stage.observation) h += block(t('Beobachtung'), rich(stage.observation));
+    if (stage.procedure) h += block(t('Durchführung'), previewHTML(stage.procedure, true));
+    if (stage.observation) h += block(t('Beobachtung'), previewHTML(stage.observation, true));
     if (stage.yieldProducts.length) {
       h += `<div class='block${stage.yieldProducts.length <= keepTogetherRows ? ' keep' : ''}'><div class='label'>${t('Ausbeute')}</div><table class='yield'>`;
       h += "<colgroup><col style='width:30%'><col style='width:14%'><col style='width:12%'><col style='width:12%'><col style='width:14%'><col style='width:18%'></colgroup>";
@@ -90,7 +112,26 @@
       }
       h += '</tbody></table></div>';
     }
+    if (stage.analyses && stage.analyses.length) h += analysesHTML(stage.analyses);
     return h + '</section>';
+  }
+
+  /** Aufreinigung & Analytik wie in einer Experimentalbeschreibung: Methode fett, dann Bedingungen und Daten. */
+  function analysesHTML(entries) {
+    const e = htmlEscaped;
+    let h = `<div class='block'><div class='label'>${t('Aufreinigung & Analytik')}</div><div class='text'>`;
+    for (const entry of entries) {
+      const head = Analysis.heading(entry), summary = Analysis.summary(entry);
+      const rest = summary.startsWith(head) ? summary.slice(head.length) : ' ' + summary;
+      const sample = String(entry.sample || '').trim();
+      h += `<p class='analysis'><b>${e(head)}</b>${sample ? ' – ' + e(sample) : ''}${e(rest)}`;
+      if (entry.files && entry.files.length) {
+        const names = entry.files.map(f => e(String(f.filePath).split(/[\\/]/).pop())).join(', ');
+        h += `<br><span class='files'>${t('Dateien')}: ${names}</span>`;
+      }
+      h += '</p>';
+    }
+    return h + '</div></div>';
   }
 
   const css = `@page { size: A4; }
@@ -109,6 +150,8 @@ h1 { font-size: 18pt; line-height: 1.2; margin: 2pt 0 4pt; font-weight: 700; }
 .stage + .stage { border-top: .5pt solid #d2d2d7; padding-top: 12pt; }
 h2 { font-size: 12.5pt; margin: 0 0 6pt; font-weight: 650; break-after: avoid; }
 .source { font-size: 8.5pt; color: #3a3a3c; margin-bottom: 6pt; overflow-wrap: anywhere; }
+.analysis { margin: 0 0 4pt 0; overflow-wrap: anywhere; }
+.analysis .files { font-size: 8pt; color: #6e6e73; }
 .label-inline { font-weight: 600; color: #6e6e73; margin-right: 4pt; }
 .block { margin-top: 10pt; }
 .label { font-size: 7.5pt; letter-spacing: .1em; text-transform: uppercase; color: #6e6e73; font-weight: 600;
@@ -163,7 +206,7 @@ mjx-container svg { max-width: 100%; height: auto; }`;
 <style>${css}</style></head><body>${body}</body></html>`;
   }
 
-  const api = { containsFormulas, previewHTML, nameHTML, looksLikeFormula, subscriptDigits, generatePDFHTML };
+  const api = { containsFormulas, containsCompoundNumbers, previewHTML, nameHTML, looksLikeFormula, subscriptDigits, generatePDFHTML };
   if (node) module.exports = api;
   else Object.assign((g.CJ = g.CJ || {}), api);
 })(typeof globalThis !== 'undefined' ? globalThis : this);

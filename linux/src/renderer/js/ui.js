@@ -33,22 +33,33 @@ export function ask({ title, message, buttons }) {
 }
 export const alertOK = (title, message) => ask({ title, message, buttons: [{ label: window.CJ.t('OK'), role: 'default' }] });
 
+/** Fragt nach einem Text (z. B. Name eines Tags). Ergebnis: Text oder null bei Abbrechen. */
+export function askText({ title, message, defaultValue = '', placeholder = '', confirm }) {
+  return new Promise(resolve => setAlert({
+    title, message, input: { value: defaultValue, placeholder },
+    buttons: [{ label: confirm, role: 'default' }, { label: window.CJ.t('Abbrechen'), role: 'cancel' }],
+    resolve: (i, text) => resolve(i === 0 ? text : null),
+  }));
+}
+
 export function AlertHost() {
   const [, tick] = useState(0);
   useEffect(() => { const f = () => tick(t => t + 1); alertListeners.add(f); return () => alertListeners.delete(f); }, []);
   if (!alertState) return null;
-  const { title, message, buttons, resolve } = alertState;
-  const finish = i => { setAlert(null); resolve(i); };
+  const { title, message, buttons, resolve, input } = alertState;
+  const finish = i => { const text = input ? input.value : undefined; setAlert(null); resolve(i, text); };
   const cancelIndex = buttons.findIndex(b => b.role === 'cancel');
   const onKey = e => {
     if (e.key === 'Escape') finish(cancelIndex);
     if (e.key === 'Enter') { const d = buttons.findIndex(b => b.role === 'default'); finish(d >= 0 ? d : 0); }
   };
-  return html`<div class="modal-backdrop" tabIndex="-1" onKeyDown=${onKey} ref=${el => el && el.focus()}>
+  return html`<div class="modal-backdrop" tabIndex="-1" onKeyDown=${onKey} ref=${el => el && !input && el.focus()}>
     <div class="modal alert">
       <img class="app-icon" src="../../build/icon.png" alt="" />
       <div class="title">${title}</div>
       ${message && html`<div class="message">${message}</div>`}
+      ${input && html`<input class="field" style="width:100%" value=${input.value} placeholder=${input.placeholder}
+        onInput=${e => { input.value = e.target.value; }} ref=${el => { if (el && !el.dataset.f) { el.dataset.f = 1; setTimeout(() => { el.focus(); el.select(); }, 0); } }} />`}
       <div class="buttons">
         ${buttons.map((b, i) => html`<button class=${'btn ' + (b.role === 'default' ? 'primary' : b.role === 'destructive' ? 'destructive' : '')}
           onClick=${() => finish(i)}>${b.label}</button>`)}
@@ -64,7 +75,7 @@ const menuListeners = new Set();
 const setMenu = s => { menuState = s; menuListeners.forEach(f => f()); };
 
 /**
- * Öffnet ein Kontextmenü an der Mausposition. items: [{ label, icon, action, destructive } | 'separator'].
+ * Öffnet ein Kontextmenü an der Mausposition. items: [{ label, icon, action, destructive } | { header } | 'separator'].
  * Verwendung: onContextMenu=${e => openContextMenu(e, [...])}
  */
 export function openContextMenu(event, items) {
@@ -97,6 +108,7 @@ export function ContextMenuHost() {
   return html`<div class="context-menu" ref=${ref} style=${{ left: `${menuState.x}px`, top: `${menuState.y}px` }} onMouseDown=${e => e.stopPropagation()}>
     ${menuState.items.map(item => (item === 'separator'
       ? html`<div class="sep"></div>`
+      : item.header ? html`<div class="menu-header">${item.header}</div>`
       : html`<div class=${'item' + (item.destructive ? ' destructive' : '')} onClick=${() => { setMenu(null); item.action(); }}>
           ${item.icon ? html`<${Icon} name=${item.icon} />` : html`<span style="width:1em"></span>`}<span>${item.label}</span>
         </div>`))}

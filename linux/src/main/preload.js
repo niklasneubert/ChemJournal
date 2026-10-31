@@ -1,6 +1,6 @@
 // Schnittstelle zwischen Oberfläche und Hintergrundprozess (nur diese Funktionen sind sichtbar).
 'use strict';
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 const invoke = (channel, ...args) => ipcRenderer.invoke(channel, ...args);
 
@@ -35,6 +35,7 @@ contextBridge.exposeInMainWorld('chemjournal', {
   casRecordPubChem: (cas, result) => invoke('cas:recordPubChem', cas, result),
   casMarkChecked: cas => invoke('cas:markChecked', cas),
   casRemove: cas => invoke('cas:remove', cas),
+  casEdit: (cas, m, d) => invoke('cas:edit', cas, m, d),
   pubChemLookup: cas => invoke('cas:lookup', cas),
   // Dateien
   exportExperiment: (experiment, name) => invoke('file:exportExperiment', experiment, name),
@@ -42,6 +43,21 @@ contextBridge.exposeInMainWorld('chemjournal', {
   chooseAnalysisFiles: () => invoke('file:chooseAnalysisFiles'),
   chooseImage: () => invoke('file:chooseImage'),
   readFile: p => invoke('file:read', p),
+  filesExist: paths => invoke('file:exists', paths),
+  /** Pfad einer hineingezogenen Datei (File.path gibt es in neueren Electron-Versionen nicht mehr). */
+  pathForFile: file => { try { return webUtils.getPathForFile(file); } catch (e) { return null; } },
+  // Reaktionsgleichung
+  drawingFind: imageB64 => invoke('drawing:find', imageB64),
+  drawingLoad: imageB64 => invoke('drawing:load', imageB64),
+  drawingSave: (drawingB64, imageB64, app) => invoke('drawing:save', drawingB64, imageB64, app),
+  reshikiStatus: () => invoke('reshiki:status'),
+  reshikiChoosePath: () => invoke('reshiki:choosePath'),
+  reshikiResetPath: () => invoke('reshiki:resetPath'),
+  reshikiOpen: drawingB64 => invoke('reshiki:open', drawingB64),
+  reshikiImport: () => invoke('reshiki:import'),
+  reshikiStop: quitApp => invoke('reshiki:stop', quitApp),
+  clipboardWriteImage: b64 => invoke('clipboard:writeImage', b64),
+  clipboardReadImage: () => invoke('clipboard:readImage'),
   openPath: p => invoke('shell:openPath', p),
   showItem: p => invoke('shell:showItem', p),
   openExternal: url => invoke('shell:openExternal', url),
@@ -55,7 +71,7 @@ contextBridge.exposeInMainWorld('chemjournal', {
   quitReady: () => ipcRenderer.send('app:quit-ready'),
   // Ereignisse aus dem Hintergrund (Menü, Änderungen anderer Rechner, CAS-Datenbank)
   on: (channel, fn) => {
-    const allowed = ['menu', 'journal:external', 'casdb:changed', 'app:prepare-quit', 'storage:changed', 'open-file'];
+    const allowed = ['menu', 'journal:external', 'casdb:changed', 'app:prepare-quit', 'storage:changed', 'open-file', 'reshiki:changed', 'reshiki:closed'];
     if (!allowed.includes(channel)) return () => {};
     const listener = (_e, ...args) => fn(...args);
     ipcRenderer.on(channel, listener);
