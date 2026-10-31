@@ -203,12 +203,15 @@ struct HTMLGenerator {
             h += "<colgroup><col style='width:27%'><col style='width:13%'><col style='width:7%'><col style='width:10%'><col style='width:9%'><col style='width:11%'><col style='width:11%'><col style='width:12%'></colgroup>"
             h += "<thead><tr>\(th(String(localized: "Verbindung"), left: true))\(th("CAS", left: true))\(th("eq"))\(th("M", "g/mol"))\(th("d", "g/cm³"))\(th("n", "mol"))\(th("V", "mL"))\(th("m", "g"))</tr></thead><tbody>"
             for c in stage.chemicals {
-                h += "<tr><td class='name'>\(nameHTML(c.name))</td><td class='cas'>\(e(c.cas))</td>\(num(c.equivalents))\(num(c.molarMass))\(num(c.density))\(num(c.amount))\(num(c.volume))\(num(c.mass))</tr>"
+                // Reinheit hinter dem Namen, wie im Laborblatt ("Carbazol (95 %)")
+                let purityValue = c.purity.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces)
+                let purity = c.purityFraction < 1 ? " (\(e(purityValue)) %)" : ""
+                h += "<tr><td class='name'>\(nameHTML(c.name))\(purity)</td><td class='cas'>\(e(c.cas))</td>\(num(c.equivalents))\(num(c.molarMass))\(num(c.density))\(num(c.amount))\(num(c.volume))\(num(c.mass))</tr>"
             }
             h += "</tbody></table></div>"
         }
-        if !stage.procedure.isEmpty { h += block(String(localized: "Durchführung"), rich(stage.procedure)) }
-        if !stage.observation.isEmpty { h += block(String(localized: "Beobachtung"), rich(stage.observation)) }
+        if !stage.procedure.isEmpty { h += block(String(localized: "Durchführung"), richNumbered(stage.procedure)) }
+        if !stage.observation.isEmpty { h += block(String(localized: "Beobachtung"), richNumbered(stage.observation)) }
         if !stage.yieldProducts.isEmpty {
             h += "<div class='block\(stage.yieldProducts.count <= keepTogetherRows ? " keep" : "")'><div class='label'>\(String(localized: "Ausbeute"))</div><table class='yield'>"
             h += "<colgroup><col style='width:30%'><col style='width:14%'><col style='width:12%'><col style='width:12%'><col style='width:14%'><col style='width:18%'></colgroup>"
@@ -224,7 +227,26 @@ struct HTMLGenerator {
             }
             h += "</tbody></table></div>"
         }
+        if !stage.analyses.isEmpty { h += analysesHTML(stage.analyses) }
         return h + "</section>"
+    }
+
+    /// Aufreinigung & Analytik wie in einer Experimentalbeschreibung: Methode fett, dann Bedingungen und Daten.
+    private static func analysesHTML(_ entries: [AnalysisEntry]) -> String {
+        let e = htmlEscaped
+        var h = "<div class='block'><div class='label'>\(String(localized: "Aufreinigung & Analytik"))</div><div class='text'>"
+        for entry in entries {
+            let summary = entry.summary
+            let rest = summary.hasPrefix(entry.heading) ? String(summary.dropFirst(entry.heading.count)) : " " + summary
+            let sample = entry.sample.trimmingCharacters(in: .whitespaces)
+            h += "<p class='analysis'><b>\(e(entry.heading))</b>\(sample.isEmpty ? "" : " – " + e(sample))\(e(rest))"
+            if !entry.files.isEmpty {
+                let names = entry.files.map { e(($0.filePath as NSString).lastPathComponent) }.joined(separator: ", ")
+                h += "<br><span class='files'>\(String(localized: "Dateien")): \(names)</span>"
+            }
+            h += "</p>"
+        }
+        return h + "</div></div>"
     }
 
     /// Tabellen bis zu dieser Länge werden nie über zwei Seiten verteilt (samt Überschrift auf die nächste Seite).
@@ -242,6 +264,8 @@ struct HTMLGenerator {
 
     /// Freitext: HTML maskiert, Zeilenumbrüche, Formeln in `$…$` und `\ce{…}` über MathJax (wie in der Vorschau).
     static func rich(_ text: String) -> String { LaTeXEditorView.previewHTML(text) }
+    /// Wie `rich`, Verbindungsnummern wie (1) fett und ohne Klammern (Vorgehen und Beobachtung).
+    static func richNumbered(_ text: String) -> String { LaTeXEditorView.previewHTML(text, boldCompoundNumbers: true) }
 
     /// Name in einer Tabellenzeile.
     /// - Steht `$…$` oder `\ce{…}` darin, setzt MathJax genau das.
@@ -295,6 +319,8 @@ struct HTMLGenerator {
     .stage + .stage { border-top: .5pt solid #d2d2d7; padding-top: 12pt; }
     h2 { font-size: 12.5pt; margin: 0 0 6pt; font-weight: 650; break-after: avoid; }
     .source { font-size: 8.5pt; color: #3a3a3c; margin-bottom: 6pt; overflow-wrap: anywhere; }
+    .analysis { margin: 0 0 4pt 0; overflow-wrap: anywhere; }
+    .analysis .files { font-size: 8pt; color: #6e6e73; }
     .label-inline { font-weight: 600; color: #6e6e73; margin-right: 4pt; }
     .block { margin-top: 10pt; }
     .label { font-size: 7.5pt; letter-spacing: .1em; text-transform: uppercase; color: #6e6e73; font-weight: 600;

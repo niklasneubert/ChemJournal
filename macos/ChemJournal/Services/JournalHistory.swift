@@ -243,15 +243,18 @@ nonisolated final class JournalHistory: @unchecked Sendable {
         }.sorted { $0.date > $1.date }
     }
 
-    /// Tägliche Backups: letzte 30 Tage + je eines pro Monat für 12 Monate. Manuelle bleiben.
+    /// Tägliche Backups bleiben 30 Tage; das neueste bleibt immer. Manuelle und die vor dem Wiederherstellen bleiben.
+    /// Das Alter kommt aus dem Dateinamen (die Kopie behält das Änderungsdatum des Journals).
     private func pruneBackups(now: Date) {
-        let daily = backups().filter { $0.url.lastPathComponent.range(of: #"^ChemJournal-\d{4}-\d{2}-\d{2}\.json$"#, options: .regularExpression) != nil }
-        var keptMonths = Set<String>()
-        for (i, b) in daily.enumerated() {
-            let age = now.timeIntervalSince(b.date)
-            if i < 30 { continue }
-            let month = String(b.url.lastPathComponent.dropFirst("ChemJournal-".count).prefix(7))
-            if age < 366 * 86_400 && keptMonths.insert(month).inserted { continue }
+        let cutoff = Self.dayString(now.addingTimeInterval(-30 * 86_400))
+        let days = backups().compactMap { b -> (url: URL, day: String)? in
+            let name = b.url.lastPathComponent
+            guard name.range(of: #"^ChemJournal-\d{4}-\d{2}-\d{2}\.json$"#, options: .regularExpression) != nil else { return nil }
+            return (b.url, String(name.dropFirst("ChemJournal-".count).prefix(10)))
+        }
+        let newest = days.map(\.day).max()
+        // "yyyy-MM-dd" lässt sich als Text vergleichen
+        for b in days where b.day < cutoff && b.day != newest {
             try? FileManager.default.removeItem(at: b.url)
         }
     }

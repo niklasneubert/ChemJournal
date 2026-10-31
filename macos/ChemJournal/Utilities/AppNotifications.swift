@@ -11,4 +11,6 @@ extension Notification.Name {
     static let snapToOptimalWidth = Notification.Name("SnapToOptimalWidth")
     /// `object`: UUID des Ansatzes, der in der Seitenleiste ausgewählt werden soll.
     static let selectExperiment = Notification.Name("SelectExperiment")
+    /// `object`: Tag (String), nach dem die Seitenleiste filtern soll.
+    static let filterByTag = Notification.Name("FilterByTag")
 }

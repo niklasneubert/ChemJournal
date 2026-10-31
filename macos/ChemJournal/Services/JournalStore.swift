@@ -188,6 +188,7 @@ final class JournalStore {
                 for st in e.stages {
                     s.append(st.chemicals.count)
                     s.append(st.yieldProducts.count)
+                    s.append(st.analyses.count)
                     s.append(st.analysisFiles.count)
                     s.append(st.reactionImageData == nil ? 0 : 1)
                 }

@@ -35,6 +35,15 @@ struct CASDatabaseTests {
         #expect(e.source == .user)
     }
 
+    @Test("Werte in den Einstellungen ändern: wird eigene Eingabe, Komma wird Punkt, leer löscht")
+    func editValues() throws {
+        let db = CASDatabase(file: nil)
+        db.recordPubChem(cas: "64-19-7", result: .init(title: "Acetic Acid", molarMass: 60.05, density: 1.0446))
+        db.edit(cas: "64-19-7", molarMass: "60,052", density: "")
+        let e = try #require(db.entry(for: "64-19-7"))
+        #expect(e.molarMass == "60.052" && e.density == "" && e.source == .user && e.name == "Acetic Acid")
+    }
+
     @Test("Ungültige CAS-Nummern werden nicht gespeichert")
     func invalidCASIgnored() {
         let db = CASDatabase(file: nil)
@@ -254,6 +263,23 @@ struct JournalHistoryTests {
         #expect(history.dailyBackup(of: journal, now: day + 60) == nil)
         #expect(history.manualBackup(of: journal, now: day + 120) != nil)
         #expect(history.backups().count == 2)
+    }
+
+    @Test("Tägliche Backups bleiben 30 Tage, manuelle bleiben immer")
+    func backupRetention() throws {
+        let dir = try tempDirectory()
+        let history = makeHistory(dir)
+        let journal = dir.appendingPathComponent("ChemJournalData.json")
+        try Data("[]".utf8).write(to: journal)
+        let start = Date(timeIntervalSince1970: 1_800_000_000)
+        history.manualBackup(of: journal, now: start)
+        for day in 0..<45 { history.dailyBackup(of: journal, now: start + Double(day) * 86_400) }
+        let names = history.backups().map(\.url.lastPathComponent)
+        let daily = names.filter { !$0.contains("manuell") }
+        #expect(daily.count == 31)   // heute und die 30 Tage davor
+        #expect(names.contains { $0.contains("manuell") })
+        #expect(daily.contains("ChemJournal-\(JournalHistory.dayString(start + 44 * 86_400)).json"))
+        #expect(!daily.contains("ChemJournal-\(JournalHistory.dayString(start + 13 * 86_400)).json"))
     }
 
     @Test("Speichern legt Versionen und das tägliche Backup automatisch an")

@@ -8,16 +8,20 @@ import WebKit
 ///   (kein Aufblitzen des Quelltexts).
 /// - Klick auf die Vorschau: zurück in den Quelltext, Cursor sofort im Feld.
 /// - Text ohne Formeln bleibt einfach als Text stehen.
+/// - Mit `boldCompoundNumbers` erscheinen Verbindungsnummern wie (1) oder (2a) in der Vorschau fett und ohne Klammern.
 struct LaTeXEditorView: View {
     var title: LocalizedStringKey
     @Binding var text: String
+    var boldCompoundNumbers = false
 
     @FocusState private var isFocused: Bool
     /// Text, den die Vorschau gerade fertig gesetzt anzeigt.
     @State private var renderedText: String?
     @State private var previewHeight: CGFloat = 0
 
-    private var hasFormulas: Bool { Self.containsFormulas(text) }
+    private var hasFormulas: Bool {
+        Self.containsFormulas(text) || (boldCompoundNumbers && Self.containsCompoundNumbers(text))
+    }
     private var showPreview: Bool { !isFocused && hasFormulas && renderedText == text }
 
     var body: some View {
@@ -34,7 +38,7 @@ struct LaTeXEditorView: View {
                     .opacity(showPreview ? 0 : 1)
 
                 if hasFormulas {
-                    MathJaxView(text: text, shouldRender: !isFocused) { rendered, height in
+                    MathJaxView(text: text, boldCompoundNumbers: boldCompoundNumbers, shouldRender: !isFocused) { rendered, height in
                         previewHeight = height
                         withAnimation(.easeOut(duration: 0.15)) { renderedText = rendered }
                     }
@@ -67,10 +71,36 @@ struct LaTeXEditorView: View {
     }
 
     /// Gleiche Umwandlung wie bisher: HTML maskieren, Zeilenumbrüche, nacktes `\ce{…}` in `$…$` setzen.
-    static func previewHTML(_ text: String) -> String {
+    /// Mit `boldCompoundNumbers` werden Verbindungsnummern außerhalb von Formeln fett, ohne Klammern: "(1)" → "<b>1</b>".
+    static func previewHTML(_ text: String, boldCompoundNumbers: Bool = false) -> String {
         var fmt = htmlEscaped(text).replacingOccurrences(of: "\n", with: "<br>")
         fmt = fmt.replacingOccurrences(of: #"(?<!\$)\\ce\{([^}]+)\}"#, with: #"$\\ce{$1}$"#, options: .regularExpression)
-        return fmt
+        return boldCompoundNumbers ? boldingCompoundNumbers(fmt) : fmt
+    }
+
+    /// Verbindungsnummer in Klammern: Zahl mit höchstens drei Stellen, optional ein Kleinbuchstabe – (1), (12), (2a).
+    /// "(5 mL)", "(2 h)" oder "(95%)" passen nicht.
+    private static let compoundNumberPattern = #"\((\d{1,3}[a-z]?)\)"#
+
+    static func containsCompoundNumbers(_ text: String) -> Bool {
+        text.range(of: compoundNumberPattern, options: .regularExpression) != nil
+    }
+
+    /// Formeln (`$…$`, `$$…$$`) bleiben unangetastet, sonst würde MathJax das `<b>` mitten in der Formel sehen.
+    private static let mathSpan = try! NSRegularExpression(pattern: #"\$\$[\s\S]*?\$\$|\$[^$]*\$"#)
+
+    private static func boldingCompoundNumbers(_ html: String) -> String {
+        func bold(_ part: Substring) -> String {
+            String(part).replacingOccurrences(of: compoundNumberPattern, with: "<b>$1</b>", options: .regularExpression)
+        }
+        var out = ""
+        var last = html.startIndex
+        for match in mathSpan.matches(in: html, range: NSRange(html.startIndex..., in: html)) {
+            guard let r = Range(match.range, in: html) else { continue }
+            out += bold(html[last..<r.lowerBound]) + html[r]
+            last = r.upperBound
+        }
+        return out + bold(html[last...])
     }
 }
 
@@ -78,6 +108,7 @@ struct LaTeXEditorView: View {
 /// Sichtbereichs gesetzt und erst dann eingetauscht. Meldet danach die Höhe des Inhalts.
 struct MathJaxView: NSViewRepresentable {
     var text: String
+    var boldCompoundNumbers = false
     /// Nur setzen, wenn das Feld nicht bearbeitet wird (spart Arbeit beim Tippen).
     var shouldRender: Bool
     var onRendered: (_ text: String, _ height: CGFloat) -> Void
@@ -98,6 +129,7 @@ struct MathJaxView: NSViewRepresentable {
 
     func updateNSView(_ nsView: WKWebView, context: Context) {
         context.coordinator.onRendered = onRendered
+        context.coordinator.boldCompoundNumbers = boldCompoundNumbers
         guard shouldRender else { return }
         context.coordinator.request(text)
     }
@@ -109,6 +141,7 @@ struct MathJaxView: NSViewRepresentable {
     final class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
         weak var webView: WKWebView?
         var onRendered: ((String, CGFloat) -> Void)?
+        var boldCompoundNumbers = false
         private var isLoaded = false
         private var requested: String?
         private var inFlight: String?
@@ -125,7 +158,7 @@ struct MathJaxView: NSViewRepresentable {
             requested = nil
             if text == lastRendered { return }
             inFlight = text
-            let html = LaTeXEditorView.previewHTML(text)
+            let html = LaTeXEditorView.previewHTML(text, boldCompoundNumbers: boldCompoundNumbers)
             guard let data = try? JSONEncoder().encode(html), let json = String(data: data, encoding: .utf8) else { return }
             webView.evaluateJavaScript("render(\(json))")
         }

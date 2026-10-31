@@ -22,14 +22,20 @@ als sauberes PDF.
 
 ## Download
 
-Die aktuelle Version gibt es unter **[Releases](../../releases/latest)**:
+Die aktuelle Version gibt es unter **[Releases](../../releases/latest)** – was neu ist, steht im
+**[Changelog](CHANGELOG.de.md)**:
 
-| System | Datei |
-|---|---|
-| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | `ChemJournal-1.0.3-macOS.dmg` |
-| Linux x86_64 (die meisten PCs) | `ChemJournal-1.0.3-x86_64.AppImage` |
-| Linux ARM64 | `ChemJournal-1.0.3-arm64.AppImage` |
-| Linux als Archiv | `ChemJournal-1.0.3-x64.tar.gz` / `…-arm64.tar.gz` |
+| System | Version | Datei |
+|---|---|---|
+| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | 1.1 | `ChemJournal-1.1-macOS.dmg` |
+| Linux x86_64 (die meisten PCs) | 1.0.3 | `ChemJournal-1.0.3-x86_64.AppImage` |
+| Linux ARM64 | 1.0.3 | `ChemJournal-1.0.3-arm64.AppImage` |
+| Linux als Archiv | 1.0.3 | `ChemJournal-1.0.3-x64.tar.gz` / `…-arm64.tar.gz` |
+
+> **Linux:** Version 1.1 gibt es vorerst nur für macOS; die Linux-Dateien liegen unter
+> [Release 1.0.3](../../releases/tag/v1.0.3). Linux 1.1 folgt. Bis dahin ein mit macOS 1.1 bearbeitetes Journal
+> nicht mit Linux 1.0.3 öffnen – sie würde beim Speichern die neuen Felder (Reinheit, Markierungen, Tags,
+> Aufreinigung & Analytik) verwerfen.
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -48,14 +54,20 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 ## Funktionen
 
 - **Projekte → Ansätze → Stufen**, jede Stufe mit eigenem Datum, Ansätze per Drag & Drop verschieben, Volltextsuche
-- **Ansatzgrößen, die rechnen:** Masse, Volumen oder Stoffmenge eingeben, der Rest folgt aus Molmasse, Dichte und
-  Äquivalenten; ändert sich der Leit-Reaktand, rechnen alle Zeilen mit; ganzen Ansatz skalieren
+- **Ansatzgrößen, die rechnen:** Masse, Volumen oder Stoffmenge eingeben, der Rest folgt aus Molmasse, Dichte,
+  Reinheit und Äquivalenten; ändert sich der Leit-Reaktand, rechnen alle Zeilen mit; ganzen Ansatz skalieren;
+  Klick auf die Einheit einer Spalte wechselt zwischen mol/mmol/µmol, ml/µl oder g/mg (macOS)
 - **CAS-Autofill:** CAS-Nummer eintippen, Molmasse und Dichte kommen aus PubChem – und werden lokal gespeichert,
   beim nächsten Mal also sofort und auch offline eingetragen
 - **Smart Extract:** Vorschrift aus einem Paper oder einer SI einfügen, die Tabelle füllt sich (Deutsch und Englisch)
-- **ChemDraw-Anbindung (macOS):** *In ChemDraw zeichnen* klicken, Reaktionsgleichung in ChemDraw zeichnen, ⌘S –
-  sie landet als hochaufgelöstes Bild im Ansatz (so ist das Schema in den Screenshots entstanden). Ohne ChemDraw
-  einfach ein Bild oder PDF hineinziehen
+- **ChemDraw oder ReShiki (macOS):** *In ChemDraw zeichnen* klicken, Reaktionsgleichung zeichnen, ⌘S – sie landet
+  als hochaufgelöstes Bild im Ansatz (so ist das Schema in den Screenshots entstanden) und bleibt 7 Tage lang
+  bearbeitbar. Das kostenlose, quelloffene [ReShiki](https://reshiki.com) funktioniert genauso. Ohne beides einfach
+  ein Bild oder PDF hineinziehen oder einfügen
+- **Aufreinigung & Analytik (macOS):** Formulare für NMR, IR, UV/Vis, EPR, MS, XRD, Säulenchromatographie, DC, GC,
+  Umkristallisation, Destillation, Schmelzpunkt und Drehwert – mit verknüpften Spektren, berechneten Werten
+  (Δ ppm, ε, Wiederfindung, [α]) und einer Zeile für den Experimentalteil und das PDF
+- **Markierungen und Tags (macOS):** wichtige Ansätze mit Stern markieren, eigene Tags vergeben, Seitenleiste filtern
 - **Formeln:** `$…$` (LaTeX) und `\ce{…}` (mhchem) in Zusammenfassung, Vorgehen und Beobachtung, automatisch
   gesetzt beim Verlassen des Feldes, komplett offline
 - **Suche nach Chemikalien:** `n-BuLi` findet auch „n-Butyllithium“, „BuLi“ und Zeilen, die nur CAS 109-72-8 haben
@@ -72,8 +84,8 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 | ![Smart Extract](docs/screenshots/smart-extract.png) | ![Suche: „toluene“ findet „Toluol“](docs/screenshots/search.png) |
 | ![Dunkelmodus](docs/screenshots/dark-mode.png) | ![PDF-Export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots und Video: die Mac-App mit Beispieldaten. Die Linux-Version hat dieselben Funktionen und dasselbe
-Dateiformat.</sub>
+<sub>Screenshots und Video: die Mac-App (Version 1.0) mit Beispieldaten. Linux 1.0.3 hat die Funktionen von macOS
+1.0.3 und dasselbe Dateiformat.</sub>
 
 ## Smart Extract
 

@@ -18,6 +18,10 @@ final class ChemDrawBridge {
     private var lastStateQuery = Date.distantPast
     /// Zeitstempel der Datei, den der Dateiwächter zuletzt gesehen hat.
     var lastSeenFileDate = Date.distantPast
+    /// ChemDraw hatte unser Dokument schon offen – fehlt es danach, hat der Nutzer es geschlossen oder ChemDraw beendet.
+    private var documentSeen = false
+    /// Unser Dokument ist in ChemDraw nicht mehr offen.
+    private(set) var documentClosed = false
 
     /// Fragt (höchstens einmal pro Sekunde, im Hintergrund) ab, ob unser Dokument in ChemDraw ungespeicherte
     /// Änderungen hat.
@@ -42,8 +46,10 @@ final class ChemDrawBridge {
                 self.stateQueryRunning = false
                 guard self.tempFileURL == url else { return }
                 switch answer {
-                case "false": self.documentWasClean = true; self.documentStateDate = Date()
-                case "true": self.documentWasClean = false; self.documentStateDate = Date()
+                case "false": self.documentWasClean = true; self.documentStateDate = Date(); self.documentSeen = true
+                case "true": self.documentWasClean = false; self.documentStateDate = Date(); self.documentSeen = true
+                // Direkt nach dem Öffnen startet ChemDraw noch – erst „weg“, wenn es schon einmal da war
+                case "none": if self.documentSeen { self.documentClosed = true }
                 default: break
                 }
             }
@@ -80,24 +86,30 @@ final class ChemDrawBridge {
         return dir
     }
 
-    /// Erstellt eine temporäre .cdxml-Datei und öffnet ChemDraw.
-    func openChemDraw() {
+    /// Leere Zeichnung im Querformat (A4 quer). Seitenrahmen und Druckeinstellung (`MacPrintInfo`) stammen aus einer
+    /// Datei, die ChemDraw selbst im Querformat gespeichert hat; mit nacktem `<page>` öffnet ChemDraw Hochformat.
+    static let landscapeTemplate = """
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE CDXML SYSTEM "http://www.cambridgesoft.com/xml/cdxml.dtd">
+    <CDXML PrintMargins="35.97 35.97 35.97 35.97" \
+    MacPrintInfo="00030000025802580000000012981A9FFF9CFF9C12FC1B030365057B03E000020000025802580000000012981A9F000100000064000000010001010100020001270F000100010000000000000000000000000002001901900000000000600000000000000000000100000000000000000000000000000000">
+      <page BoundingBox="0 0 769.86 523.26" HeaderPosition="36" FooterPosition="36" PrintTrimMarks="yes" HeightPages="1" WidthPages="1">
+      </page>
+    </CDXML>
+    """
+
+    /// Erstellt eine temporäre .cdxml-Datei und öffnet ChemDraw – leer oder mit einer gespeicherten Zeichnung.
+    func openChemDraw(drawing: Data? = nil) {
         let fileURL = Self.tempDirectory.appendingPathComponent("Reaktion_\(UUID().uuidString.prefix(8)).cdxml")
-        let template = """
-        <?xml version="1.0" encoding="UTF-8" ?>
-        <!DOCTYPE CDXML SYSTEM "http://www.cambridgesoft.com/xml/cdxml.dtd">
-        <CDXML>
-          <page>
-          </page>
-        </CDXML>
-        """
         do {
-            try template.data(using: .utf8)?.write(to: fileURL)
+            try (drawing ?? Data(Self.landscapeTemplate.utf8)).write(to: fileURL)
         } catch {
             print("ChemDraw Bridge: Konnte temporäre Datei nicht erstellen: \(error)")
             return
         }
         tempFileURL = fileURL
+        documentSeen = false
+        documentClosed = false
         documentWasClean = nil
         documentStateDate = .distantPast
         lastSeenFileDate = Self.modificationDate(of: fileURL) ?? Date()
@@ -109,18 +121,61 @@ final class ChemDrawBridge {
         } else {
             NSWorkspace.shared.open(fileURL, configuration: config)
         }
+        arrangeWindowLandscape(documentName: fileURL.lastPathComponent)
+    }
+
+    /// Bringt das ChemDraw-Fenster unseres Dokuments ins Querformat, mittig auf dem Bildschirm von ChemJournal.
+    /// ChemDraw braucht nach dem Öffnen etwas, bis das Dokument da ist – deshalb einige Sekunden lang nachfragen.
+    private func arrangeWindowLandscape(documentName: String) {
+        // Bildschirm des ChemJournal-Fensters (NSScreen.main wäre der Bildschirm der App, die gerade vorne ist)
+        let ownWindow = NSApp.keyWindow ?? NSApp.mainWindow ?? NSApp.windows.first { $0.isVisible && $0.canBecomeMain }
+        guard let screen = ownWindow?.screen ?? NSScreen.main,
+              let primaryHeight = NSScreen.screens.first?.frame.height else { return }
+        let visible = screen.visibleFrame
+        let width = min(visible.width - 80, 1400)
+        let height = min(visible.height - 60, (width * 0.66).rounded())
+        let x = (visible.midX - width / 2).rounded()
+        let y = (visible.midY - height / 2).rounded()
+        // AppleScript zählt von oben links des Hauptbildschirms, AppKit von unten links
+        let left = Int(x), right = Int(x + width)
+        let top = Int(primaryHeight - (y + height)), bottom = Int(primaryHeight - y)
+        let name = documentName.replacingOccurrences(of: "\"", with: "")
+        let script = """
+        tell application "System Events"
+            if not (exists (process "ChemDraw")) then return "wait"
+        end tell
+        tell application "ChemDraw"
+            if not ((name of every document) contains "\(name)") then return "wait"
+            set bounds of (window of document "\(name)") to {\(left), \(top), \(right), \(bottom)}
+            return "ok"
+        end tell
+        """
+        Task.detached(priority: .utility) {
+            for _ in 0..<30 {
+                if Self.runAppleScript(script, wait: true) != "wait" { return }
+                try? await Task.sleep(for: .milliseconds(500))
+            }
+        }
+    }
+
+    enum ImportResult {
+        /// Bild der Zeichnung und die Zeichnung selbst (CDXML), falls sie sich lesen ließ.
+        case image(Data, drawing: Data?)
+        /// Unser Dokument ist in ChemDraw nicht (mehr) offen – geschlossen oder ChemDraw beendet.
+        case documentGone
+        case failed
     }
 
     /// Exportiert die aktuelle Zeichnung aus ChemDraw (PNG, sonst PDF), schließt sie und gibt das Bild zurück.
     /// Der AppleScript-Aufruf blockiert und läuft deshalb im Hintergrund; `completion` kommt auf dem Main-Thread.
-    func importFromChemDraw(completion: @escaping @MainActor (Data?) -> Void) {
+    func importFromChemDraw(completion: @escaping @MainActor (ImportResult) -> Void) {
         let baseName = "ChemDraw_Export_\(UUID().uuidString.prefix(8))"
         let pngURL = Self.tempDirectory.appendingPathComponent(baseName + ".png")
         let pdfURL = Self.tempDirectory.appendingPathComponent(baseName + ".pdf")
         // ChemDraw versteht kein „exists“ – deshalb Abgleich über die Dokumentnamen.
         // Gezielt das von ChemJournal geöffnete Dokument – nicht das vorderste. Liegt in ChemDraw ein anderes
         // Dokument vorne, würde sonst dessen Zeichnung übernommen und es ohne Sichern geschlossen.
-        guard let docURL = tempFileURL else { completion(nil); return }
+        guard let docURL = tempFileURL else { completion(.documentGone); return }
         let docName = docURL.lastPathComponent.replacingOccurrences(of: "\"", with: "")
         let script = """
         tell application "System Events"
@@ -155,9 +210,15 @@ final class ChemDrawBridge {
         """
 
         Task.detached(priority: .userInitiated) {
-            Self.runAppleScript(script, wait: true)
+            let answer = Self.runAppleScript(script, wait: true)
             try? await Task.sleep(for: .milliseconds(150))   // kurze Pause für das Dateisystem
-            let result = Self.readExport(png: pngURL, pdf: pdfURL)
+            let data = Self.readExport(png: pngURL, pdf: pdfURL)
+            // Das Skript hat die Zeichnung vorher in unsere Datei gesichert
+            let drawing = (try? Data(contentsOf: docURL)).flatMap { DrawingStore.containsDrawing($0) ? $0 : nil }
+            let result: ImportResult
+            if let data { result = .image(data, drawing: drawing) }
+            else if answer == "no_doc" || answer == "not_running" { result = .documentGone }
+            else { result = .failed }
             await MainActor.run {
                 NSApp.activate(ignoringOtherApps: true)
                 completion(result)

@@ -90,6 +90,20 @@ final class CASDatabase {
         store(e)
     }
 
+    /// In den Einstellungen geänderte Werte: gelten als eigene Eingabe und haben damit Vorrang vor PubChem.
+    /// Ein geleertes Feld löscht den Wert; Komma wird zum Dezimalpunkt wie in den Tabellen.
+    func edit(cas: String, molarMass: String, density: String) {
+        guard var e = entries[cas] else { return }
+        func clean(_ s: String) -> String { s.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: ",", with: ".") }
+        let m = clean(molarMass), d = clean(density)
+        guard m != e.molarMass || d != e.density else { return }
+        e.molarMass = m
+        e.density = d
+        e.source = .user
+        e.updatedAt = Date()
+        store(e)
+    }
+
     func remove(cas: String) {
         entries[cas] = nil
         persist()

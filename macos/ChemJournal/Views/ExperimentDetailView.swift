@@ -21,8 +21,10 @@ struct DetailView: View {
                         Button { showHistory = true } label: { Label("Verlauf", systemImage: "clock.arrow.circlepath") }
                             .buttonStyle(.link)
                             .help("Frühere Versionen dieses Ansatzes ansehen und wiederherstellen")
+                        MarkButton(isMarked: $experiment.isMarked)
                     }
                     .font(.caption).foregroundColor(.secondary)
+                    ExperimentTagBar(experiment: $experiment)
                     Divider().padding(.vertical, 6)
                     ForEach($experiment.stages) { $stage in
                         StageView(stage: $stage,

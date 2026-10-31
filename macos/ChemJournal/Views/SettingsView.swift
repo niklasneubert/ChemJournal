@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Einstellungen (⌘,): Allgemein (Sprache), Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
+/// Einstellungen (⌘,): Allgemein (Sprache, Zeichenprogramm), Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
 struct SettingsView: View {
     var body: some View {
         TabView {
@@ -22,6 +22,7 @@ struct SettingsView: View {
 
 private struct GeneralSettingsView: View {
     @State private var language = AppLanguage.stored
+    @AppStorage(DrawingApp.defaultsKey) private var drawingApp = DrawingApp.chemDraw.rawValue
 
     var body: some View {
         Form {
@@ -41,6 +42,16 @@ private struct GeneralSettingsView: View {
                             .buttonStyle(.borderedProminent)
                     }
                 }
+            }
+            Section("Reaktionsgleichung") {
+                Picker("Zeichenprogramm", selection: $drawingApp) {
+                    ForEach(DrawingApp.allCases, id: \.self) { app in
+                        Text(app.isInstalled ? app.displayName : String(localized: "\(app.displayName) (nicht installiert)"))
+                            .tag(app.rawValue)
+                    }
+                }
+                Text("Bestimmt die Knöpfe „In … zeichnen“ und „In … bearbeiten“ bei der Reaktionsgleichung. Das andere Programm erreichst du über das kleine + daneben. Eine gespeicherte Zeichnung öffnet sich immer in dem Programm, mit dem sie gezeichnet wurde. ReShiki ist kostenlos und quelloffen (reshiki.com).")
+                    .font(.caption).foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
@@ -87,7 +98,7 @@ private struct StorageSettingsView: View {
 
             Section {
                 HStack {
-                    Text("Automatisch: ein Backup pro Tag (30 Tage, danach eines pro Monat für ein Jahr) und Versionen je Ansatz.")
+                    Text("Automatisch: ein Backup pro Tag (bleibt 30 Tage) und Versionen je Ansatz.")
                         .font(.caption).foregroundStyle(.secondary)
                     Spacer()
                     Button("Jetzt sichern") {
@@ -312,14 +323,18 @@ private struct CASDatabaseView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem.")
+            Text("Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem. Molmasse und Dichte lassen sich hier direkt ändern (Doppelklick oder Klick ins Feld, Return übernimmt).")
                 .font(.caption).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             Table(entries, selection: $selection) {
                 TableColumn("CAS", value: \.cas).width(min: 80, ideal: 90)
                 TableColumn("Name") { Text($0.name.isEmpty ? "–" : $0.name) }
-                TableColumn("M (g/mol)") { Text($0.molarMass.isEmpty ? "–" : $0.molarMass).monospacedDigit() }.width(min: 60, ideal: 70)
-                TableColumn("d (g/cm³)") { Text($0.density.isEmpty ? "–" : $0.density).monospacedDigit() }.width(min: 60, ideal: 70)
+                TableColumn("M (g/mol)") { e in
+                    CASValueField(value: e.molarMass) { db.edit(cas: e.cas, molarMass: $0, density: e.density) }
+                }.width(min: 60, ideal: 75)
+                TableColumn("d (g/cm³)") { e in
+                    CASValueField(value: e.density) { db.edit(cas: e.cas, molarMass: e.molarMass, density: $0) }
+                }.width(min: 60, ideal: 75)
                 TableColumn("Quelle") { e in
                     Text(e.source.displayName).foregroundStyle(e.source == .user ? .primary : .secondary)
                 }.width(min: 70, ideal: 90)
@@ -340,5 +355,25 @@ private struct CASDatabaseView: View {
         }
         .padding(16)
         .searchable(text: $query, placement: .toolbar, prompt: "CAS oder Name")
+    }
+}
+
+/// Bearbeitbare Zahl in der CAS-Tabelle. Übernimmt bei Return oder beim Verlassen des Feldes.
+private struct CASValueField: View {
+    let value: String
+    let commit: (String) -> Void
+    @State private var text = ""
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        TextField(text: $text, prompt: Text(verbatim: "–")) { EmptyView() }
+            .textFieldStyle(.plain)
+            .monospacedDigit()
+            .focused($focused)
+            .onSubmit { commit(text) }
+            .onChange(of: focused) { _, isFocused in if !isFocused { commit(text) } }
+            .onAppear { text = value }
+            .onChange(of: value) { _, new in if !focused { text = new } }
+            .help("Wert ändern – gilt danach als eigene Eingabe")
     }
 }

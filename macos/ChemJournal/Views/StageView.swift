@@ -42,10 +42,10 @@ struct StageView: View {
                 LaTeXEditorView(title: "Zusammenfassung", text: $stage.summary).contextMenu { stageContextMenu(for: $stage.summary) }
                 ReactionImageView(imageData: $stage.reactionImageData)
                 ChemicalTableView(chemicals: $stage.chemicals, showSmartExtract: $showSmartExtract)
-                LaTeXEditorView(title: "Vorgehen", text: $stage.procedure).contextMenu { stageContextMenu(for: $stage.procedure) }
-                LaTeXEditorView(title: "Beobachtung", text: $stage.observation).contextMenu { stageContextMenu(for: $stage.observation) }
+                LaTeXEditorView(title: "Vorgehen", text: $stage.procedure, boldCompoundNumbers: true).contextMenu { stageContextMenu(for: $stage.procedure) }
+                LaTeXEditorView(title: "Beobachtung", text: $stage.observation, boldCompoundNumbers: true).contextMenu { stageContextMenu(for: $stage.observation) }
                 YieldTableView(yields: $stage.yieldProducts, allChemicals: $stage.chemicals)
-                AnalysisFilesView(filePaths: $stage.analysisFiles)
+                AnalysisSectionView(entries: $stage.analyses)
             }.padding(.top, 10).padding(.bottom, 20)
         } label: {
             HStack {

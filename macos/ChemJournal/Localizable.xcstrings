@@ -441,6 +441,2576 @@
         }
       }
     },
+    "Klicken, um die Einheit der Spalte zu wechseln": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to change the unit of this column"
+          }
+        }
+      }
+    },
+    "Reinheit (%)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purity (%)"
+          }
+        }
+      }
+    },
+    "Gehalt des Reagenzes, z. B. 95 oder 60 (NaH in Mineralöl). Leer = 100 %. n bleibt die Stoffmenge des reinen Stoffes, m und V sind die abzumessende Menge.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Content of the reagent, e.g. 95 or 60 (NaH in mineral oil). Empty = 100 %. n stays the amount of the pure substance; m and V are the amount to weigh or measure."
+          }
+        }
+      }
+    },
+    "In ChemDraw bearbeiten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit in ChemDraw"
+          }
+        }
+      }
+    },
+    "Zeichnung in ChemDraw öffnen und bearbeiten (möglich bis %@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open and edit the drawing in ChemDraw (possible until %@)"
+          }
+        }
+      }
+    },
+    "Markiert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marked"
+          }
+        }
+      }
+    },
+    "Markieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark"
+          }
+        }
+      }
+    },
+    "Markierung entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove mark"
+          }
+        }
+      }
+    },
+    "Ansatz markieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark experiment"
+          }
+        }
+      }
+    },
+    "Tag hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add tag"
+          }
+        }
+      }
+    },
+    "Tag": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag"
+          }
+        }
+      }
+    },
+    "Tags": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tags"
+          }
+        }
+      }
+    },
+    "Eigenen Tag vergeben, um Ansätze einzuordnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add your own tag to categorize experiments"
+          }
+        }
+      }
+    },
+    "Neuer oder vorhandener Tag": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New or existing tag"
+          }
+        }
+      }
+    },
+    "Vorhandene Tags": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Existing tags"
+          }
+        }
+      }
+    },
+    "Return übernimmt den Namen. Tags gelten für das ganze Journal.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Return adds the name. Tags apply to the whole journal."
+          }
+        }
+      }
+    },
+    "Nur Ansätze mit diesem Tag zeigen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show only experiments with this tag"
+          }
+        }
+      }
+    },
+    "Umbenennen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename …"
+          }
+        }
+      }
+    },
+    "Von diesem Ansatz entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from this experiment"
+          }
+        }
+      }
+    },
+    "Überall löschen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete everywhere …"
+          }
+        }
+      }
+    },
+    "Tag von diesem Ansatz entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove tag from this experiment"
+          }
+        }
+      }
+    },
+    "Tag %@ entfernen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove tag %@"
+          }
+        }
+      }
+    },
+    "Nur markierte": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marked only"
+          }
+        }
+      }
+    },
+    "Alle Tags": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All tags"
+          }
+        }
+      }
+    },
+    "Filter aufheben": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear filter"
+          }
+        }
+      }
+    },
+    "Ansätze nach Markierung oder Tag filtern": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter experiments by mark or tag"
+          }
+        }
+      }
+    },
+    "Keine Ansätze für diesen Filter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No experiments match this filter"
+          }
+        }
+      }
+    },
+    "Neuer Tag …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New tag …"
+          }
+        }
+      }
+    },
+    "Neuer Tag": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New tag"
+          }
+        }
+      }
+    },
+    "Name des Tags": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag name"
+          }
+        }
+      }
+    },
+    "Name des Tags, z. B. „Photokatalyse“ oder „Scale-up“.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag name, e.g. “Photocatalysis” or “Scale-up”."
+          }
+        }
+      }
+    },
+    "Hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        }
+      }
+    },
+    "Tag „%@“ umbenennen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename tag “%@”"
+          }
+        }
+      }
+    },
+    "Der neue Name gilt in allen Ansätzen mit diesem Tag.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The new name applies to all experiments with this tag."
+          }
+        }
+      }
+    },
+    "Umbenennen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename"
+          }
+        }
+      }
+    },
+    "Tag „%@“ überall löschen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete tag “%@” everywhere?"
+          }
+        }
+      }
+    },
+    "Der Tag wird von %lld Ansätzen entfernt. Die Ansätze selbst bleiben erhalten.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The tag will be removed from %lld experiments. The experiments themselves are kept."
+          }
+        }
+      }
+    },
+    "Spektroskopie & Spektrometrie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spectroscopy & spectrometry"
+          }
+        }
+      }
+    },
+    "Chromatographie & Aufreinigung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chromatography & purification"
+          }
+        }
+      }
+    },
+    "Weitere": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        }
+      }
+    },
+    "Massenspektrometrie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mass spectrometry"
+          }
+        }
+      }
+    },
+    "Säulenchromatographie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Column chromatography"
+          }
+        }
+      }
+    },
+    "Dünnschichtchromatographie (DC)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thin-layer chromatography (TLC)"
+          }
+        }
+      }
+    },
+    "Gaschromatographie (GC)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gas chromatography (GC)"
+          }
+        }
+      }
+    },
+    "Umkristallisation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recrystallization"
+          }
+        }
+      }
+    },
+    "Destillation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distillation"
+          }
+        }
+      }
+    },
+    "Schmelzpunkt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melting point"
+          }
+        }
+      }
+    },
+    "Sonstiges": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        }
+      }
+    },
+    "DC": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TLC"
+          }
+        }
+      }
+    },
+    "Bemerkungen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes"
+          }
+        }
+      }
+    },
+    "Kern / Experiment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nucleus / experiment"
+          }
+        }
+      }
+    },
+    "Frequenz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequency"
+          }
+        }
+      }
+    },
+    "Lösungsmittel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solvent"
+          }
+        }
+      }
+    },
+    "Probenmasse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample mass"
+          }
+        }
+      }
+    },
+    "Temperatur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature"
+          }
+        }
+      }
+    },
+    "Signale (δ in ppm)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signals (δ in ppm)"
+          }
+        }
+      }
+    },
+    "Messmethode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Technique"
+          }
+        }
+      }
+    },
+    "KBr-Pressling": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KBr pellet"
+          }
+        }
+      }
+    },
+    "Lösung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solution"
+          }
+        }
+      }
+    },
+    "Banden ṽ (cm⁻¹)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bands ṽ (cm⁻¹)"
+          }
+        }
+      }
+    },
+    "Konzentration c": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concentration c"
+          }
+        }
+      }
+    },
+    "Schichtdicke d": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Path length d"
+          }
+        }
+      }
+    },
+    "Absorbanz A bei λmax": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absorbance A at λmax"
+          }
+        }
+      }
+    },
+    "Weitere Banden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Further bands"
+          }
+        }
+      }
+    },
+    "Art": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        }
+      }
+    },
+    "Ionisierung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ionization"
+          }
+        }
+      }
+    },
+    "Modus": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode"
+          }
+        }
+      }
+    },
+    "positiv": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "positive"
+          }
+        }
+      }
+    },
+    "negativ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "negative"
+          }
+        }
+      }
+    },
+    "Summenformel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Molecular formula"
+          }
+        }
+      }
+    },
+    "m/z berechnet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m/z calculated"
+          }
+        }
+      }
+    },
+    "m/z gefunden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m/z found"
+          }
+        }
+      }
+    },
+    "Weitere Signale": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Further signals"
+          }
+        }
+      }
+    },
+    "Stationäre Phase": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stationary phase"
+          }
+        }
+      }
+    },
+    "Kieselgel 60 (40–63 µm)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silica gel 60 (40–63 µm)"
+          }
+        }
+      }
+    },
+    "Kieselgel 60 (63–200 µm)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silica gel 60 (63–200 µm)"
+          }
+        }
+      }
+    },
+    "Al₂O₃ neutral": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al₂O₃ neutral"
+          }
+        }
+      }
+    },
+    "Al₂O₃ basisch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al₂O₃ basic"
+          }
+        }
+      }
+    },
+    "Al₂O₃ sauer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al₂O₃ acidic"
+          }
+        }
+      }
+    },
+    "Kieselgel 60": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silica gel 60"
+          }
+        }
+      }
+    },
+    "Eluent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eluent"
+          }
+        }
+      }
+    },
+    "Säulendurchmesser": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Column diameter"
+          }
+        }
+      }
+    },
+    "Füllhöhe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Packing height"
+          }
+        }
+      }
+    },
+    "Rohprodukt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crude product"
+          }
+        }
+      }
+    },
+    "Isoliert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isolated"
+          }
+        }
+      }
+    },
+    "Rf (Produkt)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rf (product)"
+          }
+        }
+      }
+    },
+    "Produktfraktionen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product fractions"
+          }
+        }
+      }
+    },
+    "Platte": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plate"
+          }
+        }
+      }
+    },
+    "Kieselgel 60 F₂₅₄": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silica gel 60 F₂₅₄"
+          }
+        }
+      }
+    },
+    "Detektion": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detection"
+          }
+        }
+      }
+    },
+    "Anisaldehyd": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anisaldehyde"
+          }
+        }
+      }
+    },
+    "Iod": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iodine"
+          }
+        }
+      }
+    },
+    "Bromkresolgrün": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bromocresol green"
+          }
+        }
+      }
+    },
+    "Rf-Werte": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rf values"
+          }
+        }
+      }
+    },
+    "Produkt 0.35, Edukt 0.60": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "product 0.35, starting material 0.60"
+          }
+        }
+      }
+    },
+    "Säule": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Column"
+          }
+        }
+      }
+    },
+    "Temperaturprogramm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature program"
+          }
+        }
+      }
+    },
+    "Trägergas / Fluss": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carrier gas / flow"
+          }
+        }
+      }
+    },
+    "Detektor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detector"
+          }
+        }
+      }
+    },
+    "WLD (TCD)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCD"
+          }
+        }
+      }
+    },
+    "Retentionszeit(en)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retention time(s)"
+          }
+        }
+      }
+    },
+    "Reinheit / Umsatz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purity / conversion"
+          }
+        }
+      }
+    },
+    "Volumen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume"
+          }
+        }
+      }
+    },
+    "Kristalle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crystals"
+          }
+        }
+      }
+    },
+    "Bedingungen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions"
+          }
+        }
+      }
+    },
+    "heiß lösen, langsam auf 4 °C abkühlen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dissolve hot, cool slowly to 4 °C"
+          }
+        }
+      }
+    },
+    "Aussehen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
+    "farblose Nadeln": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "colorless needles"
+          }
+        }
+      }
+    },
+    "Smp.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m.p."
+          }
+        }
+      }
+    },
+    "einfach": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "simple"
+          }
+        }
+      }
+    },
+    "fraktioniert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fractional"
+          }
+        }
+      }
+    },
+    "Vakuum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vacuum"
+          }
+        }
+      }
+    },
+    "Kugelrohr": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kugelrohr"
+          }
+        }
+      }
+    },
+    "Wasserdampf": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "steam"
+          }
+        }
+      }
+    },
+    "Druck": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pressure"
+          }
+        }
+      }
+    },
+    "Siedepunkt (Kopf)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boiling point (head)"
+          }
+        }
+      }
+    },
+    "Badtemperatur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bath temperature"
+          }
+        }
+      }
+    },
+    "Einsatz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charge"
+          }
+        }
+      }
+    },
+    "Destillat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distillate"
+          }
+        }
+      }
+    },
+    "Smp. gefunden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m.p. found"
+          }
+        }
+      }
+    },
+    "Smp. Literatur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m.p. literature"
+          }
+        }
+      }
+    },
+    "Methode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Method"
+          }
+        }
+      }
+    },
+    "Kapillare": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capillary"
+          }
+        }
+      }
+    },
+    "Kofler-Heizbank": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kofler hot bench"
+          }
+        }
+      }
+    },
+    "Bezeichnung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "z. B. Elementaranalyse, Röntgenstruktur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. elemental analysis, X-ray structure"
+          }
+        }
+      }
+    },
+    "Ergebnis / Beschreibung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Result / description"
+          }
+        }
+      }
+    },
+    "Massenabweichung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mass deviation"
+          }
+        }
+      }
+    },
+    "Extinktionskoeffizient": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extinction coefficient"
+          }
+        }
+      }
+    },
+    "Wiederfindung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recovery"
+          }
+        }
+      }
+    },
+    " ber.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " calcd"
+          }
+        }
+      }
+    },
+    " für %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " for %@"
+          }
+        }
+      }
+    },
+    "gef.: ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "found: "
+          }
+        }
+      }
+    },
+    "Analytik & Aufreinigung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis & purification"
+          }
+        }
+      }
+    },
+    "Dateien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files"
+          }
+        }
+      }
+    },
+    "Messung oder Aufreinigungsschritt hinzufügen:": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a measurement or purification step:"
+          }
+        }
+      }
+    },
+    "Weitere Messung oder Aufreinigung zu dieser Stufe hinzufügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add another measurement or purification to this stage"
+          }
+        }
+      }
+    },
+    "Einklappen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collapse"
+          }
+        }
+      }
+    },
+    "Aufklappen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expand"
+          }
+        }
+      }
+    },
+    "Probe, z. B. Produkt 3": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample, e.g. product 3"
+          }
+        }
+      }
+    },
+    "Verknüpfte Dateien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linked files"
+          }
+        }
+      }
+    },
+    "Duplizieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicate"
+          }
+        }
+      }
+    },
+    "Nach oben": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move up"
+          }
+        }
+      }
+    },
+    "Nach unten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move down"
+          }
+        }
+      }
+    },
+    "Zusammenfassung kopieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy summary"
+          }
+        }
+      }
+    },
+    "Weitere Aktionen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More actions"
+          }
+        }
+      }
+    },
+    "Eintrag entfernen (⌘Z macht es rückgängig)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove entry (⌘Z undoes it)"
+          }
+        }
+      }
+    },
+    "Vorschläge – eigene Eingabe ist auch möglich": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestions – you can also type your own"
+          }
+        }
+      }
+    },
+    "NMR-Daten verknüpfen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link NMR data"
+          }
+        }
+      }
+    },
+    "Datei verknüpfen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link file"
+          }
+        }
+      }
+    },
+    "Spektrum, Rohdaten oder Ordner verknüpfen – oder Dateien auf die Karte ziehen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link a spectrum, raw data or folder – or drag files onto the card"
+          }
+        }
+      }
+    },
+    "Dateien oder Ordner zu „%@“ verknüpfen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link files or folders to “%@”"
+          }
+        }
+      }
+    },
+    "Datei nicht gefunden: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File not found: %@"
+          }
+        }
+      }
+    },
+    "Beschreibung …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description …"
+          }
+        }
+      }
+    },
+    "Verknüpfung entfernen (die Datei bleibt erhalten)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove link (the file is kept)"
+          }
+        }
+      }
+    },
+    "Aufreinigung & Analytik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purification & analysis"
+          }
+        }
+      }
+    },
+    "Analytik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis"
+          }
+        }
+      }
+    },
+    "Säulenchromatographie (LC)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Column chromatography (LC)"
+          }
+        }
+      }
+    },
+    "Röntgenbeugung (XRD)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "X-ray diffraction (XRD)"
+          }
+        }
+      }
+    },
+    "Kerne / Experimente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuclei / experiments"
+          }
+        }
+      }
+    },
+    "Anmerkungen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remarks"
+          }
+        }
+      }
+    },
+    "z. B. Rohspektrum, Spuren von EtOAc, Probe aus Fraktion 14": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. crude spectrum, traces of EtOAc, sample from fraction 14"
+          }
+        }
+      }
+    },
+    "Einkristall (SC-XRD)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single crystal (SC-XRD)"
+          }
+        }
+      }
+    },
+    "Pulver (PXRD)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Powder (PXRD)"
+          }
+        }
+      }
+    },
+    "Strahlung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radiation"
+          }
+        }
+      }
+    },
+    "Kristallsystem": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crystal system"
+          }
+        }
+      }
+    },
+    "triklin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "triclinic"
+          }
+        }
+      }
+    },
+    "monoklin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "monoclinic"
+          }
+        }
+      }
+    },
+    "orthorhombisch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "orthorhombic"
+          }
+        }
+      }
+    },
+    "tetragonal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tetragonal"
+          }
+        }
+      }
+    },
+    "trigonal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "trigonal"
+          }
+        }
+      }
+    },
+    "hexagonal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hexagonal"
+          }
+        }
+      }
+    },
+    "kubisch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cubic"
+          }
+        }
+      }
+    },
+    "Raumgruppe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space group"
+          }
+        }
+      }
+    },
+    "Zellparameter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cell parameters"
+          }
+        }
+      }
+    },
+    "CCDC-Nummer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CCDC number"
+          }
+        }
+      }
+    },
+    "2θ-Bereich": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2θ range"
+          }
+        }
+      }
+    },
+    "Kristall": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crystal"
+          }
+        }
+      }
+    },
+    "0.20 × 0.15 × 0.10 mm, gelbe Prismen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0.20 × 0.15 × 0.10 mm, yellow prisms"
+          }
+        }
+      }
+    },
+    "Einen oder mehrere auswählen – z. B. wenn eine Datei mehrere Spektren enthält": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select one or more – e.g. when a file contains several spectra"
+          }
+        }
+      }
+    },
+    "Mehrfachauswahl möglich": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Multiple selection possible"
+          }
+        }
+      }
+    },
+    "Bild kopieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy image"
+          }
+        }
+      }
+    },
+    "Bild aus Zwischenablage einfügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste image from clipboard"
+          }
+        }
+      }
+    },
+    "Aus Zwischenablage einfügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste from clipboard"
+          }
+        }
+      }
+    },
+    "Kopiert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
+          }
+        }
+      }
+    },
+    "Ein kopiertes Reaktionsbild (z. B. aus einem anderen Ansatz) oder eine Zeichnung aus ChemDraw einfügen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a copied reaction image (e.g. from another experiment) or a drawing from ChemDraw"
+          }
+        }
+      }
+    },
+    "Probe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample"
+          }
+        }
+      }
+    },
+    "Kopieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy"
+          }
+        }
+      }
+    },
+    "Bild in die Zwischenablage kopieren – in einem anderen Ansatz mit „Aus Zwischenablage einfügen“ einsetzen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy the image to the clipboard – insert it in another experiment with “Paste from clipboard”"
+          }
+        }
+      }
+    },
+    "Bild übernehmen (⌘D)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take over image (⌘D)"
+          }
+        }
+      }
+    },
+    "Den zuletzt in ReShiki gesicherten Stand übernehmen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take over the state last saved in ReShiki"
+          }
+        }
+      }
+    },
+    "Fertig": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "ReShiki-Modus beenden – ReShiki selbst bleibt offen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End ReShiki mode – ReShiki itself stays open"
+          }
+        }
+      }
+    },
+    "In %@ bearbeiten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit in %@"
+          }
+        }
+      }
+    },
+    "In %@ zeichnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draw in %@"
+          }
+        }
+      }
+    },
+    "Mit %@ zeichnen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draw with %@"
+          }
+        }
+      }
+    },
+    "Standardprogramm in den Einstellungen wählen …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose default program in Settings …"
+          }
+        }
+      }
+    },
+    "Zeichnung in %@ öffnen und bearbeiten (möglich bis %@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open and edit the drawing in %@ (possible until %@)"
+          }
+        }
+      }
+    },
+    "ReShiki aktiv": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ReShiki active"
+          }
+        }
+      }
+    },
+    "In ReShiki ⌘S drücken – das Bild wird übernommen. „Fertig“ beendet.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press ⌘S in ReShiki – the image is taken over. “Done” finishes."
+          }
+        }
+      }
+    },
+    "In ReShiki zeichnen & ⌘S drücken": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draw in ReShiki & press ⌘S"
+          }
+        }
+      }
+    },
+    "Bei jedem Sichern übernimmt ChemJournal das Bild. Mit „Fertig“ ist die Zeichnung abgeschlossen.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChemJournal takes over the image every time you save. “Done” finishes the drawing."
+          }
+        }
+      }
+    },
+    "%@ ist nicht installiert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is not installed"
+          }
+        }
+      }
+    },
+    "ReShiki ist kostenlos und quelloffen (reshiki.com). Nach der Installation hier einfach erneut klicken.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ReShiki is free and open source (reshiki.com). After installing it, just click here again."
+          }
+        }
+      }
+    },
+    "Installiere ChemDraw oder wähle in den Einstellungen ReShiki als Zeichenprogramm.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Install ChemDraw or choose ReShiki as the drawing program in Settings."
+          }
+        }
+      }
+    },
+    "Zeichenprogramm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drawing program"
+          }
+        }
+      }
+    },
+    "%@ (nicht installiert)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (not installed)"
+          }
+        }
+      }
+    },
+    "Bestimmt die Knöpfe „In … zeichnen“ und „In … bearbeiten“ bei der Reaktionsgleichung. Das andere Programm erreichst du über das kleine + daneben. Eine gespeicherte Zeichnung öffnet sich immer in dem Programm, mit dem sie gezeichnet wurde. ReShiki ist kostenlos und quelloffen (reshiki.com).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets the “Draw in …” and “Edit in …” buttons for the reaction scheme. The other program is available from the small + next to them. A saved drawing always opens in the program it was drawn with. ReShiki is free and open source (reshiki.com)."
+          }
+        }
+      }
+    },
+    "Automatisch: ein Backup pro Tag (bleibt 30 Tage) und Versionen je Ansatz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic: one backup per day (kept for 30 days) and versions per experiment."
+          }
+        }
+      }
+    },
+    "Jede eingegebene CAS-Nummer mit Molmasse und Dichte – aus PubChem oder von dir. Beim nächsten Eintippen der CAS-Nummer werden die Werte sofort eingetragen, auch offline. Eigene Werte haben Vorrang vor PubChem. Molmasse und Dichte lassen sich hier direkt ändern (Doppelklick oder Klick ins Feld, Return übernimmt).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every CAS number you entered, with molar mass and density – from PubChem or from you. The next time you type the CAS number, the values are filled in immediately, even offline. Your own values take precedence over PubChem. Molar mass and density can be edited right here (click into the field, Return applies)."
+          }
+        }
+      }
+    },
+    "Wert ändern – gilt danach als eigene Eingabe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change value – then counts as your own entry"
+          }
+        }
+      }
+    },
+    "Konnte kein Bild aus ReShiki importieren.\nBitte stelle sicher, dass eine Zeichnung in ReShiki vorhanden ist und mit ⌘S gesichert wurde.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not import an image from ReShiki.\nPlease make sure there is a drawing in ReShiki and it was saved with ⌘S."
+          }
+        }
+      }
+    },
+    "In ReShiki ⌘S drücken oder hier ⌘D zum Importieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press ⌘S in ReShiki or ⌘D here to import"
+          }
+        }
+      }
+    },
+    "ReShiki speichert und ChemJournal importiert das Bild automatisch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ReShiki saves and ChemJournal imports the image automatically"
+          }
+        }
+      }
+    },
+    "EPR-Spektroskopie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EPR spectroscopy"
+          }
+        }
+      }
+    },
+    "Puls-EPR (ESE)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulsed EPR (ESE)"
+          }
+        }
+      }
+    },
+    "Puls-EPR": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulsed EPR"
+          }
+        }
+      }
+    },
+    "Spin-Trapping": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spin trapping"
+          }
+        }
+      }
+    },
+    "Frequenzband": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequency band"
+          }
+        }
+      }
+    },
+    "Mikrowellenfrequenz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microwave frequency"
+          }
+        }
+      }
+    },
+    "Mikrowellenleistung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microwave power"
+          }
+        }
+      }
+    },
+    "Modulationsamplitude": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modulation amplitude"
+          }
+        }
+      }
+    },
+    "Modulationsfrequenz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modulation frequency"
+          }
+        }
+      }
+    },
+    "Probenzustand": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample state"
+          }
+        }
+      }
+    },
+    "gefrorene Lösung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "frozen solution"
+          }
+        }
+      }
+    },
+    "Feststoff/Pulver": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "solid/powder"
+          }
+        }
+      }
+    },
+    "Einkristall": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "single crystal"
+          }
+        }
+      }
+    },
+    "Lösungsmittel / Matrix": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solvent / matrix"
+          }
+        }
+      }
+    },
+    "Konzentration": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concentration"
+          }
+        }
+      }
+    },
+    "Feldbereich (Mitte / Sweep)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Field range (center / sweep)"
+          }
+        }
+      }
+    },
+    "Scans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scans"
+          }
+        }
+      }
+    },
+    "g-Faktoren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "g-factors"
+          }
+        }
+      }
+    },
+    "Hyperfeinkopplung A (MHz, mit Kern)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hyperfine coupling A (MHz, with nucleus)"
+          }
+        }
+      }
+    },
+    "Nullfeldaufspaltung D, E": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero-field splitting D, E"
+          }
+        }
+      }
+    },
+    "Simulation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulation"
+          }
+        }
+      }
+    },
+    "Weitere Ergebnisse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Further results"
+          }
+        }
+      }
+    },
+    "Mod. %@ mT": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mod. %@ mT"
+          }
+        }
+      }
+    },
+    "Mod. ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mod. "
+          }
+        }
+      }
+    },
+    "%@ Scans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ scans"
+          }
+        }
+      }
+    },
+    "Feld %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "field %@"
+          }
+        }
+      }
+    },
+    "Simulation: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "simulation: %@"
+          }
+        }
+      }
+    },
+    "Neu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New"
+          }
+        }
+      }
+    },
+    "Filter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        }
+      }
+    },
+    "Neues Projekt, neuer Ansatz oder Ansatz importieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New project, new experiment or import an experiment"
+          }
+        }
+      }
+    },
+    "NMR-Spektroskopie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NMR spectroscopy"
+          }
+        }
+      }
+    },
+    "IR-Spektroskopie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IR spectroscopy"
+          }
+        }
+      }
+    },
+    "UV/Vis-Spektroskopie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UV/Vis spectroscopy"
+          }
+        }
+      }
+    },
+    "Drehwert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optical rotation"
+          }
+        }
+      }
+    },
+    "Gemessener Drehwinkel α": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured rotation α"
+          }
+        }
+      }
+    },
+    "Spezifischer Drehwert [α] (falls abgelesen)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Specific rotation [α] (if read directly)"
+          }
+        }
+      }
+    },
+    "Wellenlänge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wavelength"
+          }
+        }
+      }
+    },
+    "Küvettenlänge l": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Path length l"
+          }
+        }
+      }
+    },
+    "Literaturwert [α]": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Literature value [α]"
+          }
+        }
+      }
+    },
+    "Spezifischer Drehwert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Specific rotation"
+          }
+        }
+      }
+    },
+    "Optische Reinheit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optical purity"
+          }
+        }
+      }
+    },
+    "Literatur: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lit.: %@"
+          }
+        }
+      }
+    },
+    "optische Reinheit %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "optical purity %@"
+          }
+        }
+      }
+    },
     "Ausbeute": {
       "localizations": {
         "en": {

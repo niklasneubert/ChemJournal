@@ -115,6 +115,8 @@ nonisolated struct SearchHit: Hashable, Sendable {
 ///
 /// Jedes Wort der Suche muss im Ansatz vorkommen (UND). Ein Wort trifft:
 /// - Titel, Beschreibung, Stufentitel, Zusammenfassung, Vorgehen, Beobachtung, Quelle (Text enthält das Wort),
+/// - Tags (auch mit "#": "#scale" findet den Tag "Scale-up"),
+/// - Aufreinigung & Analytik (Methode, Probe, alle Felder, Dateinamen und -beschreibungen: "CDCl3", "HRMS", "Kieselgel"),
 /// - Chemikalien- und Produktnamen (auch "n-BuLi" ≈ "nBuLi", "CH₂Cl₂" ≈ "CH2Cl2"),
 /// - Abkürzungen/Synonyme ("n-BuLi" findet "n-Butyllithium"),
 /// - CAS-Nummern: direkt eingegeben, über die Synonymliste, über die lokale CAS-Datenbank ("Butyllithium" → 109-72-8)
@@ -129,12 +131,36 @@ struct JournalSearch {
     }
 
     private let terms: [Term]
+    /// Normalisierte Namen, je Name nur einmal berechnet (derselbe Name steht im Journal oft in vielen Zeilen).
+    private let names: NameCache
 
     var isEmpty: Bool { terms.isEmpty }
+
+    /// Zwischenspeicher für `SearchText.normalize` je Zeilenname und die daraus gebildeten Wörter.
+    private final class NameCache {
+        private var wholes: [String: String] = [:]
+        private var wordSets: [String: Set<String>] = [:]
+
+        func whole(_ name: String) -> String {
+            if let w = wholes[name] { return w }
+            let w = SearchText.normalize(name)
+            wholes[name] = w
+            return w
+        }
+
+        func words(_ name: String) -> Set<String> {
+            if let w = wordSets[name] { return w }
+            let w = JournalSearch.words(of: name)
+            wordSets[name] = w
+            return w
+        }
+    }
 
     init(query: String, projects: [Project], casDatabase: CASDatabase? = nil) {
         let words = query.split(whereSeparator: \.isWhitespace).map(String.init).filter { !$0.isEmpty }
         // Alle Zeilen des Journals einmal sammeln (Name normalisiert, CAS normalisiert)
+        let cache = NameCache()
+        names = cache
         let rows: [(name: String, cas: String)] = projects.flatMap(\.experiments).flatMap(\.stages).flatMap { stage in
             stage.chemicals.map { ($0.name, CASNumber.normalized($0.cas) ?? "") }
                 + stage.yieldProducts.map { ($0.name, CASNumber.normalized($0.cas) ?? "") }
@@ -151,7 +177,7 @@ struct JournalSearch {
             if let db = casDatabase { cas.formUnion(db.casNumbers(matchingName: norm)) }
             // Gleichwertigkeit über das Journal: Zeilen mit passendem Namen bringen ihre CAS mit
             if norm.count >= 2 {
-                for row in rows where !row.cas.isEmpty && Self.nameMatches(row.name, names) {
+                for row in rows where !row.cas.isEmpty && Self.nameMatches(row.name, names, cache: cache) {
                     cas.insert(row.cas)
                 }
             }
@@ -163,13 +189,15 @@ struct JournalSearch {
     func hits(in experiment: Experiment) -> [SearchHit]? {
         guard !terms.isEmpty else { return [] }
         var hits: [SearchHit] = []
+        // Freitexte nur einmal je Ansatz klein schreiben, nicht einmal je Suchwort
+        let texts = LoweredTexts.cached(experiment)
         for term in terms {
-            var matched = textMatches(term, experiment)
+            var matched = texts.matches(term.raw)
             for stage in experiment.stages {
                 let rows = stage.chemicals.map { ($0.name, $0.cas, false) } + stage.yieldProducts.map { ($0.name, $0.cas, true) }
                 for (name, rawCAS, isProduct) in rows {
                     let c = CASNumber.normalized(rawCAS)
-                    let byName = Self.nameMatches(name, term.names)
+                    let byName = Self.nameMatches(name, term.names, cache: names)
                     let byCAS = c.map { term.cas.contains($0) } ?? false
                     guard byName || byCAS else { continue }
                     matched = true
@@ -187,22 +215,57 @@ struct JournalSearch {
     /// Lange Namen: enthalten ("butyllithium" in "n-Butyllithium-Lösung"). Kurze (≤ 3 Zeichen): als eigenes Wort
     /// ("THF" in "THF-Lösung", aber "Br2" nicht in "CuBr2").
     static func nameMatches(_ rowName: String, _ names: Set<String>) -> Bool {
-        let whole = SearchText.normalize(rowName)
+        nameMatches(rowName, names, cache: NameCache())
+    }
+
+    private static func nameMatches(_ rowName: String, _ names: Set<String>, cache: NameCache) -> Bool {
+        let whole = cache.whole(rowName)
         guard !whole.isEmpty else { return false }
-        lazy var words = Set(rowName.split(whereSeparator: { !$0.isLetter && !$0.isNumber && !"₀₁₂₃₄₅₆₇₈₉".contains($0) })
-            .map { SearchText.normalize(String($0)) })
         for n in names where !n.isEmpty {
             if n.count > 3 { if whole.contains(n) { return true } }
-            else if whole == n || words.contains(n) { return true }
+            else if whole == n || cache.words(rowName).contains(n) { return true }
         }
         return false
     }
 
-    private func textMatches(_ term: Term, _ e: Experiment) -> Bool {
-        let q = term.raw
-        if e.title.lowercased().contains(q) || e.summary.lowercased().contains(q) { return true }
-        return e.stages.contains { s in
-            [s.title, s.summary, s.procedure, s.observation, s.sourceURL].contains { $0.lowercased().contains(q) }
+    fileprivate static func words(of rowName: String) -> Set<String> {
+        Set(rowName.split(whereSeparator: { !$0.isLetter && !$0.isNumber && !"₀₁₂₃₄₅₆₇₈₉".contains($0) })
+            .map { SearchText.normalize(String($0)) })
+    }
+
+    /// Alle Freitexte eines Ansatzes, einmal klein geschrieben: Titel, Beschreibung, Stufentexte, Aufreinigung &
+    /// Analytik – und die Tags (die auch ohne "#" passen).
+    private struct LoweredTexts {
+        let fields: [String]
+        let tags: [String]
+
+        /// Originaltexte eines Ansatzes (ohne Bilder) – daran erkennt der Zwischenspeicher, ob sich etwas geändert hat.
+        private static func sources(_ e: Experiment) -> [String] {
+            var fields = [e.title, e.summary]
+            for s in e.stages {
+                fields += [s.title, s.summary, s.procedure, s.observation, s.sourceURL]
+                fields += s.analyses.map(\.searchText)
+            }
+            return fields
+        }
+
+        /// Beim Tippen eines Suchbegriffs ändert sich das Journal nicht: klein geschriebene Texte je Ansatz merken und
+        /// nur neu bilden, wenn sich der Ansatz geändert hat. Gespeichert werden nur Texte, keine Bilder.
+        private static var cache: [UUID: (sources: [String], tags: [String], texts: LoweredTexts)] = [:]
+
+        static func cached(_ e: Experiment) -> LoweredTexts {
+            let sources = sources(e)
+            if let c = cache[e.id], c.sources == sources, c.tags == e.tags { return c.texts }
+            let texts = LoweredTexts(fields: sources.map { $0.lowercased() }, tags: e.tags.map { $0.lowercased() })
+            if cache.count > 5_000 { cache.removeAll() }   // gelöschte Ansätze nicht ewig behalten
+            cache[e.id] = (sources, e.tags, texts)
+            return texts
+        }
+
+        func matches(_ q: String) -> Bool {
+            if fields.contains(where: { $0.contains(q) }) { return true }
+            let tagQuery = q.hasPrefix("#") ? String(q.dropFirst()) : q
+            return !tagQuery.isEmpty && tags.contains { $0.contains(tagQuery) }
         }
     }
 }

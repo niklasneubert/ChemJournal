@@ -3,6 +3,10 @@ import AppKit
 
 struct YieldTableView: View {
     @Binding var yields: [YieldData]; @Binding var allChemicals: [ChemicalData]; @State private var nameWidth: CGFloat = 160
+    // Anzeigeeinheiten der Mengenspalten (gelten für alle Ausbeute-Tabellen; gespeichert wird in mol/ml/g)
+    @AppStorage("unit.yield.amount") private var amountUnit = "mol"
+    @AppStorage("unit.yield.volume") private var volumeUnit = "ml"
+    @AppStorage("unit.yield.mass") private var massUnit = "g"
     private func header(_ title: LocalizedStringKey, minWidth: CGFloat, maxWidth: CGFloat = .infinity) -> some View {
         Text(title).fontWeight(.bold).frame(minWidth: minWidth, maxWidth: maxWidth, alignment: .leading)
     }
@@ -15,11 +19,15 @@ struct YieldTableView: View {
                     HStack(spacing: 0) { Text("Produktname").fontWeight(.bold).frame(maxWidth: .infinity, alignment: .leading); ColumnResizeHandle(width: $nameWidth) }.frame(width: nameWidth)
                     // Gleiche Mindestbreiten wie die Felder darunter – sonst rücken die Köpfe einer leeren Tabelle zusammen
                     header("CAS", minWidth: 70); header("Bezug", minWidth: 90, maxWidth: 140); header("M (g/mol)", minWidth: 60); header("d (g/cm3)", minWidth: 60)
-                    header("n (mol)", minWidth: 60); header("V (ml)", minWidth: 60); header("m (g)", minWidth: 60)
+                    UnitColumnHeader(symbol: "n", kind: .amount, unitSymbol: $amountUnit, minWidth: 60)
+                    UnitColumnHeader(symbol: "V", kind: .volume, unitSymbol: $volumeUnit, minWidth: 60)
+                    UnitColumnHeader(symbol: "m", kind: .mass, unitSymbol: $massUnit, minWidth: 60)
                     header("m theor.", minWidth: 60).foregroundColor(.secondary)
                     header("Ausbeute", minWidth: 60).foregroundColor(.green); Text("").frame(width: 16)
                 }.padding(.bottom, 4); Divider()
-                ForEach($yields) { $yieldItem in YieldRowView(yieldData: $yieldItem, allChemicals: allChemicals, nameWidth: $nameWidth) { yields.removeAll { $0.id == yieldItem.id } }; Divider() }
+                ForEach($yields) { $yieldItem in YieldRowView(yieldData: $yieldItem, allChemicals: allChemicals, nameWidth: $nameWidth,
+                                 units: .init(amount: QuantityKind.amount.unit(amountUnit), volume: QuantityKind.volume.unit(volumeUnit),
+                                              mass: QuantityKind.mass.unit(massUnit))) { yields.removeAll { $0.id == yieldItem.id } }; Divider() }
             }.padding(.horizontal, 12)
             Button(action: { yields.append(YieldData()) }) { HStack { Image(systemName: "plus"); Text("Produkt hinzufügen") }.font(.subheadline).foregroundColor(.green).padding(12) }.buttonStyle(.plain)
         }.background(Color(NSColor.textBackgroundColor).opacity(0.5)).cornerRadius(8).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2), lineWidth: 1))
@@ -27,9 +35,10 @@ struct YieldTableView: View {
 }
 
 struct YieldRowView: View {
-    @Binding var yieldData: YieldData; var allChemicals: [ChemicalData]; @Binding var nameWidth: CGFloat; var onDelete: () -> Void
+    @Binding var yieldData: YieldData; var allChemicals: [ChemicalData]; @Binding var nameWidth: CGFloat; var units = QuantityUnitSet.base; var onDelete: () -> Void
     enum Field { case name, cas, molarMass, density, amount, volume, mass }
     @FocusState private var focusedField: Field?; @State private var tempName: String = ""
+    @State private var unitEdit = UnitEditBuffer<Field>()
     @State private var casStatus: CASLookupStatus = .idle
 
     private var referenceAmount: Double? {
@@ -44,7 +53,7 @@ struct YieldRowView: View {
 
     func theoreticalMass() -> String {
         guard let refN = referenceAmount, let M = parseDecimal(yieldData.molarMass) else { return "–" }
-        return format3(refN * M) + " g"
+        return QuantityConversion.format(refN * M / units.mass.factor, kind: .mass) + " " + units.mass.symbol
     }
 
     var body: some View {
@@ -57,13 +66,16 @@ struct YieldRowView: View {
             TextField("M", text: $yieldData.molarMass).focused($focusedField, equals: .molarMass).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.molarMass) { _, _ in calculate(source: .molarMass) }
             TextField("d", text: $yieldData.density).focused($focusedField, equals: .density).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.density) { _, _ in calculate(source: .density) }
                 .onChange(of: focusedField) { old, new in if (old == .molarMass || old == .density) && new != old { saveCASValues() } }
-            TextField("n", text: $yieldData.amount).focused($focusedField, equals: .amount).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.amount) { _, _ in calculate(source: .amount) }
-            TextField("V", text: $yieldData.volume).focused($focusedField, equals: .volume).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.volume) { _, _ in calculate(source: .volume) }
-            TextField("m", text: $yieldData.mass).focused($focusedField, equals: .mass).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.mass) { _, _ in calculate(source: .mass) }
+            TextField("n", text: unitBinding($yieldData.amount, field: .amount, unit: units.amount, kind: .amount, buffer: $unitEdit)).focused($focusedField, equals: .amount).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.amount) { _, _ in calculate(source: .amount) }
+            TextField("V", text: unitBinding($yieldData.volume, field: .volume, unit: units.volume, kind: .volume, buffer: $unitEdit)).focused($focusedField, equals: .volume).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.volume) { _, _ in calculate(source: .volume) }
+            TextField("m", text: unitBinding($yieldData.mass, field: .mass, unit: units.mass, kind: .mass, buffer: $unitEdit)).focused($focusedField, equals: .mass).textFieldStyle(.roundedBorder).frame(minWidth: 60).onChange(of: yieldData.mass) { _, _ in calculate(source: .mass) }
             Text(theoreticalMass()).font(.caption).foregroundColor(.secondary).frame(minWidth: 60)
             Text(currentYield()).fontWeight(.bold).foregroundColor(.green).frame(minWidth: 60)
             Button(action: onDelete) { Image(systemName: "trash").foregroundColor(.red) }.buttonStyle(.plain)
         }.padding(.vertical, 4)
+        // Beim Verlassen des Feldes oder Wechsel der Einheit wieder den umgerechneten Wert zeigen
+        .onChange(of: focusedField) { _, _ in unitEdit = UnitEditBuffer() }
+        .onChange(of: units) { _, _ in unitEdit = UnitEditBuffer() }
     }
 
     private func commitName() { let f = applySmartFormatting(to: tempName); yieldData.name = f; tempName = f }
