@@ -17,7 +17,7 @@ als sauberes PDF.
 
 [![ChemJournal in Aktion: Ansatzgrößen mit CAS-Autofill, Suche und Smart Extract](docs/demo.gif)](docs/ChemJournal-Demo.mp4)
 
-<sub>70 Sekunden Rundgang (hier doppelt so schnell) – Klick öffnet das Video in voller Auflösung
+<sub>50 Sekunden Rundgang in Echtzeit – Klick öffnet das Video in voller Auflösung mit 60 Bildern pro Sekunde
 ([MP4](docs/ChemJournal-Demo.mp4)).</sub>
 
 ## Download
@@ -94,6 +94,11 @@ liest ein regelbasierter Parser Zahl + Einheit, ignoriert Temperaturen, Zeiten, 
 Aufarbeitungsschritte und ordnet die Mengen den Namen zu. Was ein Chemikalienname ist, entscheidet ein kleines
 Modell, trainiert auf synthetischen Sätzen (Create ML auf dem Mac, gleichwertiger Klassifikator unter Linux).
 
+[![Smart Extract: Vorschrift einfügen, Extrahieren klicken – die Ansatzgrößen füllen sich](docs/smart-extract.gif)](docs/Smart-Extract-Demo.mp4)
+
+<sub>Eine englische Vorschrift in der App, in Echtzeit: Temperatur, Reaktionszeit und Aufarbeitung werden ignoriert
+([MP4](docs/Smart-Extract-Demo.mp4)).</sub>
+
 Gemessen an von Hand annotierten Absätzen aus echten Veröffentlichungen: **100 % der Zeilen richtig** (33/33
 öffentliche Fälle). Auf 95 weiteren Absätzen aus Open-Access-Artikeln 2024/25 (CC BY 4.0, über Europe PMC) sind
 in den 28 zurückgehaltenen, während der Entwicklung nie angesehenen Absätzen **85,7 % der Zeilen komplett richtig
@@ -115,7 +120,7 @@ PubChem-Suche, und die enthält nur die eingetippte CAS-Nummer.
 ChemJournal ist ein KI-gestütztes Projekt: Der Code der Mac-App, der Linux-Version, von Smart Extract und des
 Trainingsdaten-Generators wurde mit **Google Gemini Flash 3.8** und **Claude Opus 5.5** (Anthropic) geschrieben.
 Idee, Anforderungen aus dem Laboralltag und alle Entscheidungen kommen von mir.
-Jede Funktion ist durch automatische Tests abgedeckt (76 unter macOS, 10 unter Linux) und durch das
+Jede Funktion ist durch automatische Tests abgedeckt (118 unter macOS, 10 unter Linux) und durch das
 Smart-Extract-Testkorpus.
 
 ## Lizenz

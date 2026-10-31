@@ -17,7 +17,7 @@ into a clean PDF when you need it on paper.
 
 [![ChemJournal demo: reagent table with CAS autofill, search and Smart Extract](docs/demo.gif)](docs/ChemJournal-Demo.mp4)
 
-<sub>70-second tour (shown at double speed) – click for the full-resolution video
+<sub>50-second tour in real time – click for the full-resolution video at 60 fps
 ([MP4](docs/ChemJournal-Demo.mp4)).</sub>
 
 ## Download
@@ -101,6 +101,11 @@ temperatures, times, concentrations, flask sizes and work-up steps, and assigns 
 *what is a chemical name* is done by a small model trained on synthetic sentences (Create ML word tagger on
 macOS, an equivalent n-gram classifier on Linux).
 
+[![Smart Extract: paste the procedure above, click Extract – the reagent table fills in](docs/smart-extract.gif)](docs/Smart-Extract-Demo.mp4)
+
+<sub>The paragraph above in the app, in real time: temperature, reaction time and work-up are ignored
+([MP4](docs/Smart-Extract-Demo.mp4)).</sub>
+
 Measured on hand-annotated paragraphs from real papers (`macos/Tools/SmartExtractEval`): **100 % of rows
 correct** (33/33 public cases, 146 rows; also 58/58 on the larger private corpus). On 95 further paragraphs from
 2024/25 open-access articles (CC BY 4.0, via Europe PMC), the 28 held-out ones that were never looked at during
@@ -141,7 +146,7 @@ docs/       Screenshots and demo video
 ChemJournal is an AI-assisted project: the code for the macOS app, the Linux version, Smart Extract and the
 training-data generator was written with **Google Gemini Flash 3.8** and **Claude Opus 5.5** (Anthropic). The idea,
 the requirements from day-to-day lab work and all decisions come from me.
-Every feature is covered by automated tests (76 on macOS, 10 on Linux) and the Smart Extract evaluation corpus.
+Every feature is covered by automated tests (118 on macOS, 10 on Linux) and the Smart Extract evaluation corpus.
 
 ## License
 
