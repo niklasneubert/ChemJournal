@@ -2,7 +2,7 @@
 
 🇩🇪 [Deutsche Version](CHANGELOG.de.md)
 
-## Unreleased (source code, macOS and Linux)
+## 1.2 – 2 November 2026 (macOS and Linux)
 
 ### Purification & analysis
 
@@ -23,6 +23,11 @@
 ### Other
 
 - New app icon.
+
+### Compatibility
+
+- Same file format as 1.1. Version 1.1 can open journals edited with 1.2; nested entries then appear one below
+  the other, and saving with 1.1 removes the nesting (the entries themselves stay).
 
 ## 1.1 – 31 October 2026 (macOS and Linux)
 

@@ -2,7 +2,7 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
-## Noch nicht veröffentlicht (Quellcode, macOS und Linux)
+## 1.2 – 2. November 2026 (macOS und Linux)
 
 ### Aufreinigung & Analytik
 
@@ -25,6 +25,11 @@
 ### Sonstiges
 
 - Neues App-Symbol.
+
+### Kompatibilität
+
+- Gleiches Dateiformat wie 1.1. Version 1.1 kann mit 1.2 bearbeitete Journale öffnen; untergeordnete Einträge
+  stehen dann einfach untereinander, und Speichern mit 1.1 hebt die Unterordnung auf (die Einträge selbst bleiben).
 
 ## 1.1 – 31. Oktober 2026 (macOS und Linux)
 
