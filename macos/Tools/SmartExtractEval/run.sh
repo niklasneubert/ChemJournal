@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Tool mit den Smart-Extract-Quellen der App bauen (nur wenn sich etwas geändert hat)
-SOURCES=("$APP"/Services/SmartExtract/*.swift "$APP/Models/JournalModels.swift" "$APP/Utilities/NumberFormatting.swift" "$HERE/Evaluate.swift")
+SOURCES=("$APP"/Services/SmartExtract/*.swift "$APP/Models/JournalModels.swift" "$APP/Models/AnalysisModels.swift" "$APP/Utilities/NumberFormatting.swift" "$HERE/Evaluate.swift")
 BIN="$BUILD/evaluate"
 if [[ ! -x "$BIN" ]] || [[ -n "$(find "${SOURCES[@]}" -newer "$BIN" 2>/dev/null)" ]]; then
     echo "Baue Bewertungswerkzeug …"
@@ -44,7 +44,7 @@ if [[ $USE_MODEL -eq 1 ]]; then
     [[ -f "$MLMODEL" ]] || MLMODEL="$HERE/../../Training model for image classification /Smart Extract for ChemJournal $MODEL_NR.mlmodel"
     COMPILED="$BUILD/Smart Extract for ChemJournal $MODEL_NR.mlmodelc"
     [[ -f "$MLMODEL" ]] || { echo "Modell $MODEL_NR weder im App- noch im Training-Ordner gefunden" >&2; exit 1; }
-    if [[ ! -d "$COMPILED" ]] || [[ "$MLMODEL" -nt "$COMPILED" ]]; then
+    if [[ ! -f "$COMPILED/coremldata.bin" ]] || [[ "$MLMODEL" -nt "$COMPILED" ]]; then
         echo "Kompiliere Modell $MODEL_NR …"
         rm -rf "$COMPILED"
         xcrun coremlcompiler compile "$MLMODEL" "$BUILD" >/dev/null
@@ -53,4 +53,5 @@ if [[ $USE_MODEL -eq 1 ]]; then
 fi
 
 "$BIN" ${ARGS[@]+"${ARGS[@]}"} ${PASS[@]+"${PASS[@]}"} "$HERE/Korpus/korpus.json" "$HERE/Korpus/kontrollset.json" \
-    "$HERE/Korpus/korpus_europepmc.json" "$HERE/Korpus/kontrollset_europepmc.json"
+    "$HERE/Korpus/korpus_europepmc.json" "$HERE/Korpus/kontrollset_europepmc.json" \
+    $(ls "$HERE/Korpus/korpus_si_dev.json" "$HERE/Korpus/kontrollset_si.json" 2>/dev/null)

@@ -2,6 +2,30 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
+## Noch nicht veröffentlicht (Quellcode, macOS und Linux)
+
+### Aufreinigung & Analytik
+
+- **Reihenfolge per Ziehen:** Den farbigen Streifen links an einer Karte gedrückt halten und die Karte an die
+  gewünschte Stelle ziehen.
+- **Einträge unterordnen:** Eine Karte nach rechts ziehen – oder ⋯ › „Unterordnen unter“ – ordnet sie unter einen
+  anderen Eintrag (z. B. DC und Säule unter das ¹H-NMR des Produkts). Untergeordnete Einträge sind eingerückt,
+  werden mit dem übergeordneten Eintrag eingeklappt und wandern beim Verschieben mit. Nach links ziehen oder
+  „Herauslösen“ macht das rückgängig. Ältere Versionen zeigen solche Einträge einfach wieder untereinander.
+- **Behoben:** „Hinzufügen“ hat Werte und Probe vom letzten Eintrag derselben Methode übernommen. Neue Einträge sind
+  jetzt immer leer.
+
+### Smart Extract
+
+- Genauer bei Supporting Informations: Zusammensetzungen in der Mengenklammer („97 % (w/w) A, 3 % B, 157 mg“),
+  Ausbeuten in Klammern, „0.20 mmol scale“, Vorschrift-Kürzel (GPA–GPH), Fällen/Anreiben/Ansäuern, NMR-Proben und
+  Aliquots, Silbentrennung nach Lokanten. An 334 von Hand geprüften SI-Absätzen: 87.8 % → 93.3 % richtige Zeilen,
+  deutlich weniger falsche Zusatzzeilen; die Kontrollsets bleiben unverändert.
+
+### Sonstiges
+
+- Neues App-Symbol.
+
 ## 1.1 – 31. Oktober 2026 (macOS und Linux)
 
 Die größte Aktualisierung seit 1.0: Einheiten per Klick, Reinheit, Markierungen und Tags, ein komplett neuer

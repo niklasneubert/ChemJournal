@@ -372,6 +372,13 @@ select.field { padding: 0 4px; }
 .analysis-card { --c: var(--blue); position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 12px 12px 15px; border-radius: 8px;
   background: color-mix(in srgb, var(--panel-bg) 70%, transparent); border: 1px solid var(--gray-border); }
 .analysis-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 8px 0 0 8px; background: color-mix(in srgb, var(--c) 70%, transparent); }
+/* Farbstreifen zugleich Griff zum Verschieben: 10 px breite Griffzone, Streifen wird beim Zeigen breiter */
+.analysis-card .reorder-handle { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; cursor: grab; z-index: 1; border-radius: 8px 0 0 8px; }
+.analysis-card .reorder-handle:hover, .analysis-card.dragging .reorder-handle { background: linear-gradient(90deg, color-mix(in srgb, var(--c) 95%, transparent) 6px, transparent 6px); }
+.analysis-card.nested { margin-left: 28px; }
+.analysis-card.dragging { box-shadow: 0 4px 18px rgba(0,0,0,.18); transform: scale(1.01); z-index: 2; }
+.analysis-card.dragging .reorder-handle { cursor: grabbing; }
+.analysis-box.reordering { user-select: none; }
 .analysis-card.purification { --c: var(--green); }
 .analysis-card.other { --c: #8e8e93; }
 .analysis-card.drop-target { border: 2px dashed var(--accent); }

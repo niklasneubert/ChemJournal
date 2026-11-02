@@ -140,7 +140,22 @@
       id: str(e.id) || uuid(), method: METHODS.includes(e.method) ? e.method : 'other', sample: str(e.sample), values,
       files: (e.files || []).map(f => ({ id: str(f.id) || uuid(), filePath: str(f.filePath), description: str(f.description) })),
       isExpanded: e.isExpanded !== false, createdAt: typeof e.createdAt === 'number' && Number.isFinite(e.createdAt) ? e.createdAt : nowRef(),
+      ...(typeof e.parentID === 'string' && e.parentID ? { parentID: e.parentID } : {}),
     };
+  }
+
+  /**
+   * Untergeordnete Einträge stehen direkt hinter ihrem übergeordneten Eintrag (nur eine Ebene). Ein Eintrag, dessen
+   * übergeordneter Eintrag nicht unmittelbar davor steht (gelöscht, verschoben), wird wieder Eintrag oberster Ebene.
+   */
+  function normalizedHierarchy(list) {
+    let lastTop = null;
+    return list.map(e => {
+      let out = e;
+      if (e.parentID && e.parentID !== lastTop) { out = { ...e }; delete out.parentID; }
+      if (!out.parentID) lastTop = out.id;
+      return out;
+    });
   }
 
   const value = (e, key) => str(e.values && e.values[key]).trim();
@@ -368,7 +383,7 @@
 
   const api = { Analysis: {
     GROUPS, METHODS, NMR_EXPERIMENTS, groupTitle, methodsIn, title, shortTitle, symbol: m => SYMBOLS[m] || 'doc.text', group: m => GROUP_OF[m],
-    fields, inherited: m => INHERITED[m] || [], newEntry, normalizeEntry, value, list, heading, results, summary, searchText, migrated, signedNumber,
+    fields, inherited: m => INHERITED[m] || [], newEntry, normalizeEntry, normalizedHierarchy, value, list, heading, results, summary, searchText, migrated, signedNumber,
   } };
   if (node) module.exports = api;
   else Object.assign((g.CJ = g.CJ || {}), api);

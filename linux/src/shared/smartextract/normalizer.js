@@ -64,6 +64,8 @@
       if (chemicalPrefixes.has(left.toLowerCase())) return `${left}-${right}`;
       return left + right;
     });
+    // Bindestrich nach Lokant oder Klammer am Zeilenende gehört zum Namen: "((1-\nphenylprop…", "2,2′-\nbis(…)"
+    s = s.replace(/([0-9)\]′’',])-[ \t]*\n[ \t]*(?=[a-z(\[])/g, '$1-');
     s = rep(s, /^([ \t]*(?:\d+\.)+\d*[ \t]+[A-ZÄÖÜ][a-zäöüß]{2,}[^\n]*)\n(?!\n)/gm, m => {
       const line = m[1].replace(/^[ \t]+|[ \t]+$/g, '');
       const hasUnit = /\d\s*(?:mmol|µmol|mol|mg|g|kg|ml|mL|µl|µL|l|L|eq|equiv|Äq|°C)(?![A-Za-z])/.test(line);

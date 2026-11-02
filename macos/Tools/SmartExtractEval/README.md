@@ -48,6 +48,8 @@ und es gibt keinen Wert, der nicht im Soll steht.
 | `Korpus/kontrollset.json` | 13 Absätze, 56 Pflichtzeilen. Nur zum Messen – nie daran nachbessern. |
 | `Korpus/korpus_europepmc.json` | 67 Absätze, 280 Pflichtzeilen aus 2024/25 erschienenen Open-Access-Artikeln (CC BY 4.0, über Europe PMC), davon 7 aus SI-PDFs. An diesen Fällen wurde Smart Extract am 26.10.2026 robuster gemacht. |
 | `Korpus/kontrollset_europepmc.json` | 28 Absätze, 112 Pflichtzeilen aus *anderen* Artikeln derselben Suche. Während der Arbeit nie im Detail angesehen, nur als Gesamtzahl gemessen. |
+| `Korpus/korpus_si_dev.json` | 334 Absätze, 1050 Zeilen aus sieben SIs (Nature, Angew., Acc. Chem. Res., Chem. Eur. J., zwei JACS). Smart-Extract-Ausgabe von Hand korrigiert (01.11.2026); daran wurden die Regeln für 1.2 verbessert. Nicht frei lizenziert – nur lokal, nicht auf GitHub. |
+| `Korpus/kontrollset_si.json` | 30 Absätze, 92 Pflichtzeilen aus drei *anderen* SIs (Org. Lett. 2021, JACS 2018, Chem. Commun. 2013), von Hand annotiert. Nie im Detail angesehen. Nicht frei lizenziert – nur lokal. |
 
 Stand 23.10.2026 mit Modell 15: `korpus.json` und `kontrollset.json` 100 % (33/33 Fälle).
 
@@ -102,3 +104,16 @@ ein Teilstring genügt („BINOL 62b“ passt zu „monosubstituiertem BINOL 62b
 - Grenzfälle (Quench-Reagenz im Reaktionssatz, Molsieb) als `"optional": true` markieren.
 - Wenn du einen Fall zur Fehlersuche nutzt, kommt er nach `korpus.json`. `kontrollset.json` nur ergänzen,
   nie daran nachbessern – sonst misst es nicht mehr, wie gut Smart Extract mit *neuen* Texten zurechtkommt.
+
+### SI-Runde (01.11.2026, Version 1.2)
+
+| Satz | vorher | nachher |
+|---|---|---|
+| `korpus_si_dev.json` (Mac, Modell 15) | 87.8 % richtige Zeilen, 146/334 Fälle fehlerfrei, 345 falsche Zusatzzeilen | 93.3 %, 250/334, 125 |
+| `kontrollset_si.json` (ungesehen) | 90.2 %, 22/30, 7 | 90.2 %, 22/30, 7 (unverändert) |
+| Linux, `korpus_si_dev.json` | 87.0 %, 141/334, 342 | 92.2 %, 238/334, 148 |
+
+Neue Regeln: Zusammensetzung in der Mengenklammer ("97 % (w/w) A, 3 % B, 157 mg"), Ausbeute in Klammern ("25 mg, 98%)"),
+"0.20 mmol scale", Vorschrift-Kürzel GPA–GPH, "c = …", Fällen/Anreiben/Ansäuern, NMR-Proben und Aliquots, Schutzgas,
+Gefäße mit mehreren Adjektiven, Zeilenumbruch nach Lokant ("((1-⏎phenyl…"). Ein Modell 17 mit den korrigierten SIs als
+Trainingsdaten war schlechter als Modell 15 (Kontrollset 85.9 %) und wird nicht verwendet.

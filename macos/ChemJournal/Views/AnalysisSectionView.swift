@@ -6,6 +6,12 @@ import UniformTypeIdentifiers
 /// eigenem Formular und verknüpften Dateien.
 struct AnalysisSectionView: View {
     @Binding var entries: [AnalysisEntry]
+    /// Eintrag, der gerade am Farbstreifen gezogen wird, und die Rahmen aller Karten (zum Umsortieren).
+    @State private var draggingID: UUID?
+    @State private var cardFrames: [UUID: CGRect] = [:]
+    /// Waagerechter Versatz beim Ziehen: nach rechts = unterordnen, nach links = herauslösen.
+    @State private var dragOffsetX: CGFloat = 0
+    private static let indentThreshold: CGFloat = 40
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -30,14 +36,32 @@ struct AnalysisSectionView: View {
                 }
             }
             ForEach($entries) { $entry in
+                if isVisible(entry) {
                 AnalysisEntryCard(entry: $entry,
                                   onDuplicate: { duplicate(entry.id) },
                                   onMove: { move(entry.id, by: $0) },
-                                  onDelete: { withAnimation(.easeOut(duration: 0.15)) { entries.removeAll { $0.id == entry.id } } },
+                                  onDelete: { delete(entry.id) },
                                   canMoveUp: entries.first?.id != entry.id,
-                                  canMoveDown: entries.last?.id != entry.id)
+                                  canMoveDown: entries.last?.id != entry.id,
+                                  isDragging: draggingID == entry.id,
+                                  dragOffsetX: draggingID == entry.id ? dragOffsetX : 0,
+                                  childCount: entries.filter { $0.parentID == entry.id }.count,
+                                  nestTargets: nestTargets(for: entry),
+                                  onNest: { nest(entry.id, under: $0) },
+                                  onUnnest: { unnest(entry.id) },
+                                  onReorderDrag: { y, dx in reorder(entry.id, pointerY: y, offsetX: dx) },
+                                  onReorderEnd: { dx in finishDrag(entry.id, offsetX: dx) })
+                    .padding(.leading, entry.parentID == nil ? 0 : 28)
+                    .background(GeometryReader { geo in
+                        Color.clear.preference(key: AnalysisCardFrameKey.self,
+                                               value: [entry.id: geo.frame(in: .named(Self.space))])
+                    })
+                    .zIndex(draggingID == entry.id ? 1 : 0)
+                }
             }
         }
+        .coordinateSpace(name: Self.space)
+        .onPreferenceChange(AnalysisCardFrameKey.self) { cardFrames = $0 }
         .padding(12).background(Color(NSColor.textBackgroundColor).opacity(0.5)).cornerRadius(8)
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2), lineWidth: 1))
     }
@@ -59,27 +83,134 @@ struct AnalysisSectionView: View {
         .help("Weitere Messung oder Aufreinigung zu dieser Stufe hinzufügen")
     }
 
-    /// Neuer Eintrag; übernimmt Lösungsmittel, Eluent usw. vom letzten Eintrag derselben Methode.
+    /// Neuer, leerer Eintrag am Ende.
     private func add(_ method: AnalysisMethod) {
-        var entry = AnalysisEntry(method: method)
-        if let last = entries.last(where: { $0.method == method }) {
-            for key in method.inheritedKeys { if let v = last.values[key], !v.isEmpty { entry.values[key] = v } }
-            entry.sample = last.sample
-        }
-        withAnimation(.easeOut(duration: 0.15)) { entries.append(entry) }
+        withAnimation(.easeOut(duration: 0.15)) { entries.append(AnalysisEntry(method: method)) }
     }
 
     private func duplicate(_ id: UUID) {
         guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
         var copy = entries[i]
         copy.id = UUID(); copy.createdAt = Date(); copy.files = copy.files.map { var f = $0; f.id = UUID(); return f }
-        entries.insert(copy, at: i + 1)
+        // Kopie eines übergeordneten Eintrags hinter seine untergeordneten Einträge (ohne diese mitzukopieren)
+        entries.insert(copy, at: blockRange(of: i, in: entries).upperBound)
+        entries = AnalysisEntry.normalizedHierarchy(entries)
+    }
+
+    /// Löschen; untergeordnete Einträge bleiben als Einträge oberster Ebene erhalten.
+    private func delete(_ id: UUID) {
+        withAnimation(.easeOut(duration: 0.15)) {
+            for k in entries.indices where entries[k].parentID == id { entries[k].parentID = nil }
+            entries.removeAll { $0.id == id }
+        }
+    }
+
+    // MARK: Unterordnen
+
+    private func isVisible(_ entry: AnalysisEntry) -> Bool {
+        guard let p = entry.parentID, let parent = entries.first(where: { $0.id == p }) else { return true }
+        return parent.isExpanded
+    }
+
+    /// Eintrag und seine untergeordneten Einträge (nur bei Einträgen oberster Ebene).
+    private func blockRange(of i: Int, in list: [AnalysisEntry]) -> Range<Int> {
+        var end = i + 1
+        if list[i].parentID == nil { while end < list.count, list[end].parentID == list[i].id { end += 1 } }
+        return i..<end
+    }
+
+    /// Mögliche übergeordnete Einträge: alle anderen Einträge oberster Ebene (nicht für Einträge mit eigenen Untereinträgen).
+    private func nestTargets(for entry: AnalysisEntry) -> [(id: UUID, title: String)] {
+        guard entry.parentID == nil, !entries.contains(where: { $0.parentID == entry.id }) else { return [] }
+        return entries.filter { $0.parentID == nil && $0.id != entry.id }.map { e in
+            let sample = e.sample.trimmingCharacters(in: .whitespaces)
+            return (e.id, sample.isEmpty ? e.heading : "\(e.heading) – \(sample)")
+        }
+    }
+
+    private func nest(_ id: UUID, under parentID: UUID) {
+        withAnimation(.easeOut(duration: 0.2)) {
+            guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
+            var moving = entries.remove(at: i)
+            moving.parentID = parentID
+            guard let p = entries.firstIndex(where: { $0.id == parentID }) else { return }
+            entries.insert(moving, at: blockRange(of: p, in: entries).upperBound)
+            entries[entries.firstIndex(where: { $0.id == parentID })!].isExpanded = true
+            entries = AnalysisEntry.normalizedHierarchy(entries)
+        }
+    }
+
+    /// Herauslösen: als Eintrag oberster Ebene hinter den Block des bisherigen übergeordneten Eintrags.
+    private func unnest(_ id: UUID) {
+        withAnimation(.easeOut(duration: 0.2)) {
+            guard let i = entries.firstIndex(where: { $0.id == id }), let parentID = entries[i].parentID else { return }
+            var moving = entries.remove(at: i)
+            moving.parentID = nil
+            let insertAt = entries.firstIndex(where: { $0.id == parentID }).map { blockRange(of: $0, in: entries).upperBound } ?? i
+            entries.insert(moving, at: insertAt)
+            entries = AnalysisEntry.normalizedHierarchy(entries)
+        }
+    }
+
+    /// Ende des Ziehens: deutlich nach rechts gezogen = unter den Eintrag darüber, nach links = herauslösen.
+    private func finishDrag(_ id: UUID, offsetX: CGFloat) {
+        defer { withAnimation(.easeOut(duration: 0.15)) { draggingID = nil; dragOffsetX = 0 } }
+        guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
+        if offsetX > Self.indentThreshold, entries[i].parentID == nil, !entries.contains(where: { $0.parentID == id }),
+           let parent = entries[..<i].last(where: { $0.parentID == nil }) {
+            nest(id, under: parent.id)
+        } else if offsetX < -Self.indentThreshold, entries[i].parentID != nil {
+            unnest(id)
+        }
+    }
+
+    static let space = "analysisSection"
+
+    /// Umsortieren per Ziehen am Farbstreifen: Die gezogene Karte wandert an die Stelle, über der der Zeiger steht.
+    /// Ein Eintrag oberster Ebene wandert mit seinen untergeordneten Einträgen; ein untergeordneter Eintrag gehört danach
+    /// zum nächsten Eintrag oberster Ebene darüber.
+    private func reorder(_ id: UUID, pointerY: CGFloat, offsetX: CGFloat) {
+        if draggingID != id { withAnimation(.easeOut(duration: 0.12)) { draggingID = id } }
+        dragOffsetX = offsetX
+        guard let from = entries.firstIndex(where: { $0.id == id }) else { return }
+        // Eingeklappte untergeordnete Einträge haben keinen Rahmen: Sie stehen an der Stelle ihres übergeordneten Eintrags
+        func midY(_ e: AnalysisEntry) -> CGFloat { cardFrames[e.id]?.midY ?? e.parentID.flatMap { cardFrames[$0]?.midY } ?? .infinity }
+        let block = blockRange(of: from, in: entries)
+        var rest = entries
+        let moving = Array(rest[block])
+        rest.removeSubrange(block)
+        var target = 0
+        if entries[from].parentID == nil {
+            // nur zwischen ganzen Blöcken einfügen
+            var k = 0
+            while k < rest.count {
+                let r = blockRange(of: k, in: rest)
+                if midY(rest[k]) < pointerY { target = r.upperBound }
+                k = r.upperBound
+            }
+        } else {
+            target = rest.filter { midY($0) < pointerY }.count
+        }
+        var result = rest
+        result.insert(contentsOf: moving, at: target)
+        if entries[from].parentID != nil {
+            result[target].parentID = result[..<target].last(where: { $0.parentID == nil })?.id
+        }
+        result = AnalysisEntry.normalizedHierarchy(result)
+        guard result.map(\.id) != entries.map(\.id) || result.map(\.parentID) != entries.map(\.parentID) else { return }
+        withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) { entries = result }
     }
 
     private func move(_ id: UUID, by offset: Int) {
         guard let i = entries.firstIndex(where: { $0.id == id }), entries.indices.contains(i + offset) else { return }
         entries.swapAt(i, i + offset)
+        entries = AnalysisEntry.normalizedHierarchy(entries)
     }
+}
+
+private struct AnalysisCardFrameKey: PreferenceKey {
+    static let defaultValue: [UUID: CGRect] = [:]
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) { value.merge(nextValue()) { $1 } }
 }
 
 /// Farbiges Symbol mit Methodenname (für die Schnellauswahl).
@@ -113,7 +244,17 @@ struct AnalysisEntryCard: View {
     var onDelete: () -> Void
     var canMoveUp: Bool
     var canMoveDown: Bool
+    var isDragging = false
+    var dragOffsetX: CGFloat = 0
+    var childCount = 0
+    var nestTargets: [(id: UUID, title: String)] = []
+    var onNest: (UUID) -> Void = { _ in }
+    var onUnnest: () -> Void = {}
+    /// Zeigerposition (y im Koordinatenraum der Analytik) und waagerechter Versatz beim Ziehen am Farbstreifen.
+    var onReorderDrag: (CGFloat, CGFloat) -> Void = { _, _ in }
+    var onReorderEnd: (CGFloat) -> Void = { _ in }
     @State private var isDropTarget = false
+    @State private var isHoveringHandle = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -137,13 +278,42 @@ struct AnalysisEntryCard: View {
         }
         .padding(12)
         .background(Color(NSColor.controlBackgroundColor).opacity(0.7), in: RoundedRectangle(cornerRadius: 8))
-        .overlay(alignment: .leading) {
-            // Farbstreifen: blau = Spektroskopie, grün = Aufreinigung
-            UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 8).fill(entry.method.tint.opacity(0.7)).frame(width: 3)
-        }
+        .overlay(alignment: .leading) { reorderHandle }
         .overlay(RoundedRectangle(cornerRadius: 8)
             .stroke(isDropTarget ? Color.accentColor : Color.gray.opacity(0.2), style: StrokeStyle(lineWidth: isDropTarget ? 2 : 1, dash: isDropTarget ? [6] : [])))
         .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isDropTarget) { providers in linkDroppedFiles(providers) }
+        .scaleEffect(isDragging ? 1.01 : 1)
+        .offset(x: max(-30, min(30, dragOffsetX * 0.5)))
+        .shadow(color: .black.opacity(isDragging ? 0.18 : 0), radius: isDragging ? 10 : 0, y: isDragging ? 4 : 0)
+    }
+
+    /// Farbstreifen (blau = Spektroskopie, grün = Aufreinigung) – zugleich Griff zum Verschieben der Karte.
+    private var reorderHandle: some View {
+        let active = isHoveringHandle || isDragging
+        return ZStack(alignment: .leading) {
+            Color.clear.frame(width: 10)
+            UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 8)
+                .fill(entry.method.tint.opacity(active ? 0.95 : 0.7))
+                .frame(width: active ? 6 : 3)
+        }
+        .frame(maxHeight: .infinity)
+        .contentShape(Rectangle())
+        .onHover { inside in
+            isHoveringHandle = inside
+            if !isDragging { (inside ? NSCursor.openHand : NSCursor.arrow).set() }
+        }
+        .gesture(DragGesture(minimumDistance: 2, coordinateSpace: .named(AnalysisSectionView.space))
+            .onChanged { value in
+                NSCursor.closedHand.set()
+                onReorderDrag(value.location.y, value.translation.width)
+            }
+            .onEnded { value in
+                onReorderEnd(value.translation.width)
+                (isHoveringHandle ? NSCursor.openHand : NSCursor.arrow).set()
+            })
+        .animation(.easeOut(duration: 0.12), value: active)
+        .help("Gedrückt halten und ziehen, um die Reihenfolge zu ändern – nach rechts ziehen ordnet unter, nach links löst heraus")
+        .accessibilityLabel("Eintrag verschieben")
     }
 
     // MARK: Kopf
@@ -162,6 +332,10 @@ struct AnalysisEntryCard: View {
                 .textFieldStyle(.plain).font(.subheadline).foregroundStyle(.secondary)
                 .frame(minWidth: 120, maxWidth: 260)
             Spacer()
+            if !entry.isExpanded, childCount > 0 {
+                Label("\(childCount)", systemImage: "list.bullet.indent").font(.caption).foregroundStyle(.secondary)
+                    .help("Untergeordnete Einträge (eingeklappt)")
+            }
             if !entry.isExpanded, !entry.files.isEmpty {
                 Label("\(entry.files.count)", systemImage: "paperclip").font(.caption).foregroundStyle(.secondary)
                     .help("Verknüpfte Dateien")
@@ -170,6 +344,13 @@ struct AnalysisEntryCard: View {
                 Button("Duplizieren", action: onDuplicate)
                 Button("Nach oben") { onMove(-1) }.disabled(!canMoveUp)
                 Button("Nach unten") { onMove(1) }.disabled(!canMoveDown)
+                if entry.parentID != nil {
+                    Button("Herauslösen", action: onUnnest)
+                } else if !nestTargets.isEmpty {
+                    Menu("Unterordnen unter") {
+                        ForEach(nestTargets, id: \.id) { t in Button(t.title) { onNest(t.id) } }
+                    }
+                }
                 Divider()
                 Button("Zusammenfassung kopieren") {
                     NSPasteboard.general.clearContents()

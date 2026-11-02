@@ -338,12 +338,15 @@ nonisolated struct AnalysisEntry: Identifiable, Hashable, Codable, Sendable {
     var files: [AnalysisFile] = []
     var isExpanded = true
     var createdAt = Date()
+    /// Übergeordneter Eintrag derselben Stufe (eingerückt darunter, klappt mit ihm ein). Steht in der Liste direkt
+    /// hinter seinem übergeordneten Eintrag bzw. dessen anderen untergeordneten Einträgen.
+    var parentID: UUID?
 
     init(method: AnalysisMethod, sample: String = "", values: [String: String] = [:], files: [AnalysisFile] = []) {
         self.method = method; self.sample = sample; self.values = values; self.files = files
     }
 
-    private enum CodingKeys: String, CodingKey { case id, method, sample, values, files, isExpanded, createdAt }
+    private enum CodingKeys: String, CodingKey { case id, method, sample, values, files, isExpanded, createdAt, parentID }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -354,6 +357,19 @@ nonisolated struct AnalysisEntry: Identifiable, Hashable, Codable, Sendable {
         files = try c.decodeIfPresent([AnalysisFile].self, forKey: .files) ?? []
         isExpanded = try c.decodeIfPresent(Bool.self, forKey: .isExpanded) ?? true
         createdAt = try c.decodeIfPresent(Date.self, forKey: .createdAt) ?? Date()
+        parentID = try c.decodeIfPresent(UUID.self, forKey: .parentID)
+    }
+
+    /// Hält die Ordnung gültig: Ein untergeordneter Eintrag gehört immer zum nächsten Eintrag oberster Ebene davor.
+    /// Passt das nicht (übergeordneter Eintrag gelöscht oder verschoben), wird er wieder ein Eintrag oberster Ebene.
+    static func normalizedHierarchy(_ list: [AnalysisEntry]) -> [AnalysisEntry] {
+        var out = list
+        var lastTop: UUID?
+        for i in out.indices {
+            if let p = out[i].parentID, p != lastTop { out[i].parentID = nil }
+            if out[i].parentID == nil { lastTop = out[i].id }
+        }
+        return out
     }
 
     func value(_ key: String) -> String { (values[key] ?? "").trimmingCharacters(in: .whitespacesAndNewlines) }

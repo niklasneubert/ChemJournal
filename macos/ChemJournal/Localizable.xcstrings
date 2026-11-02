@@ -441,6 +441,46 @@
         }
       }
     },
+    "Eintrag verschieben": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move entry"
+          }
+        }
+      }
+    },
+    "Gedrückt halten und ziehen, um die Reihenfolge zu ändern": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click and drag to reorder"
+          }
+        }
+      }
+    },
+    "Gedrückt halten und ziehen, um die Reihenfolge zu ändern – nach rechts ziehen ordnet unter, nach links löst heraus": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click and drag to reorder – drag right to nest, left to move out"
+          }
+        }
+      }
+    },
+    "Herauslösen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move out"
+          }
+        }
+      }
+    },
     "Klicken, um die Einheit der Spalte zu wechseln": {
       "localizations": {
         "en": {
@@ -477,6 +517,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Edit in ChemDraw"
+          }
+        }
+      }
+    },
+    "Untergeordnete Einträge (eingeklappt)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nested entries (collapsed)"
+          }
+        }
+      }
+    },
+    "Unterordnen unter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nest under"
           }
         }
       }

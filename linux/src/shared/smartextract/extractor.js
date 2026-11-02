@@ -173,6 +173,7 @@
       'erhielt', 'quench', 'quenching', 'poured', 'gegossen', 'silica', 'kieselgel', 'slurry', 'brine',
       'filtration', 'evaporation', 'extraction', 'eingedampft', 'rotiert',
       'afford', 'affords', 'affording', 'furnishing',
+      'precipitation', 'triturated', 'acidified', 'acidification', 'angesäuert',
     ]),
     // Verben, hinter denen im selben Teilsatz nur noch das Produkt steht ("… to give 3a (45 mg)", "… gave 4b")
     productVerbs: new Set(['gave', 'give', 'gives', 'giving', 'provided', 'providing']),
@@ -358,6 +359,10 @@
       this.lastQuantityEnd = null;
       // "azide (13, 14, or 17; 0.27 mmol)": Nummern/Namen am Anfang der Klammer sind Aliasse des Namens davor
       this.skippingAliases = false;
+      // "(25 mg, 0.098 mmol, 98%)": Ausbeute in der Klammer – der Rest der Klammer gehört zum Produkt
+      this.skippingProductGroup = false;
+      // Klammertiefe, in der eine Zusammensetzungsangabe ("97 % (w/w) A, 3 % B, …") übersprungen wird
+      this.compositionDepth = null;
     }
 
     wt(w) { return this.text.slice(w.start, w.end); }
@@ -490,6 +495,15 @@
             isLetter(chars(lowers[k + 1])[0])) continue;
         return true;
       }
+      // "The product was dissolved in 5 ml DCM …": Arbeit am fertigen Produkt
+      if (lowers.length > 1 && ['the', 'das', 'der'].includes(lowers[0]) && ['product', 'produkt', 'precipitate', 'niederschlag'].includes(lowers[1])) return true;
+      // NMR-/Analysenproben: "an aliquot (0.2 mL) … CDCl3 (0.4 mL)", "The NMR samples were prepared …"
+      if (lowers.some(w => w.startsWith('aliquot')) && !lowers.some(w => ['mmol', 'µmol', 'equiv', 'eq'].includes(trimSet(w, ['.'])))) return true;
+      if (lowers.includes('nmr') && lowers.some(w => ['sample', 'samples', 'probe', 'proben'].includes(w))) return true;
+      // "… and precipitated with Et2O" – nicht "a solid precipitated" (Beobachtung)
+      for (let k = 0; k + 1 < lowers.length; k++) {
+        if (['precipitated', 'gefällt', 'ausgefällt'].includes(lowers[k]) && ['with', 'by', 'from', 'using', 'mit', 'durch', 'aus'].includes(lowers[k + 1])) return true;
+      }
       // Stoffmengen oder Äquivalente im Teilsatz: Reaktionsansatz, auch wenn "ges. NH4Cl" vorkommt
       const hasAmounts = lowers.some(w => ['mmol', 'µmol', 'umol', 'mol', 'equiv', 'eq', 'äq', 'äquiv'].includes(trimSet(w, ['.'])));
       for (let k = 0; k + 1 < lowers.length; k++) {
@@ -522,6 +536,20 @@
         this.parenDepth = Math.max(0, this.parenDepth + countOf(span, '(') - countOf(span, ')'));
         if (skip.carrier) { i += 1; continue; }
         if (word.gapBefore.includes(')')) this.skippingAliases = false;
+        if (this.skippingProductGroup) {
+          if (this.parenDepth === 0 || word.gapBefore.includes(')')) this.skippingProductGroup = false; else { i += 1; continue; }
+        }
+        // Zusammensetzung in der Mengenklammer: "TFT-Reagenz (97 % (w/w) TFT-S-oxid 1, 3 % TFT 2, 157 mg, …)"
+        if (this.compositionDepth === null && word.gapBefore.includes('(') && this.current.nameRange !== null && !hasQuantity(this.current) &&
+            this.parenDepth > 0 && word.tokens.length === 1 && parseDecimal(wordText) !== null && i + 1 < sentence.end &&
+            (this.words[i + 1].gapBefore.startsWith('%') || this.words[i + 1].gapBefore.startsWith(' %')) && this.compositionHasQuantity(i, sentence)) {
+          this.compositionDepth = this.parenDepth;
+        }
+        if (this.compositionDepth !== null) {
+          if (this.parenDepth < this.compositionDepth || (this.parenDepth === this.compositionDepth && this.startsQuantity(i, sentence))) {
+            this.compositionDepth = null;
+          } else { i += 1; continue; }
+        }
         if (word.gapBefore.includes('(') && this.current.nameRange !== null && !hasQuantity(this.current) && this.parenDepth > 0 &&
             !this.startsQuantity(i, sentence) && this.parenGroupHasQuantity(i, sentence) && this.aliasListFollows(i, sentence)) {
           this.skippingAliases = true;
@@ -597,6 +625,12 @@
           continue;
         }
 
+        // "(c = 0.50 mM, 4.0 mL)": Formelzeichen vor "=" sind keine Stoffe
+        if (chars(wordText).length <= 2 && i + 1 < sentence.end && this.words[i + 1].gapBefore.includes('=')) {
+          this.nameOpen = false;
+          i += 1;
+          continue;
+        }
         if (isCompoundLabel(wordText)) {
           if (this.acceptCompoundLabel(i, sentence)) this.addLabelWord(word, i, sentence);
           else { this.nameOpen = false; this.lastRejectedWord = word; }
@@ -651,6 +685,19 @@
       const gapAfterNext = i + 2 < sentence.end ? words[i + 2].gapBefore
         : chars(this.text.slice(next ? next.end : this.text.length)).slice(0, 3).join('');
 
+      // Prozentangabe am Ende einer Aufzählung ("…, 0.098 mmol, 98%)", "41 mg, colorless oil, 98%."): Ausbeute –
+      // die Mengen davor beschreiben das Produkt. Am Textende zählt der Rest des Textes.
+      const percentGap = next === null ? chars(this.text.slice(numberWord.end)).slice(0, 4).join('') : gapToNext;
+      const afterPercent = percentGap.replace(/^[% ]+/, '');
+      // "1.1g (3.10 mmol, 41.0%) 1-Brom…": folgt direkt ein Name, war es nur eine Angabe zur Charge
+      const nameFollows = afterPercent.startsWith(')') && !/[.,;]/.test(afterPercent.slice(1)) && next !== null &&
+        (this.isChemicalName(next, nextText) || ChemicalHeuristics.looksLikeChemical(nextText));
+      if (percentGap.includes('%') && (next === null || ')],;.'.includes(afterPercent[0] || 'x')) &&
+          (hasQuantity(this.current) || this.parenDepth > 0) && !nameFollows) {
+        this.current = newPartial(); this.nameOpen = false; this.pendingNameStart = null;
+        if (this.parenDepth > 0 && afterPercent[0] !== ')') this.skippingProductGroup = true;
+        return i + 1;
+      }
       if (gapToNext.startsWith('%')) {
         this.pendingNameStart = numberWord.start;
         return i + 1;
@@ -662,6 +709,9 @@
         const quantity = Units.quantity(nextText, gapAfterNext);
         if (quantity) {
           if (quantity.kind === 'volume' && this.isApparatus(i + 1, sentence)) return i + 2;
+          // "in a 0.20 mmol scale": Ansatzgröße, keine Menge eines Stoffes
+          if (i + 2 < sentence.end && allWS(words[i + 2].gapBefore) &&
+              ['scale', 'maßstab', 'ansatz', 'batch'].includes(this.wt(words[i + 2]).toLowerCase())) return i + 3;
           // "KOH (0.200 g, 3.56 mmol, 2 mL H2O)": Volumen direkt vor einem Lösemittel in der Klammer ist eine eigene Zeile
           if (quantity.kind === 'volume' && this.parenDepth > 0 && this.current.nameRange !== null && i + 2 < sentence.end &&
               /^ *$/.test(words[i + 2].gapBefore)) {
@@ -750,12 +800,26 @@
       return false;
     }
 
+    /** Folgt in derselben Klammerebene (innere Klammern wie "(w/w)" übersprungen) noch eine Mengenangabe? */
+    compositionHasQuantity(i, sentence) {
+      let depth = 0;
+      for (let j = i; j < sentence.end; j++) {
+        if (j > i) {
+          const gap = this.words[j].gapBefore;
+          depth += countOf(gap, '(') - countOf(gap, ')');
+          if (depth < 0) return false;
+        }
+        if (depth === 0 && this.startsQuantity(j, sentence)) return true;
+      }
+      return false;
+    }
+
     isApparatus(unitIndex, sentence) {
-      for (let j = unitIndex + 1; j < Math.min(unitIndex + 5, sentence.end); j++) {
+      for (let j = unitIndex + 1; j < Math.min(unitIndex + 6, sentence.end); j++) {
         // Nur die Wörter direkt dahinter ("25 mL high-pressure J-Young tube"), nicht über "in", Kommas oder Klammern hinaus
         if (j > unitIndex + 1 && chars(this.words[j].gapBefore).some(c => ',;()'.includes(c))) break;
         const w = this.wt(this.words[j]).toLowerCase();
-        if (j > unitIndex + 1 && Vocabulary.stopwords.has(w) && !Vocabulary.apparatus.some(a => w.includes(a))) break;
+        if (j > unitIndex + 1 && Vocabulary.stopwords.has(w) && !['and', 'und'].includes(w) && !Vocabulary.apparatus.some(a => w.includes(a))) break;
         if (Vocabulary.apparatus.some(a => w.includes(a))) return true;
       }
       return false;
@@ -807,6 +871,10 @@
       if (Vocabulary.apparatus.some(a => lower.includes(a))) return false;
       if (/^\d+(?:[.,]\d+)?-?(?:ml|l|µl|ul|g|mg|mmol|mol|eq)$/.test(lower)) return false;
       if (/^(?:aav|gp|av|sop|gsp)-?\d/.test(lower)) return false;
+      // "according to the GPC using …": Kürzel einer allgemeinen Vorschrift ("GPA", "GPB")
+      if (/^(?:gp|aav|av|agp)[a-h]$/.test(lower)) return false;
+      // "argon gas", "nitrogen gas": Schutzgas, kein Reagenz
+      if (lower === 'gas' || lower === 'gases') return false;
       if (Units.quantity(lower, '') !== null || Units.isIgnoredUnit(lower)) return false;
       const tags = word.tokens.map(t => t.tag).filter(t => t !== null);
       if (tags.includes('CHEMICAL')) return true;

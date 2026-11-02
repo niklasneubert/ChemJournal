@@ -36,6 +36,7 @@ const paths = {
   'arrow.up.left.and.arrow.down.right': '<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>',
   sync: '<path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/>',
   checkmark: '<path d="M5 12.5l4.5 4.5L19 7"/>',
+  'list.bullet.indent': '<path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 9l3 3-3 3"/>',
   'chevron.down': '<path d="M6 9l6 6 6-6"/>',
   star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/>',
   'star.fill': '<path fill="currentColor" d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/>',

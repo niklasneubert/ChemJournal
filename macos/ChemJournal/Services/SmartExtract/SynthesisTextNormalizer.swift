@@ -101,6 +101,8 @@ nonisolated enum SynthesisTextNormalizer {
             if chemicalPrefixes.contains(lastWord) { return "\(left)-\(right)" }
             return left + right
         }
+        // Bindestrich nach Lokant oder Klammer am Zeilenende gehört zum Namen: "((1-\nphenylprop…", "2,2′-\nbis(…)"
+        s = replace(s, #"([0-9)\]′’',])-[ \t]*\n[ \t]*(?=[a-z(\[])"#, "$1-")
         // Nummerierte Überschrift ("5.3.2 Silylketenacetal 5", "6. General procedures") bleibt ein eigener Absatz.
         // Zeilen mit Einheiten ("6.55 ml (46.5 mmol) …") sind Fließtext, auch wenn sie mit einer Zahl beginnen.
         s = replace(s, #"(?m)^([ \t]*(?:\d+\.)+\d*[ \t]+[A-ZÄÖÜ][a-zäöüß]{2,}[^\n]*)\n(?!\n)"#) { m in

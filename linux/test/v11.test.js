@@ -76,6 +76,20 @@ test('Aufreinigung & Analytik: Zeilen wie im Experimentalteil (identisch zur Mac
   assert.strictEqual(Analysis.groupTitle(Analysis.GROUPS[0]), 'Chromatographie & Aufreinigung');
 });
 
+test('Untergeordnete Analytik-Einträge: Reihenfolge prüfen, parentID speichern und lesen', () => {
+  const a = Analysis.newEntry('column'), d = Analysis.newEntry('ir');
+  const b = { ...Analysis.newEntry('nmr'), parentID: a.id }, c = { ...Analysis.newEntry('ms'), parentID: a.id };
+  assert.deepStrictEqual(Analysis.normalizedHierarchy([a, b, c, d]).map(e => e.parentID), [undefined, a.id, a.id, undefined]);
+  // übergeordneter Eintrag fehlt (gelöscht) → wieder oberste Ebene
+  assert.deepStrictEqual(Analysis.normalizedHierarchy([b, c, d]).map(e => e.parentID), [undefined, undefined, undefined]);
+  // steht hinter einem anderen Eintrag oberster Ebene → wieder oberste Ebene
+  assert.deepStrictEqual(Analysis.normalizedHierarchy([a, d, b]).map(e => e.parentID), [undefined, undefined, undefined]);
+  assert.strictEqual(Analysis.normalizeEntry(JSON.parse(JSON.stringify(b))).parentID, a.id);
+  assert.ok(!('parentID' in Analysis.normalizeEntry({ method: 'nmr' })));
+  // neue Einträge sind leer (keine Werte vom letzten Eintrag derselben Methode)
+  assert.deepStrictEqual(Analysis.newEntry('nmr').values, {});
+});
+
 test('Ältere Dateien: Dateiliste wird zu Einträgen, Liste wird weiter mitgeschrieben; unbekannte Methode → Sonstiges', () => {
   const s = normalizeStage({ title: 'S', analysisFiles: [
     { filePath: '/x/NK12_1H.fid', description: '1H NMR CDCl3' }, { filePath: '/x/NK12_13C.pdf', description: '' },

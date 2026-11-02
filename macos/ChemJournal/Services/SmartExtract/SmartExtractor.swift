@@ -135,6 +135,10 @@ nonisolated extension SmartExtractor {
         var lastQuantityEnd: String.Index?
         /// "azide (13, 14, or 17; 0.27 mmol)": Nummern/Namen am Anfang der Klammer sind Aliasse des Namens davor
         var skippingAliases = false
+        /// "(25 mg, 0.098 mmol, 98%)": Ausbeute in der Klammer – der Rest der Klammer gehört zum Produkt
+        var skippingProductGroup = false
+        /// Klammertiefe, in der eine Zusammensetzungsangabe ("97 % (w/w) A, 3 % B, …") übersprungen wird
+        var compositionDepth: Int?
         /// Zuletzt verworfenes Wort. Folgt darauf "(Menge …)", war es doch ein Name ("Natriumascorbat (19.8 mg)").
         var lastRejectedWord: Word?
 
@@ -267,6 +271,16 @@ nonisolated extension SmartExtractor {
                    lowers[k + 1].first?.isLetter == true { continue }
                 return true
             }
+            // "The product was dissolved in 5 ml DCM …": Arbeit am fertigen Produkt ("The residue was dissolved in EtOH, and NaBH4
+            // was added" ist dagegen oft der nächste Reaktionsschritt)
+            if lowers.count > 1, ["the", "das", "der"].contains(lowers[0]),
+               ["product", "produkt", "precipitate", "niederschlag"].contains(lowers[1]) { return true }
+            // NMR-/Analysenproben: "an aliquot (0.2 mL) … CDCl3 (0.4 mL)", "The NMR samples were prepared …"
+            if lowers.contains(where: { $0.hasPrefix("aliquot") }), !lowers.contains(where: { ["mmol", "µmol", "equiv", "eq"].contains($0.trimmingCharacters(in: CharacterSet(charactersIn: "."))) }) { return true }
+            // "… and precipitated with Et2O", "durch Zugabe von Pentan gefällt" – nicht "a solid precipitated" (Beobachtung)
+            for (a, b) in zip(lowers, lowers.dropFirst()) where ["precipitated", "gefällt", "ausgefällt"].contains(a)
+                && ["with", "by", "from", "using", "mit", "durch", "aus"].contains(b) { return true }
+            if lowers.contains("nmr") && lowers.contains(where: { ["sample", "samples", "probe", "proben"].contains($0) }) { return true }
             // Stoffmengen oder Äquivalente im Teilsatz: Reaktionsansatz, auch wenn "ges. NH4Cl" vorkommt
             let hasAmounts = lowers.contains { ["mmol", "µmol", "umol", "mol", "equiv", "eq", "äq", "äquiv"].contains($0.trimmingCharacters(in: CharacterSet(charactersIn: "."))) }
             // "crude product", "crude residue" – aber nicht "crude (6.0 g, …) tris-diol" als Edukt
@@ -302,6 +316,22 @@ nonisolated extension SmartExtractor {
                 parenDepth = max(0, parenDepth + span.filter { $0 == "(" }.count - span.filter { $0 == ")" }.count)
                 if skipCarrier { i += 1; continue }
                 if word.gapBefore.contains(")") { skippingAliases = false }
+                if skippingProductGroup {
+                    if parenDepth == 0 || word.gapBefore.contains(")") { skippingProductGroup = false } else { i += 1; continue }
+                }
+                // Zusammensetzung in der Mengenklammer: "TFT-Reagenz (97 % (w/w) TFT-S-oxid 1, 3 % TFT 2, 157 mg, …)" –
+                // die Bestandteile sind keine eigenen Zeilen, die Mengen gehören zum Namen vor der Klammer
+                if compositionDepth == nil, word.gapBefore.contains("("), current.nameRange != nil, !current.hasQuantity, parenDepth > 0,
+                   word.tokens.count == 1, parseDecimal(wordText) != nil, i + 1 < sentence.endIndex,
+                   sentence[i + 1].gapBefore.hasPrefix("%") || sentence[i + 1].gapBefore.hasPrefix(" %"),
+                   compositionHasQuantity(from: i, in: sentence) {
+                    compositionDepth = parenDepth
+                }
+                if let depth = compositionDepth {
+                    if parenDepth < depth || (parenDepth == depth && startsQuantity(at: i, in: sentence)) {
+                        compositionDepth = nil
+                    } else { i += 1; continue }
+                }
                 if word.gapBefore.contains("("), current.nameRange != nil, !current.hasQuantity, parenDepth > 0,
                    !startsQuantity(at: i, in: sentence), parenGroupHasQuantity(from: i, in: sentence),
                    aliasListFollows(from: i, in: sentence) {
@@ -375,6 +405,12 @@ nonisolated extension SmartExtractor {
                     continue
                 }
 
+                // "(c = 0.50 mM, 4.0 mL)": Formelzeichen vor "=" sind keine Stoffe
+                if wordText.count <= 2, i + 1 < sentence.endIndex, sentence[i + 1].gapBefore.contains("=") {
+                    nameOpen = false
+                    i += 1
+                    continue
+                }
                 if SmartExtractor.isCompoundLabel(wordText) {
                     if acceptCompoundLabel(at: i, in: sentence) { addLabelWord(word, at: i, in: sentence) } else { nameOpen = false; lastRejectedWord = word }
                     i += 1
@@ -427,6 +463,19 @@ nonisolated extension SmartExtractor {
             let gapToNext = next?.gapBefore ?? ""
             let gapAfterNext = i + 2 < sentence.endIndex ? sentence[i + 2].gapBefore : Substring(text[(next?.range.upperBound ?? text.endIndex)...].prefix(3))
 
+            // Prozentangabe am Ende einer Aufzählung ("…, 0.098 mmol, 98%)", "41 mg, colorless oil, 98%."): Ausbeute –
+            // die Mengen davor beschreiben das Produkt
+            // Am Textende gibt es kein nächstes Wort – dann zählt der Rest des Textes ("… 98%).")
+            let percentGap = next == nil ? text[numberWord.range.upperBound...].prefix(4) : gapToNext
+            let afterPercent = percentGap.drop(while: { $0 == "%" || $0 == " " })
+            // "1.1g (3.10 mmol, 41.0%) 1-Brom…": folgt direkt ein Name, war es nur eine Angabe zur Charge
+            let nameFollows = afterPercent.first == ")" && !afterPercent.dropFirst().contains(where: { ".,;".contains($0) }) && next.map { isChemicalName($0, text: nextText) || ChemicalHeuristics.looksLikeChemical(nextText) } == true
+            if percentGap.contains("%"), next == nil || afterPercent.first.map({ ")],;.".contains($0) }) == true,
+               current.hasQuantity || parenDepth > 0, !nameFollows {
+                current = PartialRow(); nameOpen = false; pendingNameStart = nil
+                if parenDepth > 0, !(afterPercent.first == ")") { skippingProductGroup = true }
+                return i + 1
+            }
             // Prozentangabe direkt an der Zahl: "10% Pd/C" ist Teil des Namens
             if gapToNext.hasPrefix("%") {
                 pendingNameStart = numberWord.range.lowerBound
@@ -438,6 +487,9 @@ nonisolated extension SmartExtractor {
             let unitAdjacent = next != nil && gapToNext.allSatisfy(\.isWhitespace)
             if unitAdjacent, let quantity = Units.quantity(nextText, gapAfter: gapAfterNext) {
                 if quantity.kind == .volume, isApparatus(after: i + 1, in: sentence) { return i + 2 }
+                // "in a 0.20 mmol scale", "auf 1 mmol Maßstab": Ansatzgröße, keine Menge eines Stoffes
+                if i + 2 < sentence.endIndex, sentence[i + 2].gapBefore.allSatisfy(\.isWhitespace),
+                   ["scale", "maßstab", "ansatz", "batch"].contains(text[sentence[i + 2].range].lowercased()) { return i + 3 }
                 // "KOH (0.200 g, 3.56 mmol, 2 mL H2O)": Volumen direkt vor einem Lösemittel in der Klammer ist eine eigene Zeile
                 if quantity.kind == .volume, parenDepth > 0, current.nameRange != nil, i + 2 < sentence.endIndex,
                    sentence[i + 2].gapBefore.allSatisfy({ $0 == " " }) {
@@ -505,6 +557,22 @@ nonisolated extension SmartExtractor {
             return false
         }
 
+        /// Folgt in derselben Klammerebene (innere Klammern wie "(w/w)" übersprungen) noch eine Mengenangabe?
+        private func compositionHasQuantity(from i: Int, in sentence: ArraySlice<Word>) -> Bool {
+            var depth = 0
+            var j = i
+            while j < sentence.endIndex {
+                if j > i {
+                    let gap = sentence[j].gapBefore
+                    depth += gap.filter { $0 == "(" }.count - gap.filter { $0 == ")" }.count
+                    if depth < 0 { return false }
+                }
+                if depth == 0, startsQuantity(at: j, in: sentence) { return true }
+                j += 1
+            }
+            return false
+        }
+
         /// Steht vor der ersten Menge der Klammer eine Aufzählung ("13, 14, or 17;", "ibuprofen, flurbiprofen or fenoprofen,",
         /// "O,O,")? Ein einzelnes Wort wie "(1, 0.66 g)" bleibt beim bisherigen Verhalten (Verbindungsnummer).
         private func aliasListFollows(from i: Int, in sentence: ArraySlice<Word>) -> Bool {
@@ -536,11 +604,12 @@ nonisolated extension SmartExtractor {
 
         /// Kolben- oder Gefäßvolumen: "in einem 250 mL Kolben", "a 25 mL round-bottom flask".
         private func isApparatus(after unitIndex: Int, in sentence: ArraySlice<Word>) -> Bool {
-            for j in (unitIndex + 1)..<min(unitIndex + 5, sentence.endIndex) {
+            for j in (unitIndex + 1)..<min(unitIndex + 6, sentence.endIndex) {
                 // Nur die Wörter direkt dahinter ("25 mL high-pressure J-Young tube"), nicht über "in", Kommas oder Klammern hinaus
                 if j > unitIndex + 1, sentence[j].gapBefore.contains(where: { ",;()".contains($0) }) { break }
                 let w = text[sentence[j].range].lowercased()
-                if j > unitIndex + 1, Vocabulary.stopwords.contains(w), !Vocabulary.apparatus.contains(where: { w.contains($0) }) { break }
+                if j > unitIndex + 1, Vocabulary.stopwords.contains(w), !["and", "und"].contains(w),
+                   !Vocabulary.apparatus.contains(where: { w.contains($0) }) { break }
                 if Vocabulary.apparatus.contains(where: { w.contains($0) }) { return true }
             }
             return false
@@ -600,6 +669,10 @@ nonisolated extension SmartExtractor {
             if lower.range(of: #"^\d+(?:[.,]\d+)?-?(?:ml|l|µl|ul|g|mg|mmol|mol|eq)$"#, options: .regularExpression) != nil { return false }
             // Verweise auf Arbeitsvorschriften: "AAV-1", "GP2", "AAV 3"
             if lower.range(of: #"^(?:aav|gp|av|sop|gsp)-?\d"#, options: .regularExpression) != nil { return false }
+            // "according to the GPC using …": Kürzel einer allgemeinen Vorschrift ("GPA", "GPB")
+            if lower.range(of: #"^(?:gp|aav|av|agp)[a-h]$"#, options: .regularExpression) != nil { return false }
+            // "argon gas", "nitrogen gas": Schutzgas, kein Reagenz
+            if lower == "gas" || lower == "gases" { return false }
             if Units.quantity(lower, gapAfter: "") != nil || Units.isIgnoredUnit(lower) { return false }
             let tags = word.tags
             if tags.contains("CHEMICAL") { return true }
@@ -796,6 +869,7 @@ nonisolated enum Vocabulary {
         "erhielt", "quench", "quenching", "poured", "gegossen", "silica", "kieselgel", "slurry", "brine",
         "filtration", "evaporation", "extraction", "eingedampft", "rotiert",
         "afford", "affords", "affording", "furnishing",
+        "precipitation", "triturated", "acidified", "acidification", "angesäuert",
     ]
 
     /// Verben, hinter denen im selben Teilsatz nur noch das Produkt steht ("… to give 3a (45 mg)", "… gave 4b").

@@ -267,15 +267,16 @@ function ReactionImage({ data, onChange }) {
 const A = () => CJ.Analysis;
 
 function AnalysisSection({ entries, onChange }) {
-  const add = method => onChange(list => {
-    const entry = A().newEntry(method);
-    const last = [...list].reverse().find(e => e.method === method);
-    if (last) {
-      for (const key of A().inherited(method)) if (last.values[key]) entry.values[key] = last.values[key];
-      entry.sample = last.sample;
-    }
-    return list.concat([entry]);
-  });
+  const norm = list => A().normalizedHierarchy(list);
+  /** Eintrag und seine untergeordneten Einträge (nur bei Einträgen oberster Ebene): [start, end). */
+  const blockRange = (i, list) => {
+    let end = i + 1;
+    if (!list[i].parentID) while (end < list.length && list[end].parentID === list[i].id) end++;
+    return [i, end];
+  };
+  const withoutParent = e => { const out = { ...e }; delete out.parentID; return out; };
+  // Neuer, leerer Eintrag am Ende
+  const add = method => onChange(list => list.concat([A().newEntry(method)]));
   const addMenu = e => openMenuAt(e.currentTarget, A().GROUPS.flatMap((grp, i) => [
     ...(i ? ['separator'] : []),
     { header: A().groupTitle(grp) },
@@ -285,16 +286,128 @@ function AnalysisSection({ entries, onChange }) {
   const move = (id, offset) => onChange(list => {
     const i = list.findIndex(e => e.id === id), j = i + offset;
     if (i < 0 || j < 0 || j >= list.length) return list;
-    const out = list.slice(); [out[i], out[j]] = [out[j], out[i]]; return out;
+    const out = list.slice(); [out[i], out[j]] = [out[j], out[i]]; return norm(out);
   });
+  // Löschen: untergeordnete Einträge bleiben als Einträge oberster Ebene erhalten
+  const remove = id => onChange(list => list.filter(e => e.id !== id).map(e => (e.parentID === id ? withoutParent(e) : e)));
+
+  // MARK: Unterordnen
+  const isVisible = entry => {
+    if (!entry.parentID) return true;
+    const parent = entries.find(e => e.id === entry.parentID);
+    return !parent || parent.isExpanded;
+  };
+  /** Mögliche übergeordnete Einträge: alle anderen Einträge oberster Ebene (nicht für Einträge mit eigenen Untereinträgen). */
+  const nestTargets = entry => {
+    if (entry.parentID || entries.some(e => e.parentID === entry.id)) return [];
+    return entries.filter(e => !e.parentID && e.id !== entry.id).map(e => {
+      const sample = (e.sample || '').trim();
+      return { id: e.id, title: sample ? `${A().heading(e)} – ${sample}` : A().heading(e) };
+    });
+  };
+  const nestIn = (list, id, parentID) => {
+    const i = list.findIndex(e => e.id === id);
+    if (i < 0) return list;
+    const out = list.slice();
+    const [moving] = out.splice(i, 1);
+    const p = out.findIndex(e => e.id === parentID);
+    if (p < 0) return list;
+    out.splice(blockRange(p, out)[1], 0, { ...moving, parentID });
+    const pi = out.findIndex(e => e.id === parentID);
+    out[pi] = { ...out[pi], isExpanded: true };
+    return norm(out);
+  };
+  const nest = (id, parentID) => onChange(list => nestIn(list, id, parentID));
+  /** Herauslösen: als Eintrag oberster Ebene hinter den Block des bisherigen übergeordneten Eintrags. */
+  const unnestIn = (list, id) => {
+    const i = list.findIndex(e => e.id === id);
+    if (i < 0 || !list[i].parentID) return list;
+    const parentID = list[i].parentID;
+    const out = list.slice();
+    const [moving] = out.splice(i, 1);
+    const p = out.findIndex(e => e.id === parentID);
+    out.splice(p >= 0 ? blockRange(p, out)[1] : i, 0, withoutParent(moving));
+    return norm(out);
+  };
+  const unnest = id => onChange(list => unnestIn(list, id));
+
+  // Umsortieren per Ziehen am Farbstreifen (wie auf dem Mac): Die Karte wandert an die Stelle unter dem Zeiger.
+  // Ein Eintrag oberster Ebene wandert mit seinen untergeordneten Einträgen; ein untergeordneter Eintrag gehört danach
+  // zum nächsten Eintrag oberster Ebene darüber. Deutlich nach rechts ziehen ordnet unter, nach links löst heraus.
+  const INDENT = 40;
+  const boxRef = useRef(null);
+  const [dragging, setDragging] = useState(null);
+  const [dragDX, setDragDX] = useState(0);
+  const startDrag = (id, e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const handle = e.currentTarget;
+    handle.setPointerCapture(e.pointerId);
+    const startX = e.clientX;
+    setDragging(id);
+    setDragDX(0);
+    const onMoveEvt = ev => {
+      setDragDX(ev.clientX - startX);
+      // Mitte jeder sichtbaren Karte; eingeklappte untergeordnete Einträge stehen an der Stelle ihres übergeordneten Eintrags
+      const mids = {};
+      for (const c of boxRef.current.querySelectorAll('.analysis-card[data-id]')) { const r = c.getBoundingClientRect(); mids[c.dataset.id] = r.top + r.height / 2; }
+      const midY = x => mids[x.id] ?? (x.parentID != null ? mids[x.parentID] : undefined) ?? Infinity;
+      onChange(list => {
+        const from = list.findIndex(x => x.id === id);
+        if (from < 0) return list;
+        const [b0, b1] = blockRange(from, list);
+        const rest = list.slice(0, b0).concat(list.slice(b1));
+        const moving = list.slice(b0, b1);
+        let target = 0;
+        if (!list[from].parentID) {
+          // nur zwischen ganzen Blöcken einfügen
+          for (let k = 0; k < rest.length;) {
+            const end = blockRange(k, rest)[1];
+            if (midY(rest[k]) < ev.clientY) target = end;
+            k = end;
+          }
+        } else target = rest.filter(x => midY(x) < ev.clientY).length;
+        let result = rest.slice(0, target).concat(moving, rest.slice(target));
+        if (list[from].parentID) {
+          const parent = result.slice(0, target).reverse().find(x => !x.parentID);
+          result[target] = parent ? { ...result[target], parentID: parent.id } : withoutParent(result[target]);
+        }
+        result = norm(result);
+        const same = result.length === list.length && result.every((x, k) => x.id === list[k].id && x.parentID === list[k].parentID);
+        return same ? list : result;
+      });
+    };
+    const onUp = ev => {
+      handle.removeEventListener('pointermove', onMoveEvt);
+      handle.removeEventListener('pointerup', onUp);
+      handle.removeEventListener('pointercancel', onUp);
+      const dx = ev.type === 'pointerup' ? ev.clientX - startX : 0;
+      onChange(list => {
+        const i = list.findIndex(x => x.id === id);
+        if (i < 0) return list;
+        if (dx > INDENT && !list[i].parentID && !list.some(x => x.parentID === id)) {
+          const parent = list.slice(0, i).reverse().find(x => !x.parentID);
+          return parent ? nestIn(list, id, parent.id) : list;
+        }
+        if (dx < -INDENT && list[i].parentID) return unnestIn(list, id);
+        return list;
+      });
+      setDragging(null);
+      setDragDX(0);
+    };
+    handle.addEventListener('pointermove', onMoveEvt);
+    handle.addEventListener('pointerup', onUp);
+    handle.addEventListener('pointercancel', onUp);
+  };
   const duplicate = id => onChange(list => {
     const i = list.findIndex(e => e.id === id);
     if (i < 0) return list;
     const copy = { ...list[i], id: uuid(), createdAt: nowRef(), values: { ...list[i].values }, files: list[i].files.map(f => ({ ...f, id: uuid() })) };
-    const out = list.slice(); out.splice(i + 1, 0, copy); return out;
+    // Kopie eines übergeordneten Eintrags hinter seine untergeordneten Einträge (ohne diese mitzukopieren)
+    const out = list.slice(); out.splice(blockRange(i, list)[1], 0, copy); return norm(out);
   });
 
-  return html`<div class="table-box analysis-box">
+  return html`<div class="table-box analysis-box" ref=${boxRef}>
     <div class="section-head" style="margin:0">
       <span class="headline">${t('Aufreinigung & Analytik')}</span><span style="flex:1"></span>
       ${entries.length > 0 && html`<button class="link-button" title=${t('Weitere Messung oder Aufreinigung zu dieser Stufe hinzufügen')} onClick=${addMenu}>
@@ -308,13 +421,16 @@ function AnalysisSection({ entries, onChange }) {
           <${Icon} name=${A().symbol(m)} />${A().title(m)}</button>`)}</span>
       </div>`)}
     </div>`}
-    ${entries.map((entry, i) => html`<${AnalysisCard} key=${entry.id} entry=${entry}
-      onUpdate=${fn => update(entry.id, fn)} onDelete=${() => onChange(list => list.filter(e => e.id !== entry.id))}
-      onDuplicate=${() => duplicate(entry.id)} onMove=${off => move(entry.id, off)} canUp=${i > 0} canDown=${i < entries.length - 1} />`)}
+    ${entries.map((entry, i) => isVisible(entry) && html`<${AnalysisCard} key=${entry.id} entry=${entry}
+      onUpdate=${fn => update(entry.id, fn)} onDelete=${() => remove(entry.id)}
+      onDuplicate=${() => duplicate(entry.id)} onMove=${off => move(entry.id, off)} canUp=${i > 0} canDown=${i < entries.length - 1}
+      dragging=${dragging === entry.id} dragDX=${dragging === entry.id ? dragDX : 0} onHandleDown=${e => startDrag(entry.id, e)}
+      childCount=${entries.filter(e => e.parentID === entry.id).length} nestTargets=${nestTargets(entry)}
+      onNest=${pid => nest(entry.id, pid)} onUnnest=${() => unnest(entry.id)} />`)}
   </div>`;
 }
 
-function AnalysisCard({ entry, onUpdate, onDelete, onDuplicate, onMove, canUp, canDown }) {
+function AnalysisCard({ entry, onUpdate, onDelete, onDuplicate, onMove, canUp, canDown, dragging, dragDX = 0, onHandleDown, childCount = 0, nestTargets = [], onNest, onUnnest }) {
   const [dropTarget, setDropTarget] = useState(false);
   const [existing, setExisting] = useState({});
   const group = A().group(entry.method);
@@ -338,13 +454,18 @@ function AnalysisCard({ entry, onUpdate, onDelete, onDuplicate, onMove, canUp, c
     { label: t('Duplizieren'), icon: 'doc.on.doc', action: onDuplicate },
     ...(canUp ? [{ label: t('Nach oben'), action: () => onMove(-1) }] : []),
     ...(canDown ? [{ label: t('Nach unten'), action: () => onMove(1) }] : []),
+    ...(entry.parentID ? [{ label: t('Herauslösen'), icon: 'list.bullet.indent', action: onUnnest }]
+      : nestTargets.length ? ['separator', { header: t('Unterordnen unter') }, ...nestTargets.map(x => ({ label: x.title, action: () => onNest(x.id) }))] : []),
     'separator',
     { label: t('Zusammenfassung kopieren'), icon: 'doc.text', action: () => navigator.clipboard.writeText(A().summary(entry)) },
   ]);
 
-  return html`<div class=${'analysis-card ' + group + (dropTarget ? ' drop-target' : '')}
+  return html`<div class=${'analysis-card ' + group + (dropTarget ? ' drop-target' : '') + (dragging ? ' dragging' : '') + (entry.parentID ? ' nested' : '')} data-id=${entry.id}
+    style=${dragDX ? { translate: `${Math.max(-30, Math.min(30, dragDX * 0.5))}px 0` } : null}
     onDragOver=${e => { if ([...e.dataTransfer.types].includes('Files')) { e.preventDefault(); setDropTarget(true); } }}
     onDragLeave=${() => setDropTarget(false)} onDrop=${onDrop}>
+    <div class="reorder-handle" title=${t('Gedrückt halten und ziehen, um die Reihenfolge zu ändern – nach rechts ziehen ordnet unter, nach links löst heraus')}
+      aria-label=${t('Eintrag verschieben')} onPointerDown=${onHandleDown}></div>
     <div class="analysis-head">
       <button class=${'disclosure' + (entry.isExpanded ? ' open' : '')} title=${entry.isExpanded ? t('Einklappen') : t('Aufklappen')}
         onClick=${() => onUpdate(e => ({ ...e, isExpanded: !e.isExpanded }))}><${Icon} name="chevron.right" /></button>
@@ -352,6 +473,7 @@ function AnalysisCard({ entry, onUpdate, onDelete, onDuplicate, onMove, canUp, c
       <span class="heading">${A().heading(entry)}</span>
       <input class="plain-field sample" placeholder=${t('Probe')} value=${entry.sample} onInput=${e => onUpdate(x => ({ ...x, sample: e.target.value }))} />
       <span style="flex:1"></span>
+      ${!entry.isExpanded && childCount > 0 && html`<span class="caption secondary" title=${t('Untergeordnete Einträge (eingeklappt)')}><${Icon} name="list.bullet.indent" />${childCount}</span>`}
       ${!entry.isExpanded && entry.files.length > 0 && html`<span class="caption secondary" title=${t('Verknüpfte Dateien')}><${Icon} name="paperclip" />${entry.files.length}</span>`}
       <button class="icon-button gray" title=${t('Weitere Aktionen')} onClick=${moreMenu}><${Icon} name="ellipsis.circle" /></button>
       <button class="icon-button red" title=${t('Eintrag entfernen (Strg+Z macht es rückgängig)')} onClick=${onDelete}><${Icon} name="trash" /></button>

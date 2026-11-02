@@ -2,6 +2,28 @@
 
 🇩🇪 [Deutsche Version](CHANGELOG.de.md)
 
+## Unreleased (source code, macOS and Linux)
+
+### Purification & analysis
+
+- **Reorder by dragging:** hold the colored stripe on the left of a card and drag the card where you want it.
+- **Nest entries:** drag a card to the right – or use ⋯ › “Nest under” – to place it under another entry (e.g. TLC
+  and column under the product's ¹H NMR). Nested entries are indented, collapse together with their parent and move
+  with it. Drag left or choose “Move out” to undo. Older versions simply show such entries one below the other.
+- **Fixed:** “Add” copied the values and sample from the last entry of the same method. New entries are now always
+  empty.
+
+### Smart Extract
+
+- More accurate with supporting information: compositions inside the amount brackets (“97 % (w/w) A, 3 % B,
+  157 mg”), yields in brackets, “0.20 mmol scale”, procedure labels (GPA–GPH), precipitation/trituration/
+  acidification, NMR samples and aliquots, hyphenation after locants. On 334 hand-checked SI paragraphs:
+  87.8 % → 93.3 % correct rows with far fewer extra rows; the control sets are unchanged.
+
+### Other
+
+- New app icon.
+
 ## 1.1 – 31 October 2026 (macOS and Linux)
 
 The biggest update since 1.0: switch units with one click, purity, marks and tags, a completely new

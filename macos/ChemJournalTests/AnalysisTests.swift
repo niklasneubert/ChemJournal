@@ -156,3 +156,26 @@ struct AnalysisTests {
         #expect(AnalysisGroup.allCases.first == .purification)
     }
 }
+
+@Suite("Untergeordnete Analytik-Einträge")
+struct AnalysisNestingTests {
+    @Test("Untergeordnete Einträge gehören zum nächsten Eintrag oberster Ebene davor")
+    func normalized() {
+        let a = AnalysisEntry(method: .column); var b = AnalysisEntry(method: .nmr); var c = AnalysisEntry(method: .ms); let d = AnalysisEntry(method: .ir)
+        b.parentID = a.id; c.parentID = a.id
+        #expect(AnalysisEntry.normalizedHierarchy([a, b, c, d]).map(\.parentID) == [nil, a.id, a.id, nil])
+        // übergeordneter Eintrag fehlt (gelöscht) → wieder oberste Ebene
+        #expect(AnalysisEntry.normalizedHierarchy([b, c, d]).map(\.parentID) == [nil, nil, nil])
+        // steht hinter einem anderen Eintrag oberster Ebene → wieder oberste Ebene
+        #expect(AnalysisEntry.normalizedHierarchy([a, d, b]).map(\.parentID) == [nil, nil, nil])
+    }
+
+    @Test("parentID wird gespeichert und gelesen; alte Daten ohne parentID laden")
+    func codable() throws {
+        var e = AnalysisEntry(method: .nmr); e.parentID = UUID()
+        let back = try JSONDecoder().decode(AnalysisEntry.self, from: JSONEncoder().encode(e))
+        #expect(back.parentID == e.parentID)
+        let old = try JSONDecoder().decode(AnalysisEntry.self, from: Data(#"{"method":"nmr"}"#.utf8))
+        #expect(old.parentID == nil)
+    }
+}
