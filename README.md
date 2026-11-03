@@ -27,10 +27,10 @@ Get the latest version from the **[Releases page](../../releases/latest)** – w
 
 | System | Version | File |
 |---|---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2.1 | `ChemJournal-1.2.1-macOS.dmg` |
-| Linux x86_64 (most PCs) | 1.2.1 | `ChemJournal-1.2.1-x86_64.AppImage` |
-| Linux ARM64 | 1.2.1 | `ChemJournal-1.2.1-arm64.AppImage` |
-| Linux, as plain archive | 1.2.1 | `ChemJournal-1.2.1-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2.1 | [`ChemJournal-1.2.1-macOS.dmg`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-macOS.dmg) |
+| Linux x86_64 (most PCs) | 1.2.1 | [`ChemJournal-1.2.1-x86_64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x86_64.AppImage) |
+| Linux ARM64 | 1.2.1 | [`ChemJournal-1.2.1-arm64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.AppImage) |
+| Linux, as plain archive | 1.2.1 | [`ChemJournal-1.2.1-x64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x64.tar.gz) / [`ChemJournal-1.2.1-arm64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.tar.gz) |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
