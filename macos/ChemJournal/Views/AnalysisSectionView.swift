@@ -71,7 +71,7 @@ struct AnalysisSectionView: View {
             ForEach(AnalysisGroup.allCases, id: \.self) { group in
                 Section(group.title) {
                     ForEach(group.methods, id: \.self) { method in
-                        Button { add(method) } label: { Label(method.title, systemImage: method.symbol) }
+                        Button { add(method) } label: { Label { Text(method.title) } icon: { method.image } }
                     }
                 }
             }
@@ -213,11 +213,25 @@ private struct AnalysisCardFrameKey: PreferenceKey {
     static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) { value.merge(nextValue()) { $1 } }
 }
 
+/// Symbol einer Methode in fester Größe – eigene Zeichnungen und SF Symbols gleich groß.
+struct MethodIcon: View {
+    let method: AnalysisMethod
+    var size: CGFloat = 15
+    var body: some View {
+        method.image.resizable().scaledToFit().frame(width: size, height: size)
+    }
+}
+
+extension AnalysisMethod {
+    /// Bild des Symbols in natürlicher Größe (z. B. für Menüs).
+    var image: Image { hasCustomSymbol ? Image(symbol) : Image(systemName: symbol) }
+}
+
 /// Farbiges Symbol mit Methodenname (für die Schnellauswahl).
 private struct MethodBadge: View {
     let method: AnalysisMethod
     var body: some View {
-        Label(method.title, systemImage: method.symbol)
+        Label { Text(method.title) } icon: { MethodIcon(method: method, size: 13) }
             .font(.caption).fontWeight(.medium)
             .foregroundStyle(method.tint)
             .padding(.horizontal, 8).padding(.vertical, 4)
@@ -326,7 +340,7 @@ struct AnalysisEntryCard: View {
             }
             .buttonStyle(.plain)
             .help(entry.isExpanded ? "Einklappen" : "Aufklappen")
-            Image(systemName: entry.method.symbol).foregroundStyle(entry.method.tint)
+            MethodIcon(method: entry.method, size: 15).foregroundStyle(entry.method.tint)
             Text(verbatim: entry.heading).font(.subheadline.weight(.semibold))
             TextField("Probe", text: $entry.sample)
                 .textFieldStyle(.plain).font(.subheadline).foregroundStyle(.secondary)

@@ -88,24 +88,30 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
         }
     }
 
+    /// Symbol der Methode. Namen mit „method.“ sind eigene Zeichnungen in Assets.xcassets (Säule mit Banden,
+    /// DC-Platte, Chromatogramm, Kristalle, Destille, NMR-Multipletts, IR-Banden, UV/Vis-Absorptionsbanden,
+    /// MS-Strichspektrum, EPR-Ableitungssignal, Bragg-Reflexion, [α] im Drehpfeil); die übrigen sind SF Symbols.
     var symbol: String {
         switch self {
-        case .nmr: "waveform.path.ecg"
-        case .ir: "waveform"
-        case .uvVis: "rainbow"
-        case .ms: "chart.bar.xaxis"
-        case .epr: "dot.radiowaves.left.and.right"
-        case .xrd: "circle.hexagongrid"
-        case .column: "line.3.horizontal.decrease"
-        case .tlc: "rectangle.split.1x2"
-        case .gc: "chart.xyaxis.line"
-        case .recrystallization: "snowflake"
-        case .distillation: "flame"
+        case .nmr: "method.nmr"
+        case .ir: "method.ir"
+        case .uvVis: "method.uvVis"
+        case .ms: "method.ms"
+        case .epr: "method.epr"
+        case .xrd: "method.xrd"
+        case .column: "method.column"
+        case .tlc: "method.tlc"
+        case .gc: "method.gc"
+        case .recrystallization: "method.recrystallization"
+        case .distillation: "method.distillation"
         case .meltingPoint: "thermometer.medium"
-        case .opticalRotation: "dial.medium"
+        case .opticalRotation: "method.opticalRotation"
         case .other: "doc.text"
         }
     }
+
+    /// `true`, wenn `symbol` eine eigene Zeichnung aus den Assets ist (sonst ein SF Symbol).
+    var hasCustomSymbol: Bool { symbol.hasPrefix("method.") }
 
     // MARK: Felder
 

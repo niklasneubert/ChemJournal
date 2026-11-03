@@ -117,24 +117,30 @@ struct YieldRowView: View {
     }
 }
 
-/// Ziehgriff für die Breite der Namensspalte. Merkt sich, ob der Cursor gesetzt wurde,
-/// damit `NSCursor.pop()` nicht öfter aufgerufen wird als `push()`.
+/// Ziehgriff für die Breite der Namensspalte.
+///
+/// Die Zugstrecke wird im Fensterkoordinatensystem gemessen: Der Griff wandert mit der Spalte mit – lokal gemessen
+/// würde jede Verschiebung den nächsten Messwert verfälschen, und die Spalte springt hin und her statt dem Mauszeiger
+/// zu folgen. Breiten werden auf ganze Punkte gerundet und ohne Animation gesetzt, damit die Tabelle nur neu
+/// gezeichnet wird, wenn sich wirklich etwas ändert.
 struct ColumnResizeHandle: View {
     @Binding var width: CGFloat
-    @State private var cursorPushed = false
+    var minWidth: CGFloat = 80
+    var maxWidth: CGFloat = 600
     @State private var startWidth: CGFloat?
 
     var body: some View {
         Divider().frame(width: 8).contentShape(Rectangle())
-            .onHover { inside in
-                if inside && !cursorPushed { NSCursor.resizeLeftRight.push(); cursorPushed = true }
-                else if !inside && cursorPushed { NSCursor.pop(); cursorPushed = false }
-            }
-            .gesture(DragGesture()
+            .pointerStyle(.columnResize)
+            .gesture(DragGesture(minimumDistance: 1, coordinateSpace: .global)
                 .onChanged { v in
                     let base = startWidth ?? width
                     if startWidth == nil { startWidth = width }
-                    width = max(80, base + v.translation.width)
+                    let new = min(maxWidth, max(minWidth, base + v.translation.width)).rounded()
+                    guard new != width else { return }
+                    var t = Transaction()
+                    t.disablesAnimations = true
+                    withTransaction(t) { width = new }
                 }
                 .onEnded { _ in startWidth = nil })
     }

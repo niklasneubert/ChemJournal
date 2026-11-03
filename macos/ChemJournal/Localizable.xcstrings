@@ -441,12 +441,52 @@
         }
       }
     },
+    "Dezimaltrennzeichen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decimal separator"
+          }
+        }
+      }
+    },
+    "Dezimaltrennzeichen – in den Einstellungen wählbar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decimal separator – can be changed in Settings"
+          }
+        }
+      }
+    },
     "Eintrag verschieben": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Move entry"
+          }
+        }
+      }
+    },
+    "Ergebnis kopieren": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy result"
+          }
+        }
+      }
+    },
+    "Fehler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
           }
         }
       }
@@ -471,6 +511,16 @@
         }
       }
     },
+    "Gilt für den Taschenrechner in der Symbolleiste. Beim Tippen werden Punkt und Komma immer als Dezimaltrennzeichen verstanden.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applies to the calculator in the toolbar. When typing, both point and comma are always accepted as decimal separator."
+          }
+        }
+      }
+    },
     "Herauslösen": {
       "localizations": {
         "en": {
@@ -487,6 +537,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Click to change the unit of this column"
+          }
+        }
+      }
+    },
+    "Komma (1,5)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comma (1,5)"
+          }
+        }
+      }
+    },
+    "Letztes Zeichen löschen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete last character"
+          }
+        }
+      }
+    },
+    "Potenz (^)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power (^)"
+          }
+        }
+      }
+    },
+    "Prozent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percent"
+          }
+        }
+      }
+    },
+    "Punkt (1.5)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Point (1.5)"
           }
         }
       }
@@ -521,6 +621,26 @@
         }
       }
     },
+    "Taschenrechner": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculator"
+          }
+        }
+      }
+    },
+    "Taschenrechner – am Rand wegziehen, um ihn als eigenes Fenster frei schweben zu lassen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculator – drag it away by its edge to keep it as a floating window"
+          }
+        }
+      }
+    },
     "Untergeordnete Einträge (eingeklappt)": {
       "localizations": {
         "en": {
@@ -537,6 +657,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nest under"
+          }
+        }
+      }
+    },
+    "Vorzeichen wechseln": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change sign"
+          }
+        }
+      }
+    },
+    "Wurzel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Square root"
           }
         }
       }
@@ -687,6 +827,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Remove from this experiment"
+          }
+        }
+      }
+    },
+    "Zurücksetzen (C)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear (C)"
           }
         }
       }

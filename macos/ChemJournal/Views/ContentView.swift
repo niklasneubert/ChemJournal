@@ -189,6 +189,7 @@ struct ContentView: View {
                     }
                     .help("Neues Projekt, neuer Ansatz oder Ansatz importieren")
                     filterMenu(tags: tags)
+                    CalculatorToolbarButton()
                 }
             }
         } detail: {

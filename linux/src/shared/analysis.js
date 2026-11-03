@@ -18,9 +18,10 @@
     xrd: 'Röntgenbeugung (XRD)', column: 'Säulenchromatographie (LC)', tlc: 'Dünnschichtchromatographie (DC)', gc: 'Gaschromatographie (GC)',
     recrystallization: 'Umkristallisation', distillation: 'Destillation', meltingPoint: 'Schmelzpunkt', opticalRotation: 'Drehwert', other: 'Sonstiges' };
   const SHORT = { nmr: 'NMR', ir: 'IR', uvVis: 'UV/Vis', ms: 'MS', epr: 'EPR', xrd: 'XRD', tlc: 'DC', gc: 'GC' };
-  const SYMBOLS = { nmr: 'waveform.path.ecg', ir: 'waveform', uvVis: 'rainbow', ms: 'chart.bar.xaxis', epr: 'dot.radiowaves', xrd: 'circle.hexagongrid',
-    column: 'line.3.horizontal.decrease', tlc: 'rectangle.split.1x2', gc: 'chart.xyaxis.line', recrystallization: 'snowflake', distillation: 'flame',
-    meltingPoint: 'thermometer', opticalRotation: 'dial', other: 'doc.text' };
+  // Wie die Mac-App: eigene Zeichnungen (method.…) und SF-Symbol-Namen, siehe renderer/js/icons.js
+  const SYMBOLS = { nmr: 'method.nmr', ir: 'method.ir', uvVis: 'method.uvVis', ms: 'method.ms', epr: 'method.epr', xrd: 'method.xrd',
+    column: 'method.column', tlc: 'method.tlc', gc: 'method.gc', recrystallization: 'method.recrystallization', distillation: 'method.distillation',
+    meltingPoint: 'thermometer', opticalRotation: 'method.opticalRotation', other: 'doc.text' };
 
   const title = m => t(TITLES[m] || TITLES.other);
   const shortTitle = m => (m === 'tlc' ? t('DC') : SHORT[m] || title(m));

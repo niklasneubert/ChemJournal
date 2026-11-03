@@ -2,6 +2,7 @@
 import { html, render, CJ, api, t, useState, useEffect, refToDate, nowRef, uuid, newExperiment, newProject } from './lib.js';
 import { store, useStore } from './store.js';
 import { AlertHost, ContextMenuHost, ask, alertOK } from './ui.js';
+import { CalculatorHost } from './calculator.js';
 import { Sidebar, DetailView, ProjectDetail, Settings } from './views.js';
 
 // Welche Textfelder seit dem Fokussieren bearbeitet wurden (für Strg+Z im Feld)
@@ -204,6 +205,7 @@ function App() {
     ${showSettings && html`<${Settings} onClose=${() => setShowSettings(false)} />`}
     <${AlertHost} />
     <${ContextMenuHost} />
+    <${CalculatorHost} />
   </div>`;
 }
 

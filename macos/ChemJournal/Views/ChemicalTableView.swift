@@ -19,7 +19,7 @@ struct ChemicalTableView: View {
                 Text("Ansatzgrößen").font(.headline)
                 Spacer()
                 Button(action: { scaleFactorText = "1.0"; showScaleModal = true }) {
-                    Label("Skalieren", systemImage: "arrow.up.left.and.arrow.down.right")
+                    Label { Text("Skalieren") } icon: { Image("action.scale").resizable().scaledToFit().frame(width: 14, height: 14) }
                         .font(.subheadline).foregroundColor(.orange)
                         .padding(.horizontal, 8).padding(.vertical, 4)
                         .background(Color.orange.opacity(0.1)).cornerRadius(6)

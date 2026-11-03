@@ -1,6 +1,7 @@
 // Seitenleiste, Detailansichten, Verlauf und Einstellungen – entspricht ContentView.swift, ExperimentDetailView.swift,
 // ProjectDetailView.swift, VersionHistoryView.swift und SettingsView.swift.
-import { html, CJ, api, t, useState, useEffect, useRef, nowRef, refToDate, newStage, formatLong, formatAbbrevTime, formatNumeric, formatTime, formatBytes } from './lib.js';
+import { CalculatorButton, SEPARATOR_EVENT } from './calculator.js';
+import { html, CJ, api, t, useState, useEffect, useRef, nowRef, refToDate, newStage, formatLong, formatAbbrevTime, formatNumeric, formatTime, formatBytes, stored as storedSetting, remember } from './lib.js';
 import { Icon } from './icons.js';
 import { Sheet, ask, askText, openContextMenu, openMenuAt } from './ui.js';
 import { store } from './store.js';
@@ -87,6 +88,7 @@ export function Sidebar({ selection, setSelection, actions }) {
       ])}><${Icon} name="plus" /></button>
       <button class=${'toolbar-button' + (isFiltering ? ' active' : '')} title=${t('Ansätze nach Markierung oder Tag filtern')} onClick=${filterMenu}>
         <${Icon} name=${isFiltering ? 'line.3.horizontal.decrease.circle.fill' : 'line.3.horizontal.decrease.circle'} /></button>
+      <${CalculatorButton} />
     </div>
     <div class="search-field">
       <${Icon} name="magnifyingglass" />
@@ -398,6 +400,8 @@ function GeneralSettings() {
   const [reshiki, setReshiki] = useState(null);
   useEffect(() => { api.getLanguage().then(l => { setLanguage(l); setStored(l); }); api.reshikiStatus().then(setReshiki); }, []);
   const choose = async l => { setLanguage(l); await api.setLanguage(l); setStored(l); };
+  const [separator, setSeparator] = useState(storedSetting(CJ.Calculator.SEPARATOR_KEY, '.'));
+  const chooseSeparator = v => { setSeparator(v); remember(CJ.Calculator.SEPARATOR_KEY, v); window.dispatchEvent(new Event(SEPARATOR_EVENT)); };
   return html`<div class="modal-body" style="flex:1">
     <div class="form-section">
       <div class="form-row"><span class="label">${t('Sprache')}</span>
@@ -407,6 +411,14 @@ function GeneralSettings() {
       <div class="caption secondary">${t('Standard ist Deutsch, unabhängig von der Sprache des Rechners. Die Smart-Extract-Texterkennung versteht immer Deutsch und Englisch.')}</div>
       ${stored !== api.language && html`<div class="form-row"><span>${t('Die neue Sprache gilt nach einem Neustart von ChemJournal.')}</span>
         <button class="btn primary" onClick=${() => api.relaunch()}>${t('Jetzt neu starten')}</button></div>`}
+    </div>
+    <div class="headline">${t('Taschenrechner')}</div>
+    <div class="form-section">
+      <div class="form-row"><span class="label">${t('Dezimaltrennzeichen')}</span>
+        <select class="field" style="width:200px" value=${separator} onChange=${e => chooseSeparator(e.target.value)}>
+          <option value=".">${t('Punkt (1.5)')}</option><option value=",">${t('Komma (1,5)')}</option>
+        </select></div>
+      <div class="caption secondary">${t('Gilt für den Taschenrechner in der Symbolleiste. Beim Tippen werden Punkt und Komma immer als Dezimaltrennzeichen verstanden.')}</div>
     </div>
     <div class="headline">${t('Reaktionsgleichung')}</div>
     <div class="form-section">

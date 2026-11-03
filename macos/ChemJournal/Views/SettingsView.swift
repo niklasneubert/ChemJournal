@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Einstellungen (⌘,): Allgemein (Sprache, Zeichenprogramm), Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
+/// Einstellungen (⌘,): Allgemein (Sprache, Zeichenprogramm, Taschenrechner), Speicherort & Backups, gelöschte Ansätze, CAS-Datenbank.
 struct SettingsView: View {
     var body: some View {
         TabView {
@@ -23,6 +23,7 @@ struct SettingsView: View {
 private struct GeneralSettingsView: View {
     @State private var language = AppLanguage.stored
     @AppStorage(DrawingApp.defaultsKey) private var drawingApp = DrawingApp.chemDraw.rawValue
+    @AppStorage(CalculatorSeparator.defaultsKey) private var calculatorSeparator = CalculatorSeparator.point.rawValue
 
     var body: some View {
         Form {
@@ -51,6 +52,14 @@ private struct GeneralSettingsView: View {
                     }
                 }
                 Text("Bestimmt die Knöpfe „In … zeichnen“ und „In … bearbeiten“ bei der Reaktionsgleichung. Das andere Programm erreichst du über das kleine + daneben. Eine gespeicherte Zeichnung öffnet sich immer in dem Programm, mit dem sie gezeichnet wurde. ReShiki ist kostenlos und quelloffen (reshiki.com).")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Section("Taschenrechner") {
+                Picker("Dezimaltrennzeichen", selection: $calculatorSeparator) {
+                    Text("Punkt (1.5)").tag(CalculatorSeparator.point.rawValue)
+                    Text("Komma (1,5)").tag(CalculatorSeparator.comma.rawValue)
+                }
+                Text("Gilt für den Taschenrechner in der Symbolleiste. Beim Tippen werden Punkt und Komma immer als Dezimaltrennzeichen verstanden.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

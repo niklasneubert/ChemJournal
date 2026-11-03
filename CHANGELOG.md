@@ -2,6 +2,43 @@
 
 🇩🇪 [Deutsche Version](CHANGELOG.de.md)
 
+## 1.2.1 – 3 November 2026 (macOS and Linux)
+
+### Calculator
+
+- **New in the toolbar:** a small calculator for + − × ÷, brackets, power, square root, percent and sign change –
+  with correct operator precedence and a live intermediate result while you type.
+- **Edit the calculation:** click into the calculation line, move the cursor with ← →, delete characters with the
+  delete key; digits and operators are inserted at the cursor. After “=” the calculation stays and can be changed,
+  the result updates immediately. Return calculates, typed `*` and `/` become × and ÷.
+- **Floating:** drag the calculator away by its edge – it detaches into a small window with a close button and
+  stays open until you close it. On Linux it floats inside the ChemJournal window.
+- **Decimal separator** point (default) or comma: *Settings › General › Calculator*. When typing, both point and
+  comma are always accepted as decimal separator.
+
+### Tags
+
+- **21 instead of 11 colors:** ten new, clearly distinct colors (gold, lime, fuchsia, olive, coral, navy, slate,
+  forest, wine, lavender), each with its own shade for light and dark mode. A tag has the same color on Mac and
+  Linux. Because there are more colors now, existing tags get a new color once.
+
+### Icons
+
+- **Newly drawn icons** for purification and analysis that show what the method or its spectrum looks like: column
+  with bands, TLC plate, chromatogram (GC), crystals, still, NMR multiplets, IR bands, UV/Vis absorption bands, MS
+  stick spectrum, EPR derivative signal, Bragg reflection (XRD) and [α] in a rotation arrow (optical rotation); plus
+  new icons for “Scale” and the calculator.
+
+### Fixed
+
+- **Dragging the name column wider or narrower** (reagent and yield tables): on the Mac the divider jumped back and
+  forth instead of following the mouse. It now follows smoothly; on Linux the table is redrawn at most once per frame
+  while dragging.
+
+### Compatibility
+
+- Same file format as 1.2. The calculator setting is stored per computer.
+
 ## 1.2 – 2 November 2026 (macOS and Linux)
 
 ### Purification & analysis

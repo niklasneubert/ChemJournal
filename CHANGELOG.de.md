@@ -2,6 +2,43 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
+## 1.2.1 – 3. November 2026 (macOS und Linux)
+
+### Taschenrechner
+
+- **Neu in der Symbolleiste:** ein kleiner Taschenrechner für + − × ÷, Klammern, Potenz, Wurzel, Prozent und
+  Vorzeichenwechsel – mit Punkt-vor-Strich und Zwischenergebnis schon während der Eingabe.
+- **Rechnung bearbeiten:** In die Rechnungszeile klicken, mit ← → den Cursor bewegen, mit der Löschtaste Zeichen
+  entfernen; Ziffern und Rechenzeichen landen an der Cursorposition. Nach „=“ bleibt die Aufgabe stehen und lässt sich
+  ändern, das Ergebnis rechnet sofort mit. Return rechnet, eingetipptes `*` und `/` werden zu × und ÷.
+- **Frei schwebend:** Den Rechner am Rand wegziehen – er löst sich als kleines Fenster mit Schließen-Knopf und bleibt
+  offen, bis man ihn schließt. Unter Linux schwebt er innerhalb des ChemJournal-Fensters.
+- **Dezimaltrennzeichen** Punkt (Standard) oder Komma: *Einstellungen › Allgemein › Taschenrechner*. Beim Tippen
+  gelten Punkt und Komma immer als Dezimalzeichen.
+
+### Tags
+
+- **21 statt 11 Farben:** zehn neue, gut unterscheidbare Farben (Gold, Limette, Fuchsia, Oliv, Koralle, Marine,
+  Schiefer, Waldgrün, Weinrot, Lavendel), jeweils mit eigenem Ton für hellen und dunklen Modus. Ein Tag hat auf Mac
+  und Linux dieselbe Farbe. Durch die größere Auswahl bekommen bestehende Tags einmalig eine neue Farbe.
+
+### Symbole
+
+- **Neu gezeichnete Symbole** für die Analytik und Aufreinigung, die zeigen, wie die Methode bzw. ihr Spektrum
+  aussieht: Säule mit Banden, DC-Platte, Chromatogramm (GC), Kristalle, Destille, NMR-Multipletts, IR-Banden,
+  UV/Vis-Absorptionsbanden, MS-Strichspektrum, EPR-Ableitungssignal, Bragg-Reflexion (XRD) und [α] im Drehpfeil
+  (Drehwert); dazu neue Symbole für „Skalieren“ und den Taschenrechner.
+
+### Behoben
+
+- **Namensspalte breiter/schmaler ziehen** (Ansatzgrößen und Ausbeute): Auf dem Mac sprang die Trennlinie beim Ziehen
+  hin und her, statt dem Mauszeiger zu folgen. Jetzt läuft sie gleichmäßig mit; unter Linux wird beim Ziehen
+  höchstens einmal pro Bild neu gezeichnet.
+
+### Kompatibilität
+
+- Gleiches Dateiformat wie 1.2. Die Einstellung für den Taschenrechner gilt je Computer.
+
 ## 1.2 – 2. November 2026 (macOS und Linux)
 
 ### Aufreinigung & Analytik

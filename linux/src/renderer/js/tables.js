@@ -206,8 +206,16 @@ function ResizeHandle({ width, setWidth }) {
   const onDown = e => {
     e.preventDefault();
     const startX = e.clientX, startW = width;
-    const move = ev => setWidth(Math.max(80, startW + ev.clientX - startX));
-    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); document.body.style.cursor = ''; };
+    // ganze Pixel und höchstens einmal pro Bild – sonst zeichnet jede Mausbewegung die ganze Tabelle neu
+    let frame = 0, latest = startW;
+    const move = ev => {
+      latest = Math.round(Math.min(600, Math.max(80, startW + ev.clientX - startX)));
+      if (!frame) frame = requestAnimationFrame(() => { frame = 0; setWidth(latest); });
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); document.body.style.cursor = '';
+      if (frame) { cancelAnimationFrame(frame); frame = 0; setWidth(latest); }
+    };
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', up);
     document.body.style.cursor = 'col-resize';
@@ -262,7 +270,7 @@ export function ChemicalTable({ eid, stage, showSmartExtract, setShowSmartExtrac
   return html`<div class="table-box">
     <div class="table-head">
       <span class="headline">${t('Ansatzgrößen')}</span><span class="spacer"></span>
-      <button class="tint-button orange" onClick=${() => setShowScale(true)}><${Icon} name="arrow.up.left.and.arrow.down.right" /> ${t('Skalieren')}</button>
+      <button class="tint-button orange" onClick=${() => setShowScale(true)}><${Icon} name="action.scale" /> ${t('Skalieren')}</button>
       <button class="tint-button purple" onClick=${() => setShowSmartExtract(true)}><${Icon} name="wand" /> Smart Extract</button>
     </div>
     <div class="grid" style=${{ gridTemplateColumns: cols }}>

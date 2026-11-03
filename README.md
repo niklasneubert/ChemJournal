@@ -27,10 +27,10 @@ Get the latest version from the **[Releases page](../../releases/latest)** – w
 
 | System | Version | File |
 |---|---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2 | `ChemJournal-1.2-macOS.dmg` |
-| Linux x86_64 (most PCs) | 1.2 | `ChemJournal-1.2-x86_64.AppImage` |
-| Linux ARM64 | 1.2 | `ChemJournal-1.2-arm64.AppImage` |
-| Linux, as plain archive | 1.2 | `ChemJournal-1.2-x64.tar.gz` / `…-arm64.tar.gz` |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2.1 | `ChemJournal-1.2.1-macOS.dmg` |
+| Linux x86_64 (most PCs) | 1.2.1 | `ChemJournal-1.2.1-x86_64.AppImage` |
+| Linux ARM64 | 1.2.1 | `ChemJournal-1.2.1-arm64.AppImage` |
+| Linux, as plain archive | 1.2.1 | `ChemJournal-1.2.1-x64.tar.gz` / `…-arm64.tar.gz` |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
@@ -39,8 +39,8 @@ and click **Open Anyway**.
 **Linux:** make the AppImage executable and start it – no installation needed:
 
 ```bash
-chmod +x ChemJournal-1.2-x86_64.AppImage
-./ChemJournal-1.2-x86_64.AppImage
+chmod +x ChemJournal-1.2.1-x86_64.AppImage
+./ChemJournal-1.2.1-x86_64.AppImage
 ```
 
 Want to try it with data? Import one of the [example experiments](examples/) via
@@ -67,6 +67,8 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 - **Marks and tags:** star important experiments, give them your own tags and filter the sidebar
 - **Formulas:** write `$…$` LaTeX or `\ce{…}` (mhchem) in summaries, procedures and observations – rendered
   automatically when you leave the field, entirely offline (bundled MathJax)
+- **Calculator in the toolbar:** a small calculator with an editable calculation line; drag it away by its edge to
+  keep it floating next to your work (decimal point or comma, see *Settings › General*)
 - **Search by chemical:** `n-BuLi` also finds “n-Butyllithium”, “BuLi” and rows that only carry CAS 109-72-8
 - **Yields** against a chosen reference reagent, including theoretical mass
 - **PDF export** on A4 with page numbers, one PDF per experiment or one for a whole project
@@ -82,8 +84,8 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 | ![Smart Extract](docs/screenshots/smart-extract.png) | ![Search by chemical: "toluene" finds "Toluol"](docs/screenshots/search.png) |
 | ![Dark mode](docs/screenshots/dark-mode.png) | ![PDF export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots and video: the macOS app (version 1.0) with example data. Linux 1.2 has the features of macOS
-1.2 and the same file format.</sub>
+<sub>Screenshots and video: the macOS app (version 1.0) with example data. Linux 1.2.1 has the features of macOS
+1.2.1 and the same file format.</sub>
 
 ## Smart Extract
 

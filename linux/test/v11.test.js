@@ -49,7 +49,10 @@ test('Tags: bereinigen, Dubletten, umbenennen, löschen, Farben wie auf dem Mac'
   assert.deepStrictEqual(projects[0].experiments.map(x => x.tags), [['Grosser Ansatz', 'NMR'], ['Grosser Ansatz'], ['Grosser Ansatz']]);
   projects = Tags.remove(projects, 'grosser ansatz');
   assert.deepStrictEqual(projects[0].experiments.map(x => x.tags), [['NMR'], [], []]);
-  assert.deepStrictEqual(['Photokatalyse', 'Kreuzkupplung', 'TADF', 'Scale-up'].map(Tags.color), ['orange', 'red', 'cyan', 'blue']);
+  // 21 Farben, gleiche Zuordnung wie TagColor auf dem Mac (TagColorTests)
+  assert.deepStrictEqual(['Photokatalyse', 'Kreuzkupplung', 'TADF', 'Scale-up', 'Grignard', 'Praktikum'].map(Tags.color),
+    ['teal', 'lavender', 'teal', 'gold', 'purple', 'purple']);
+  assert.strictEqual(Tags.color('photokatalyse'), Tags.color('Photokatalyse'));
 });
 
 test('Aufreinigung & Analytik: Zeilen wie im Experimentalteil (identisch zur Mac-App)', () => {

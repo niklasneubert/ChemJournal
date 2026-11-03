@@ -3,13 +3,43 @@ import AppKit
 
 /// Feste Farbe pro Tag-Name (gleicher Name → gleiche Farbe, auch nach Neustart).
 enum TagColor {
-    private static let palette: [Color] = [.blue, .green, .orange, .purple, .pink, .teal, .indigo, .brown, .mint, .red, .cyan]
+    /// Name und Farbe je Platz – gleiche Reihenfolge und gleicher Hash wie `Tags.color` in der Linux-App
+    /// (src/shared/tags.js), damit ein Tag auf beiden Systemen dieselbe Farbe hat. Die ersten elf sind
+    /// Systemfarben, die übrigen haben eigene Töne für hell und dunkel (gut lesbar als Schrift auf getöntem Grund).
+    private static let palette: [(name: String, color: Color)] = [
+        ("blue", .blue), ("green", .green), ("orange", .orange), ("purple", .purple), ("pink", .pink), ("teal", .teal),
+        ("indigo", .indigo), ("brown", .brown), ("mint", .mint), ("red", .red), ("cyan", .cyan),
+        ("gold", adaptive(0xb8860b, 0xffd60a)),
+        ("lime", adaptive(0x5a8f00, 0xa3e635)),
+        ("fuchsia", adaptive(0xc026d3, 0xe879f9)),
+        ("olive", adaptive(0x7d7a00, 0xc9c45a)),
+        ("coral", adaptive(0xe2553b, 0xff8a70)),
+        ("navy", adaptive(0x1f4fa8, 0x7ea6ff)),
+        ("slate", adaptive(0x5b6878, 0xa7b4c4)),
+        ("forest", adaptive(0x1e7b3c, 0x5ddc8a)),
+        ("wine", adaptive(0x9b2148, 0xf28bab)),
+        ("lavender", adaptive(0x7a5fe0, 0xb9a8ff)),
+    ]
 
-    static func color(for tag: String) -> Color {
+    static func color(for tag: String) -> Color { palette[index(for: tag)].color }
+
+    /// Name der Farbe (für Tests und den Abgleich mit Linux).
+    static func name(for tag: String) -> String { palette[index(for: tag)].name }
+
+    private static func index(for tag: String) -> Int {
         let key = tag.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
         // Eigener Hash: `hashValue` ändert sich bei jedem Programmstart
         let sum = key.unicodeScalars.reduce(UInt32(5381)) { ($0 &* 33) &+ $1.value }
-        return palette[Int(sum % UInt32(palette.count))]
+        return Int(sum % UInt32(palette.count))
+    }
+
+    private static func adaptive(_ light: UInt32, _ dark: UInt32) -> Color {
+        func ns(_ hex: UInt32) -> NSColor {
+            NSColor(srgbRed: CGFloat((hex >> 16) & 0xff) / 255, green: CGFloat((hex >> 8) & 0xff) / 255, blue: CGFloat(hex & 0xff) / 255, alpha: 1)
+        }
+        return Color(nsColor: NSColor(name: nil) { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? ns(dark) : ns(light)
+        })
     }
 }
 

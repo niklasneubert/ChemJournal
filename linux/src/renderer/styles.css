@@ -330,6 +330,9 @@ select.field { padding: 0 4px; }
 .tag-chip button:hover { opacity: 1; }
 .tag-blue { --c: #007aff; } .tag-green { --c: #28a745; } .tag-orange { --c: #ff9500; } .tag-purple { --c: #af52de; } .tag-pink { --c: #ff2d55; }
 .tag-teal { --c: #30b0c7; } .tag-indigo { --c: #5856d6; } .tag-brown { --c: #a2845e; } .tag-mint { --c: #00c7be; } .tag-red { --c: #ff3b30; } .tag-cyan { --c: #32ade6; }
+/* weitere Tag-Farben: eigener Ton für hell und dunkel */
+.tag-gold { --c: #b8860b; } .tag-lime { --c: #5a8f00; } .tag-fuchsia { --c: #c026d3; } .tag-olive { --c: #7d7a00; } .tag-coral { --c: #e2553b; } .tag-navy { --c: #1f4fa8; } .tag-slate { --c: #5b6878; } .tag-forest { --c: #1e7b3c; } .tag-wine { --c: #9b2148; } .tag-lavender { --c: #7a5fe0; }
+@media (prefers-color-scheme: dark) { .tag-gold { --c: #ffd60a; } .tag-lime { --c: #a3e635; } .tag-fuchsia { --c: #e879f9; } .tag-olive { --c: #c9c45a; } .tag-coral { --c: #ff8a70; } .tag-navy { --c: #7ea6ff; } .tag-slate { --c: #a7b4c4; } .tag-forest { --c: #5ddc8a; } .tag-wine { --c: #f28bab; } .tag-lavender { --c: #b9a8ff; } }
 .tag-line { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 1px; }
 .tag-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; font-size: 11px; }
 .tag-add { position: relative; }
@@ -409,3 +412,37 @@ select.field { padding: 0 4px; }
 .experiment-row .title-line { display: flex; align-items: center; gap: 4px; min-width: 0; }
 .experiment-row .title-line .star { flex: none; font-size: 10px; }
 .experiment-row.selected .tag-chip { color: #fff; background: rgba(255, 255, 255, 0.22); border-color: rgba(255, 255, 255, 0.45); }
+
+/* Taschenrechner (Popover bzw. frei schwebend) */
+.calc-panel { position: fixed; z-index: 60; width: 276px; background: var(--panel-bg); border-radius: 12px; box-shadow: var(--shadow);
+  user-select: none; cursor: default; }
+.calc-panel.popover::before { content: ''; position: absolute; top: -6px; left: 22px; width: 12px; height: 12px; background: var(--panel-bg);
+  transform: rotate(45deg); border-radius: 2px; }
+.calc-panel.floating { cursor: grab; }
+.calc-panel.floating:active { cursor: grabbing; }
+.calc-titlebar { display: flex; align-items: center; height: 26px; padding: 0 8px; border-bottom: 1px solid var(--separator);
+  font-size: 12px; font-weight: 600; color: var(--secondary); }
+.calc-titlebar span { flex: 1; text-align: center; }
+.calc-titlebar .calc-close-spacer { flex: none; width: 16px; }
+.calc-close { width: 16px; height: 16px; border-radius: 50%; border: none; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+  background: #ff5f57; color: transparent; font-size: 9px; cursor: pointer; }
+.calc-close:hover { color: rgba(0, 0, 0, 0.6); }
+.calc-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.calc-display { display: flex; flex-direction: column; align-items: stretch; gap: 2px; padding: 8px 10px; border-radius: 8px;
+  background: var(--text-bg); border: 1px solid var(--field-border); cursor: text; }
+.calc-line { display: flex; align-items: center; gap: 6px; }
+.calc-copy { flex: none; }
+.calc-field { flex: 1; min-width: 0; border: none; outline: none; background: transparent; color: var(--text); text-align: right;
+  font: 16px ui-rounded, system-ui, sans-serif; font-variant-numeric: tabular-nums; user-select: text; cursor: text; }
+.calc-result { text-align: right; font: 300 30px ui-rounded, system-ui, sans-serif; font-variant-numeric: tabular-nums; color: var(--secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.15; }
+.calc-result.final { color: var(--text); }
+.calc-result.error { color: var(--red); }
+.calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.calc-key { height: 34px; border: none; border-radius: 7px; font: 17px ui-rounded, system-ui, sans-serif; color: var(--text); cursor: pointer;
+  background: rgba(128, 128, 128, 0.16); }
+.calc-key.function { background: rgba(128, 128, 128, 0.30); font-weight: 500; }
+.calc-key.operator { background: color-mix(in srgb, var(--blue) 22%, transparent); color: var(--blue); font-weight: 500; }
+.calc-key.equals { background: var(--blue); color: #fff; font-weight: 500; }
+.calc-key:active { filter: brightness(0.8); }
+.calc-key sup { font-size: 10px; }

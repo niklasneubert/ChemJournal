@@ -54,7 +54,8 @@
   }
 
   /** Feste Farbe pro Tag-Name – gleiche Reihenfolge und gleicher Hash wie auf dem Mac. */
-  const PALETTE = ['blue', 'green', 'orange', 'purple', 'pink', 'teal', 'indigo', 'brown', 'mint', 'red', 'cyan'];
+  const PALETTE = ['blue', 'green', 'orange', 'purple', 'pink', 'teal', 'indigo', 'brown', 'mint', 'red', 'cyan',
+    'gold', 'lime', 'fuchsia', 'olive', 'coral', 'navy', 'slate', 'forest', 'wine', 'lavender'];
   function color(tag) {
     let sum = 5381;
     for (const ch of fold(tag)) sum = (Math.imul(sum, 33) + ch.codePointAt(0)) >>> 0;
