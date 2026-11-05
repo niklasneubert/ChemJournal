@@ -24,6 +24,22 @@ struct AnalysisTests {
         #expect(stage.analyses[0].files[0].description == "1H NMR CDCl3")
     }
 
+    @Test("Gekoppelte Methoden GC-MS und LC-MS")
+    func hyphenated() throws {
+        #expect(AnalysisGroup.spectroscopy.methods.contains(.gcms) && AnalysisGroup.spectroscopy.methods.contains(.lcms))
+        #expect(AnalysisMethod.gcms.hasCustomSymbol && AnalysisMethod.lcms.hasCustomSymbol)
+        var lc = AnalysisEntry(method: .lcms)
+        lc.values = ["ionization": "ESI", "polarity": "positiv", "retention": "3.42 min", "ion": "[M+H]⁺", "mzFound": "355.1"]
+        #expect(lc.heading == "LC-MS")
+        #expect(lc.summary.hasPrefix("LC-MS: "))
+        #expect(lc.summary.contains("Retentionszeit(en) 3.42 min") && lc.summary.contains("355.1"))
+        let old = #","analysisFiles":[{"id":"\#(UUID().uuidString)","filePath":"/x/NK12_GC-MS.pdf","description":""},"# +
+            #"{"id":"\#(UUID().uuidString)","filePath":"/x/NK12_lcms_run.raw","description":""},"# +
+            #"{"id":"\#(UUID().uuidString)","filePath":"/x/NK12_gc.pdf","description":""}]"#
+        let stage = try JSONDecoder().decode(Stage.self, from: stageJSON(old))
+        #expect(stage.analyses.map(\.method) == [.gcms, .lcms, .gc])
+    }
+
     @Test("Ohne Analysen und ohne Dateiliste: leer")
     func empty() throws {
         #expect(try JSONDecoder().decode(Stage.self, from: stageJSON("")).analyses.isEmpty)

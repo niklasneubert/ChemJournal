@@ -43,11 +43,11 @@ nonisolated struct AnalysisField: Identifiable, Sendable {
 }
 
 nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
-    case nmr, ir, uvVis, ms, epr, xrd, column, tlc, gc, recrystallization, distillation, meltingPoint, opticalRotation, other
+    case nmr, ir, uvVis, ms, gcms, lcms, epr, xrd, column, tlc, gc, recrystallization, distillation, meltingPoint, opticalRotation, other
 
     var group: AnalysisGroup {
         switch self {
-        case .nmr, .ir, .uvVis, .ms, .epr, .xrd: .spectroscopy
+        case .nmr, .ir, .uvVis, .ms, .gcms, .lcms, .epr, .xrd: .spectroscopy
         case .column, .tlc, .gc, .recrystallization, .distillation: .purification
         case .meltingPoint, .opticalRotation, .other: .other
         }
@@ -59,6 +59,8 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
         case .ir: String(localized: "IR-Spektroskopie")
         case .uvVis: String(localized: "UV/Vis-Spektroskopie")
         case .ms: String(localized: "Massenspektrometrie")
+        case .gcms: "GC-MS"
+        case .lcms: "LC-MS"
         case .epr: String(localized: "EPR-Spektroskopie")
         case .xrd: String(localized: "Röntgenbeugung (XRD)")
         case .column: String(localized: "Säulenchromatographie (LC)")
@@ -79,6 +81,8 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
         case .ir: "IR"
         case .uvVis: "UV/Vis"
         case .ms: "MS"
+        case .gcms: "GC-MS"
+        case .lcms: "LC-MS"
         case .epr: "EPR"
         case .xrd: "XRD"
         case .column: String(localized: "Säulenchromatographie (LC)")
@@ -97,6 +101,8 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
         case .ir: "method.ir"
         case .uvVis: "method.uvVis"
         case .ms: "method.ms"
+        case .gcms: "method.gcms"
+        case .lcms: "method.lcms"
         case .epr: "method.epr"
         case .xrd: "method.xrd"
         case .column: "method.column"
@@ -163,6 +169,36 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
                 AnalysisField(key: "mzCalc", label: String(localized: "m/z berechnet"), kind: .number(unit: "")),
                 AnalysisField(key: "mzFound", label: String(localized: "m/z gefunden"), kind: .number(unit: "")),
                 AnalysisField(key: "data", label: String(localized: "Weitere Signale"), kind: .multiline),
+            ]
+        case .gcms:
+            // Gekoppelt: Trennung wie bei der GC, Detektion im Massenspektrometer
+            return [
+                AnalysisField(key: "column", label: String(localized: "Säule"), kind: .text),
+                AnalysisField(key: "program", label: String(localized: "Temperaturprogramm"), kind: .text),
+                AnalysisField(key: "carrier", label: String(localized: "Trägergas / Fluss"), kind: .text),
+                AnalysisField(key: "ionization", label: String(localized: "Ionisierung"), kind: .choice(["EI (70 eV)", "CI", "FI"])),
+                AnalysisField(key: "massRange", label: String(localized: "Massenbereich m/z"), kind: .text),
+                AnalysisField(key: "retention", label: String(localized: "Retentionszeit(en)"), kind: .text),
+                AnalysisField(key: "purity", label: String(localized: "Reinheit / Umsatz"), kind: .number(unit: "%")),
+                AnalysisField(key: "data", label: String(localized: "m/z (rel. Intensität)"), kind: .multiline),
+                notes,
+            ]
+        case .lcms:
+            // Gekoppelt: HPLC/UPLC-Trennung, Detektion im Massenspektrometer (meist ESI)
+            return [
+                AnalysisField(key: "column", label: String(localized: "Säule"), kind: .text),
+                AnalysisField(key: "eluent", label: String(localized: "Eluent / Gradient"), kind: .text),
+                AnalysisField(key: "flow", label: String(localized: "Fluss"), kind: .number(unit: "mL/min")),
+                AnalysisField(key: "ionization", label: String(localized: "Ionisierung"), kind: .choice(["ESI", "APCI", "APPI"])),
+                AnalysisField(key: "polarity", label: String(localized: "Modus"),
+                              kind: .choice([String(localized: "positiv"), String(localized: "negativ")])),
+                AnalysisField(key: "retention", label: String(localized: "Retentionszeit(en)"), kind: .text),
+                AnalysisField(key: "ion", label: "Ion",
+                              kind: .choice(["[M+H]⁺", "[M+Na]⁺", "[M+K]⁺", "[M+NH₄]⁺", "[M]⁺", "[M−H]⁻", "[M+Cl]⁻", "[M+HCOO]⁻"])),
+                AnalysisField(key: "mzFound", label: String(localized: "m/z gefunden"), kind: .number(unit: "")),
+                AnalysisField(key: "purity", label: String(localized: "Reinheit"), kind: .number(unit: "%")),
+                AnalysisField(key: "data", label: String(localized: "Weitere Signale"), kind: .multiline),
+                notes,
             ]
         case .epr:
             // Angaben wie in Experimentalteilen üblich (CW-EPR: Frequenz, Leistung, Modulation, Temperatur, Probe;
@@ -306,6 +342,8 @@ nonisolated enum AnalysisMethod: String, CaseIterable, Sendable {
         case .ir: ["technique"]
         case .uvVis: ["solvent", "concentration", "pathLength"]
         case .ms: ["kind", "ionization", "polarity", "formula"]
+        case .gcms: ["column", "program", "carrier", "ionization", "massRange"]
+        case .lcms: ["column", "eluent", "flow", "ionization", "polarity"]
         case .epr: ["technique", "band", "frequency", "power", "modAmp", "modFreq", "temperature", "sampleState", "solvent"]
         case .xrd: ["kind", "radiation", "temperature"]
         case .column: ["stationaryPhase", "eluent"]
@@ -633,6 +671,10 @@ nonisolated struct AnalysisEntry: Identifiable, Hashable, Codable, Sendable {
             else if has(["hmbc"]) { entry.values["nucleus"] = "HMBC" }
             else if has(["noesy"]) { entry.values["nucleus"] = "NOESY" }
             else if has(["1h"]) { entry.values["nucleus"] = "¹H" }
+        } else if has(["gcms", "gc-ms"]) {
+            entry = AnalysisEntry(method: .gcms)
+        } else if has(["lcms", "lc-ms", "hplc-ms", "uplc-ms"]) {
+            entry = AnalysisEntry(method: .lcms)
         } else if has(["hrms", "ms", "esi", "maldi", "apci", "masse", "mass"]) {
             entry = AnalysisEntry(method: .ms)
             if has(["hrms"]) { entry.values["kind"] = "HRMS" }
@@ -640,7 +682,7 @@ nonisolated struct AnalysisEntry: Identifiable, Hashable, Codable, Sendable {
             entry = AnalysisEntry(method: .ir)
         } else if has(["uv", "uvvis", "uv-vis", "absorption"]) {
             entry = AnalysisEntry(method: .uvVis)
-        } else if has(["gc", "gcms", "gc-ms"]) {
+        } else if has(["gc"]) {
             entry = AnalysisEntry(method: .gc)
         } else if has(["dc", "tlc"]) {
             entry = AnalysisEntry(method: .tlc)

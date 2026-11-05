@@ -10,16 +10,16 @@
   const GROUPS = ['purification', 'spectroscopy', 'other'];
   const GROUP_TITLES = { purification: 'Chromatographie & Aufreinigung', spectroscopy: 'Analytik', other: 'Weitere' };
   // Reihenfolge wie auf dem Mac (bestimmt auch die Reihenfolge im Menü)
-  const METHODS = ['nmr', 'ir', 'uvVis', 'ms', 'epr', 'xrd', 'column', 'tlc', 'gc', 'recrystallization', 'distillation', 'meltingPoint', 'opticalRotation', 'other'];
-  const GROUP_OF = { nmr: 'spectroscopy', ir: 'spectroscopy', uvVis: 'spectroscopy', ms: 'spectroscopy', epr: 'spectroscopy', xrd: 'spectroscopy',
+  const METHODS = ['nmr', 'ir', 'uvVis', 'ms', 'gcms', 'lcms', 'epr', 'xrd', 'column', 'tlc', 'gc', 'recrystallization', 'distillation', 'meltingPoint', 'opticalRotation', 'other'];
+  const GROUP_OF = { nmr: 'spectroscopy', ir: 'spectroscopy', uvVis: 'spectroscopy', ms: 'spectroscopy', gcms: 'spectroscopy', lcms: 'spectroscopy', epr: 'spectroscopy', xrd: 'spectroscopy',
     column: 'purification', tlc: 'purification', gc: 'purification', recrystallization: 'purification', distillation: 'purification',
     meltingPoint: 'other', opticalRotation: 'other', other: 'other' };
-  const TITLES = { nmr: 'NMR-Spektroskopie', ir: 'IR-Spektroskopie', uvVis: 'UV/Vis-Spektroskopie', ms: 'Massenspektrometrie', epr: 'EPR-Spektroskopie',
+  const TITLES = { nmr: 'NMR-Spektroskopie', ir: 'IR-Spektroskopie', uvVis: 'UV/Vis-Spektroskopie', ms: 'Massenspektrometrie', gcms: 'GC-MS', lcms: 'LC-MS', epr: 'EPR-Spektroskopie',
     xrd: 'Röntgenbeugung (XRD)', column: 'Säulenchromatographie (LC)', tlc: 'Dünnschichtchromatographie (DC)', gc: 'Gaschromatographie (GC)',
     recrystallization: 'Umkristallisation', distillation: 'Destillation', meltingPoint: 'Schmelzpunkt', opticalRotation: 'Drehwert', other: 'Sonstiges' };
-  const SHORT = { nmr: 'NMR', ir: 'IR', uvVis: 'UV/Vis', ms: 'MS', epr: 'EPR', xrd: 'XRD', tlc: 'DC', gc: 'GC' };
+  const SHORT = { nmr: 'NMR', ir: 'IR', uvVis: 'UV/Vis', ms: 'MS', gcms: 'GC-MS', lcms: 'LC-MS', epr: 'EPR', xrd: 'XRD', tlc: 'DC', gc: 'GC' };
   // Wie die Mac-App: eigene Zeichnungen (method.…) und SF-Symbol-Namen, siehe renderer/js/icons.js
-  const SYMBOLS = { nmr: 'method.nmr', ir: 'method.ir', uvVis: 'method.uvVis', ms: 'method.ms', epr: 'method.epr', xrd: 'method.xrd',
+  const SYMBOLS = { nmr: 'method.nmr', ir: 'method.ir', uvVis: 'method.uvVis', ms: 'method.ms', gcms: 'method.gcms', lcms: 'method.lcms', epr: 'method.epr', xrd: 'method.xrd',
     column: 'method.column', tlc: 'method.tlc', gc: 'method.gc', recrystallization: 'method.recrystallization', distillation: 'method.distillation',
     meltingPoint: 'thermometer', opticalRotation: 'method.opticalRotation', other: 'doc.text' };
 
@@ -61,6 +61,18 @@
         choice('polarity', t('Modus'), [t('positiv'), t('negativ')]), text('formula', t('Summenformel')),
         choice('ion', 'Ion', ['[M+H]⁺', '[M+Na]⁺', '[M+K]⁺', '[M+NH₄]⁺', '[M]⁺', '[M]⁺•', '[M−H]⁻', '[M+Cl]⁻', '[M+HCOO]⁻']),
         number('mzCalc', t('m/z berechnet')), number('mzFound', t('m/z gefunden')), multiline('data', t('Weitere Signale'))];
+      // Gekoppelte Methoden: Trennung (GC bzw. HPLC/UPLC) mit Detektion im Massenspektrometer
+      case 'gcms': return [
+        text('column', t('Säule')), text('program', t('Temperaturprogramm')), text('carrier', t('Trägergas / Fluss')),
+        choice('ionization', t('Ionisierung'), ['EI (70 eV)', 'CI', 'FI']), text('massRange', t('Massenbereich m/z')),
+        text('retention', t('Retentionszeit(en)')), number('purity', t('Reinheit / Umsatz'), '%'),
+        multiline('data', t('m/z (rel. Intensität)')), notes];
+      case 'lcms': return [
+        text('column', t('Säule')), text('eluent', t('Eluent / Gradient')), number('flow', t('Fluss'), 'mL/min'),
+        choice('ionization', t('Ionisierung'), ['ESI', 'APCI', 'APPI']), choice('polarity', t('Modus'), [t('positiv'), t('negativ')]),
+        text('retention', t('Retentionszeit(en)')),
+        choice('ion', 'Ion', ['[M+H]⁺', '[M+Na]⁺', '[M+K]⁺', '[M+NH₄]⁺', '[M]⁺', '[M−H]⁻', '[M+Cl]⁻', '[M+HCOO]⁻']),
+        number('mzFound', t('m/z gefunden')), number('purity', t('Reinheit'), '%'), multiline('data', t('Weitere Signale')), notes];
       case 'epr': return [
         choice('technique', t('Methode'), ['CW-EPR', t('Puls-EPR (ESE)'), 'ENDOR', 'HYSCORE', 'ESEEM', 'DEER/PELDOR', t('Spin-Trapping')]),
         choice('band', t('Frequenzband'), ['X-Band (~9.5 GHz)', 'Q-Band (~34 GHz)', 'W-Band (~94 GHz)', 'S-Band (~3 GHz)', 'L-Band (~1 GHz)']),
@@ -117,7 +129,8 @@
 
   /** Felder, die ein neuer Eintrag derselben Methode in der Stufe übernimmt. */
   const INHERITED = { nmr: ['solvent', 'sampleMass', 'temperature'], ir: ['technique'], uvVis: ['solvent', 'concentration', 'pathLength'],
-    ms: ['kind', 'ionization', 'polarity', 'formula'], epr: ['technique', 'band', 'frequency', 'power', 'modAmp', 'modFreq', 'temperature', 'sampleState', 'solvent'],
+    ms: ['kind', 'ionization', 'polarity', 'formula'], gcms: ['column', 'program', 'carrier', 'ionization', 'massRange'],
+    lcms: ['column', 'eluent', 'flow', 'ionization', 'polarity'], epr: ['technique', 'band', 'frequency', 'power', 'modAmp', 'modFreq', 'temperature', 'sampleState', 'solvent'],
     xrd: ['kind', 'radiation', 'temperature'], column: ['stationaryPhase', 'eluent'], tlc: ['eluent', 'detection'],
     gc: ['column', 'program', 'carrier', 'detector'], recrystallization: ['solvent'], distillation: ['technique'], meltingPoint: ['method'],
     opticalRotation: ['wavelength', 'temperature', 'solvent', 'pathLength'], other: [] };
@@ -370,12 +383,14 @@
       const nucleus = has(['13c']) ? '¹³C{¹H}' : has(['19f']) ? '¹⁹F' : has(['31p']) ? '³¹P{¹H}' : has(['11b']) ? '¹¹B' : has(['cosy']) ? 'COSY'
         : has(['hsqc']) ? 'HSQC' : has(['hmbc']) ? 'HMBC' : has(['noesy']) ? 'NOESY' : has(['1h']) ? '¹H' : null;
       if (nucleus) entry.values.nucleus = nucleus;
-    } else if (has(['hrms', 'ms', 'esi', 'maldi', 'apci', 'masse', 'mass'])) {
+    } else if (has(['gcms', 'gc-ms'])) entry = newEntry('gcms');
+    else if (has(['lcms', 'lc-ms', 'hplc-ms', 'uplc-ms'])) entry = newEntry('lcms');
+    else if (has(['hrms', 'ms', 'esi', 'maldi', 'apci', 'masse', 'mass'])) {
       entry = newEntry('ms');
       if (has(['hrms'])) entry.values.kind = 'HRMS';
     } else if (has(['ir', 'ftir', 'atr'])) entry = newEntry('ir');
     else if (has(['uv', 'uvvis', 'uv-vis', 'absorption'])) entry = newEntry('uvVis');
-    else if (has(['gc', 'gcms', 'gc-ms'])) entry = newEntry('gc');
+    else if (has(['gc'])) entry = newEntry('gc');
     else if (has(['dc', 'tlc'])) entry = newEntry('tlc');
     else entry = newEntry('other');
     entry.files = [{ id: str(file.id) || uuid(), filePath: str(file.filePath), description: str(file.description) }];

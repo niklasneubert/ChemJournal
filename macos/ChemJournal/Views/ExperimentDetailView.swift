@@ -47,6 +47,13 @@ struct DetailView: View {
                 // unter die Symbolleiste.
                 .frame(width: max(scrollGeo.size.width, contentNeededWidth), alignment: .leading)
             }
+            .modifier(SoftTopScrollEdge())
+            // Bis unter die Symbolleiste reichen, damit der Inhalt beim Scrollen weich unter die Leiste gleitet statt an
+            // ihrer Unterkante hart abgeschnitten zu werden. Der Inhalt beginnt trotzdem unterhalb der Leiste: oberer
+            // Rand = Abstand des sichtbaren Bereichs vom Fensteroberrand (Höhe der Symbolleiste).
+            .contentMargins(.top, scrollGeo.frame(in: .global).minY, for: .scrollContent)
+            .contentMargins(.top, scrollGeo.frame(in: .global).minY, for: .scrollIndicators)
+            .ignoresSafeArea(.container, edges: .top)
             .background(.regularMaterial)
             .sheet(isPresented: $showHistory) { VersionHistoryView(experimentID: experiment.id, currentTitle: experiment.title) }
             .onAppear { updateSnapWidths() }
@@ -57,5 +64,17 @@ struct DetailView: View {
     private func updateSnapWidths() {
         WindowSnapManager.shared.perfectWidth = 1024
         WindowSnapManager.shared.snapWidths = hasYields ? [1024, 1260] : [1024]
+    }
+}
+
+/// Inhalt verschwindet beim Scrollen weich unter der Symbolleiste statt an einer harten Kante abgeschnitten zu werden
+/// (sonst sieht ein leicht gescrollter Titel aus wie halb abgeschnitten). Ab macOS 26; davor bleibt es wie bisher.
+struct SoftTopScrollEdge: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 26.0, *) {
+            content.scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+            content
+        }
     }
 }

@@ -70,6 +70,11 @@ final class CalculatorController: NSObject, NSPopoverDelegate, NSWindowDelegate 
         center.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.panel?.level = .normal }
         }
+        // Erscheinungsbild von ChemJournal (Darstellung › Erscheinungsbild) übernehmen – das abgelöste Fenster ist ein
+        // eigenes Fenster und folgte sonst dem System statt der App-Einstellung
+        center.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.applyAppearance() }
+        }
     }
 
     func toggle() {
@@ -110,6 +115,7 @@ final class CalculatorController: NSObject, NSPopoverDelegate, NSWindowDelegate 
         model.onEscape = { [weak p] in p?.performClose(nil) }
         p.show(relativeTo: rect, of: anchor, preferredEdge: anchor.isFlipped ? .maxY : .minY)
         popover = p
+        applyAppearance()
         model.requestFocus()
     }
 
@@ -123,6 +129,17 @@ final class CalculatorController: NSObject, NSPopoverDelegate, NSWindowDelegate 
     // Ablösen
 
     func popoverShouldDetach(_ popover: NSPopover) -> Bool { true }
+
+    /// Hell/Dunkel wie in ChemJournal eingestellt („System“ = wie macOS).
+    private func applyAppearance() {
+        let appearance: NSAppearance? = switch UserDefaults.standard.string(forKey: "appTheme") {
+        case AppTheme.dark.rawValue: NSAppearance(named: .darkAqua)
+        case AppTheme.light.rawValue: NSAppearance(named: .aqua)
+        default: nil
+        }
+        if panel?.appearance != appearance { panel?.appearance = appearance }
+        if let popover, popover.appearance != appearance { popover.appearance = appearance }
+    }
 
     func detachableWindow(for popover: NSPopover) -> NSWindow? {
         if let panel { return panel }
@@ -142,6 +159,7 @@ final class CalculatorController: NSObject, NSPopoverDelegate, NSWindowDelegate 
         p.contentViewController = vc
         p.setContentSize(vc.view.fittingSize)
         panel = p
+        applyAppearance()
         return p
     }
 

@@ -471,6 +471,16 @@
         }
       }
     },
+    "Eluent / Gradient": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eluent / gradient"
+          }
+        }
+      }
+    },
     "Ergebnis kopieren": {
       "localizations": {
         "en": {
@@ -487,6 +497,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Error"
+          }
+        }
+      }
+    },
+    "Fluss": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flow"
           }
         }
       }
@@ -561,6 +581,26 @@
         }
       }
     },
+    "m/z (rel. Intensität)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m/z (rel. intensity)"
+          }
+        }
+      }
+    },
+    "Massenbereich m/z": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mass range m/z"
+          }
+        }
+      }
+    },
     "Potenz (^)": {
       "localizations": {
         "en": {
@@ -587,6 +627,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Point (1.5)"
+          }
+        }
+      }
+    },
+    "Reinheit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purity"
           }
         }
       }

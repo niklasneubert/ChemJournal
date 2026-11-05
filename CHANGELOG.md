@@ -2,6 +2,18 @@
 
 🇩🇪 [Deutsche Version](CHANGELOG.de.md)
 
+## Unreleased (macOS and Linux)
+
+- **Hyphenated methods GC-MS and LC-MS** in “Purification & analysis” (analysis group), each with its own form: GC-MS
+  with column, temperature program, carrier gas, ionization (EI/CI/FI), mass range, retention times, purity and m/z
+  signals; LC-MS with column, eluent/gradient, flow, ionization (ESI/APCI/APPI), mode, retention times, ion, m/z found
+  and purity. New icons (chromatogram peak with mass spectrum). Older file lists with “GC-MS” or “LC-MS” in the file
+  name are assigned to the matching method.
+- **Fixed (macOS):** the detached calculator was light while ChemJournal was in dark mode – it now follows
+  *View › Appearance*.
+- **Fixed (macOS):** when scrolling slightly, an experiment's title was cut off hard at the bottom edge of the toolbar.
+  Content now slides softly under the toolbar.
+
 ## 1.2.1 – 3 November 2026 (macOS and Linux)
 
 ### Calculator

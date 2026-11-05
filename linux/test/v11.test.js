@@ -93,6 +93,17 @@ test('Untergeordnete Analytik-Einträge: Reihenfolge prüfen, parentID speichern
   assert.deepStrictEqual(Analysis.newEntry('nmr').values, {});
 });
 
+test('Gekoppelte Methoden GC-MS und LC-MS (wie auf dem Mac)', () => {
+  assert.ok(Analysis.methodsIn('spectroscopy').includes('gcms') && Analysis.methodsIn('spectroscopy').includes('lcms'));
+  assert.strictEqual(Analysis.symbol('gcms'), 'method.gcms');
+  const lc = { ...Analysis.newEntry('lcms'), values: { ionization: 'ESI', polarity: 'positiv', retention: '3.42 min', ion: '[M+H]⁺', mzFound: '355.1' } };
+  assert.strictEqual(Analysis.heading(lc), 'LC-MS');
+  assert.ok(Analysis.summary(lc).startsWith('LC-MS: '), Analysis.summary(lc));
+  assert.ok(Analysis.summary(lc).includes('Retentionszeit(en) 3.42 min') && Analysis.summary(lc).includes('355.1'));
+  const files = ['/x/NK12_GC-MS.pdf', '/x/NK12_lcms_run.raw', '/x/NK12_gc.pdf'].map(f => ({ id: 'A', filePath: f, description: '' }));
+  assert.deepStrictEqual(files.map(f => Analysis.migrated(f).method), ['gcms', 'lcms', 'gc']);
+});
+
 test('Ältere Dateien: Dateiliste wird zu Einträgen, Liste wird weiter mitgeschrieben; unbekannte Methode → Sonstiges', () => {
   const s = normalizeStage({ title: 'S', analysisFiles: [
     { filePath: '/x/NK12_1H.fid', description: '1H NMR CDCl3' }, { filePath: '/x/NK12_13C.pdf', description: '' },

@@ -2,6 +2,18 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
+## Noch nicht veröffentlicht (macOS und Linux)
+
+- **Gekoppelte Methoden GC-MS und LC-MS** in „Aufreinigung & Analytik“ (Gruppe Analytik), jeweils mit eigenem Formular:
+  GC-MS mit Säule, Temperaturprogramm, Trägergas, Ionisierung (EI/CI/FI), Massenbereich, Retentionszeiten, Reinheit und
+  m/z-Signalen; LC-MS mit Säule, Eluent/Gradient, Fluss, Ionisierung (ESI/APCI/APPI), Modus, Retentionszeiten, Ion,
+  m/z gefunden und Reinheit. Neue Symbole (Chromatogramm-Peak mit Massenspektrum). Ältere Dateilisten mit „GC-MS“ bzw.
+  „LC-MS“ im Dateinamen werden der passenden Methode zugeordnet.
+- **Behoben (macOS):** Der abgelöste Taschenrechner war im dunklen Modus von ChemJournal hell – er folgt jetzt der
+  Einstellung *Darstellung › Erscheinungsbild*.
+- **Behoben (macOS):** Beim leichten Scrollen wurde der Titel eines Ansatzes an der Unterkante der Symbolleiste hart
+  abgeschnitten. Der Inhalt gleitet jetzt weich unter die Symbolleiste.
+
 ## 1.2.1 – 3. November 2026 (macOS und Linux)
 
 ### Taschenrechner
