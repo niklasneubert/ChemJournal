@@ -27,10 +27,10 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)** – was
 
 | System | Version | Datei |
 |---|---|---|
-| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | 1.2.1 | [`ChemJournal-1.2.1-macOS.dmg`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-macOS.dmg) |
-| Linux x86_64 (die meisten PCs) | 1.2.1 | [`ChemJournal-1.2.1-x86_64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x86_64.AppImage) |
-| Linux ARM64 | 1.2.1 | [`ChemJournal-1.2.1-arm64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.AppImage) |
-| Linux als Archiv | 1.2.1 | [`ChemJournal-1.2.1-x64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x64.tar.gz) / [`ChemJournal-1.2.1-arm64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.tar.gz) |
+| macOS 15 (Sequoia) oder neuer, Apple-Chip und Intel | 1.2.2 | [`ChemJournal-1.2.2-macOS.dmg`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-macOS.dmg) |
+| Linux x86_64 (die meisten PCs) | 1.2.2 | [`ChemJournal-1.2.2-x86_64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-x86_64.AppImage) |
+| Linux ARM64 | 1.2.2 | [`ChemJournal-1.2.2-arm64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-arm64.AppImage) |
+| Linux als Archiv | 1.2.2 | [`ChemJournal-1.2.2-x64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-x64.tar.gz) / [`ChemJournal-1.2.2-arm64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-arm64.tar.gz) |
 
 **macOS:** .dmg öffnen und ChemJournal in den Ordner *Programme* ziehen. Die App ist nicht von Apple beglaubigt
 (dafür bräuchte es ein kostenpflichtiges Entwicklerkonto). Beim ersten Start blockiert macOS sie deshalb einmal:
@@ -39,8 +39,8 @@ Die aktuelle Version gibt es unter **[Releases](../../releases/latest)** – was
 **Linux:** AppImage ausführbar machen und starten, keine Installation nötig:
 
 ```bash
-chmod +x ChemJournal-1.2.1-x86_64.AppImage
-./ChemJournal-1.2.1-x86_64.AppImage
+chmod +x ChemJournal-1.2.2-x86_64.AppImage
+./ChemJournal-1.2.2-x86_64.AppImage
 ```
 
 Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
@@ -59,7 +59,7 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
   als hochaufgelöstes Bild im Ansatz (so ist das Schema in den Screenshots entstanden) und bleibt 7 Tage lang
   bearbeitbar. Das kostenlose, quelloffene [ReShiki](https://reshiki.com) funktioniert genauso (unter Linux ist es das Zeichenprogramm). Ohne beides einfach
   ein Bild oder PDF hineinziehen oder einfügen
-- **Aufreinigung & Analytik:** Formulare für NMR, IR, UV/Vis, EPR, MS, XRD, Säulenchromatographie, DC, GC,
+- **Aufreinigung & Analytik:** Formulare für NMR, IR, UV/Vis, EPR, MS, XRD, GC-MS, LC-MS, Säulenchromatographie, DC, GC,
   Umkristallisation, Destillation, Schmelzpunkt und Drehwert – mit verknüpften Spektren, berechneten Werten
   (Δ ppm, ε, Wiederfindung, [α]) und einer Zeile für den Experimentalteil und das PDF; Karten am Farbstreifen verschieben und Einträge
   einander unterordnen (z. B. DC und Säule unter das NMR des Produkts)
@@ -82,8 +82,8 @@ Zum Ausprobieren mit Daten: einen der [Beispiel-Ansätze](examples/) über
 | ![Smart Extract](docs/screenshots/smart-extract.png) | ![Suche: „toluene“ findet „Toluol“](docs/screenshots/search.png) |
 | ![Dunkelmodus](docs/screenshots/dark-mode.png) | ![PDF-Export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots und Video: die Mac-App (Version 1.0) mit Beispieldaten. Linux 1.2.1 hat die Funktionen von macOS
-1.2.1 und dasselbe Dateiformat.</sub>
+<sub>Screenshots und Video: die Mac-App (Version 1.0) mit Beispieldaten. Linux 1.2.2 hat die Funktionen von macOS
+1.2.2 und dasselbe Dateiformat.</sub>
 
 ## Smart Extract
 

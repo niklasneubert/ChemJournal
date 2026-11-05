@@ -2,13 +2,16 @@
 
 🇬🇧 [English version](CHANGELOG.md)
 
-## Noch nicht veröffentlicht (macOS und Linux)
+## 1.2.2 – 5. November 2026 (macOS und Linux)
 
 - **Gekoppelte Methoden GC-MS und LC-MS** in „Aufreinigung & Analytik“ (Gruppe Analytik), jeweils mit eigenem Formular:
   GC-MS mit Säule, Temperaturprogramm, Trägergas, Ionisierung (EI/CI/FI), Massenbereich, Retentionszeiten, Reinheit und
   m/z-Signalen; LC-MS mit Säule, Eluent/Gradient, Fluss, Ionisierung (ESI/APCI/APPI), Modus, Retentionszeiten, Ion,
   m/z gefunden und Reinheit. Neue Symbole (Chromatogramm-Peak mit Massenspektrum). Ältere Dateilisten mit „GC-MS“ bzw.
   „LC-MS“ im Dateinamen werden der passenden Methode zugeordnet.
+- **Behoben (macOS):** Ein neu eingetippter Name in den Ansatzgrößen oder bei der Ausbeute ging verloren, wenn man
+  danach direkt zu einem anderen Ansatz wechselte (er wurde erst beim Verlassen des Feldes gespeichert). Jetzt wird
+  jeder Tastendruck sofort gespeichert; die Formatierung (z. B. H₂O) folgt weiterhin beim Verlassen des Feldes.
 - **Behoben (macOS):** Der abgelöste Taschenrechner war im dunklen Modus von ChemJournal hell – er folgt jetzt der
   Einstellung *Darstellung › Erscheinungsbild*.
 - **Behoben (macOS):** Beim leichten Scrollen wurde der Titel eines Ansatzes an der Unterkante der Symbolleiste hart

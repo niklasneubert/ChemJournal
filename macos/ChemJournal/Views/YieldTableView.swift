@@ -59,6 +59,8 @@ struct YieldRowView: View {
     var body: some View {
         GridRow {
             TextField("Produktname", text: $tempName).focused($focusedField, equals: .name).textFieldStyle(.roundedBorder).frame(width: max(40, nameWidth - 8)).onAppear { tempName = yieldData.name }.onChange(of: yieldData.name) { _, newV in if focusedField != .name { tempName = newV } }.onSubmit { commitName() }.onChange(of: focusedField) { oldF, newF in if oldF == .name && newF != .name { commitName() } }
+                // Sofort speichern (siehe Ansatzgrößen) – sonst geht der Name beim direkten Wechsel des Ansatzes verloren
+                .onChange(of: tempName) { _, v in if focusedField == .name, yieldData.name != v { yieldData.name = v } }
             TextField("CAS", text: $yieldData.cas).focused($focusedField, equals: .cas).textFieldStyle(.roundedBorder).frame(minWidth: 70)
                 .overlay(alignment: .trailing) { CASStatusIcon(status: casStatus) }
                 .onChange(of: yieldData.cas) { _, newValue in casChanged(newValue) }

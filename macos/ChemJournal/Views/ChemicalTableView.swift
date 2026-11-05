@@ -161,6 +161,9 @@ struct ChemicalRowView: View {
         GridRow {
             TextField("Name", text: $tempName).focused($focusedField, equals: .name).textFieldStyle(.roundedBorder).frame(width: max(40, nameWidth - 8))
                 .onAppear { tempName = chemical.name }.onChange(of: chemical.name) { _, newV in if focusedField != .name { tempName = newV } }.onSubmit { commitName() }.onChange(of: focusedField) { oldF, newF in if oldF == .name && newF != .name { commitName() } }
+                // Jeden Tastendruck sofort speichern – sonst ginge der Name verloren, wenn man direkt zu einem anderen
+                // Ansatz wechselt (das Feld verliert dann nicht erst den Fokus). Formatiert wird beim Verlassen des Feldes.
+                .onChange(of: tempName) { _, v in if focusedField == .name, chemical.name != v { chemical.name = v } }
             TextField("eq", text: $chemical.equivalents).focused($focusedField, equals: .eq).textFieldStyle(.roundedBorder).frame(minWidth: 40).onChange(of: chemical.equivalents) { _, _ in calculate(source: .eq) }
             TextField("CAS", text: $chemical.cas).focused($focusedField, equals: .cas).textFieldStyle(.roundedBorder).frame(minWidth: 70)
                 .overlay(alignment: .trailing) { CASStatusIcon(status: casStatus) }

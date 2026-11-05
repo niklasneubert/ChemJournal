@@ -27,10 +27,10 @@ Get the latest version from the **[Releases page](../../releases/latest)** – w
 
 | System | Version | File |
 |---|---|---|
-| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2.1 | [`ChemJournal-1.2.1-macOS.dmg`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-macOS.dmg) |
-| Linux x86_64 (most PCs) | 1.2.1 | [`ChemJournal-1.2.1-x86_64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x86_64.AppImage) |
-| Linux ARM64 | 1.2.1 | [`ChemJournal-1.2.1-arm64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.AppImage) |
-| Linux, as plain archive | 1.2.1 | [`ChemJournal-1.2.1-x64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-x64.tar.gz) / [`ChemJournal-1.2.1-arm64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.1/ChemJournal-1.2.1-arm64.tar.gz) |
+| macOS 15 (Sequoia) or newer, Apple Silicon and Intel | 1.2.2 | [`ChemJournal-1.2.2-macOS.dmg`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-macOS.dmg) |
+| Linux x86_64 (most PCs) | 1.2.2 | [`ChemJournal-1.2.2-x86_64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-x86_64.AppImage) |
+| Linux ARM64 | 1.2.2 | [`ChemJournal-1.2.2-arm64.AppImage`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-arm64.AppImage) |
+| Linux, as plain archive | 1.2.2 | [`ChemJournal-1.2.2-x64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-x64.tar.gz) / [`ChemJournal-1.2.2-arm64.tar.gz`](https://github.com/niklasneubert/ChemJournal/releases/download/v1.2.2/ChemJournal-1.2.2-arm64.tar.gz) |
 
 **macOS:** open the .dmg and drag ChemJournal into *Applications*. The app is not notarised by Apple (that needs a
 paid developer account), so on first launch macOS will block it once: open *System Settings › Privacy & Security*
@@ -39,8 +39,8 @@ and click **Open Anyway**.
 **Linux:** make the AppImage executable and start it – no installation needed:
 
 ```bash
-chmod +x ChemJournal-1.2.1-x86_64.AppImage
-./ChemJournal-1.2.1-x86_64.AppImage
+chmod +x ChemJournal-1.2.2-x86_64.AppImage
+./ChemJournal-1.2.2-x86_64.AppImage
 ```
 
 Want to try it with data? Import one of the [example experiments](examples/) via
@@ -60,7 +60,7 @@ Want to try it with data? Import one of the [example experiments](examples/) via
   the experiment as a high-resolution image (the scheme in the screenshots was made this way) and stays editable for
   7 days. The free, open-source [ReShiki](https://reshiki.com) works the same way (on Linux it is the drawing program). Without either, just drop in or
   paste any image or PDF
-- **Purification & analysis:** forms for NMR, IR, UV/Vis, EPR, MS, XRD, column chromatography, TLC, GC,
+- **Purification & analysis:** forms for NMR, IR, UV/Vis, EPR, MS, XRD, GC-MS, LC-MS, column chromatography, TLC, GC,
   recrystallisation, distillation, melting point and optical rotation – with linked spectra, calculated values
   (Δ ppm, ε, recovery, [α]) and a one-line summary for the experimental section and the PDF; reorder cards by dragging their colored
   stripe and nest entries under each other (e.g. TLC and column under the product's NMR)
@@ -84,8 +84,8 @@ Want to try it with data? Import one of the [example experiments](examples/) via
 | ![Smart Extract](docs/screenshots/smart-extract.png) | ![Search by chemical: "toluene" finds "Toluol"](docs/screenshots/search.png) |
 | ![Dark mode](docs/screenshots/dark-mode.png) | ![PDF export](docs/screenshots/pdf-export.png) |
 
-<sub>Screenshots and video: the macOS app (version 1.0) with example data. Linux 1.2.1 has the features of macOS
-1.2.1 and the same file format.</sub>
+<sub>Screenshots and video: the macOS app (version 1.0) with example data. Linux 1.2.2 has the features of macOS
+1.2.2 and the same file format.</sub>
 
 ## Smart Extract
 

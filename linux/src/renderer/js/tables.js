@@ -188,7 +188,8 @@ export function CASStatusIcon({ status }) {
 
 // MARK: Bausteine ------------------------------------------------------------------------------------------
 
-/** Name mit „Smarter Formatierung“ beim Verlassen des Feldes ("\ce{H2O}" → H₂O, "(12)" → fett). */
+/** Name mit „Smarter Formatierung“ beim Verlassen des Feldes ("\ce{H2O}" → H₂O, "(12)" → fett). Jeder Tastendruck wird
+ *  sofort gespeichert – sonst ginge der Name verloren, wenn man direkt zu einem anderen Ansatz wechselt. */
 function NameField({ value, placeholder, onCommit }) {
   const [temp, setTemp] = useState(value);
   const focused = useRef(false);
@@ -196,7 +197,7 @@ function NameField({ value, placeholder, onCommit }) {
   // Immer den Feldinhalt nehmen – der zuletzt gezeichnete Zustand kann einen Tastendruck hinterher sein
   const commit = el => { const f = CJ.applySmartFormatting(el.value); el.value = f; setTemp(f); if (f !== value) onCommit(f); };
   return html`<input class="field" placeholder=${placeholder} value=${temp}
-    onInput=${e => setTemp(e.target.value)}
+    onInput=${e => { setTemp(e.target.value); if (e.target.value !== value) onCommit(e.target.value); }}
     onFocus=${() => { focused.current = true; }}
     onBlur=${e => { focused.current = false; commit(e.target); }}
     onKeyDown=${e => { if (e.key === 'Enter') commit(e.target); }} />`;
